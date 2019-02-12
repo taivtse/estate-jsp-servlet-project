@@ -6,21 +6,21 @@ import com.laptrinhjavaweb.core.anotation.Id;
 
 import java.lang.reflect.Field;
 
-public class ModelAnnotationUtilImpl implements ModelAnnotationUtil {
-    private Object model;
+public class ModelAnnotationUtilImpl implements IModelAnnotationUtil {
+    private Class<?> modelClass;
 
-    public ModelAnnotationUtilImpl(Object model) {
-        this.model = model;
+    public ModelAnnotationUtilImpl(Class<?> modelClass) {
+        this.modelClass = modelClass;
     }
 
     @Override
     public String getTableName() {
-        return model.getClass().getAnnotation(Entity.class).tableName();
+        return this.modelClass.getAnnotation(Entity.class).tableName();
     }
 
     @Override
     public String getIdColumnName() {
-        Field[] fieldList = this.model.getClass().getDeclaredFields();
+        Field[] fieldList = this.modelClass.getDeclaredFields();
 
         for (Field field : fieldList) {
             if (field.isAnnotationPresent(Id.class)) {
@@ -33,7 +33,7 @@ public class ModelAnnotationUtilImpl implements ModelAnnotationUtil {
 
     @Override
     public boolean isAutoIncrement() {
-        Field[] fieldList = this.model.getClass().getDeclaredFields();
+        Field[] fieldList = this.modelClass.getDeclaredFields();
 
         for (Field field : fieldList) {
             if (field.isAnnotationPresent(Id.class)) {
@@ -46,7 +46,7 @@ public class ModelAnnotationUtilImpl implements ModelAnnotationUtil {
 
     @Override
     public String buildInsertStatement() {
-        Field[] fieldList = this.model.getClass().getDeclaredFields();
+        Field[] fieldList = this.modelClass.getDeclaredFields();
 
         StringBuilder statement = new StringBuilder("INSERT INTO ");
         statement.append(this.getTableName());
@@ -80,7 +80,7 @@ public class ModelAnnotationUtilImpl implements ModelAnnotationUtil {
         statement.append(this.getTableName());
         statement.append(" SET ");
 
-        Field[] fieldList = this.model.getClass().getDeclaredFields();
+        Field[] fieldList = this.modelClass.getDeclaredFields();
         for (int i = 0; i < fieldList.length; i++) {
 //            skip id column
             if (fieldList[i].isAnnotationPresent(Id.class)) {

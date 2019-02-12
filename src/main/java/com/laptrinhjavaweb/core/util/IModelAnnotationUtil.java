@@ -1,6 +1,6 @@
 package com.laptrinhjavaweb.core.util;
 
-public interface ModelAnnotationUtil {
+public interface IModelAnnotationUtil {
     String getTableName();
 
     String getIdColumnName();
@@ -17,7 +17,7 @@ public interface ModelAnnotationUtil {
 
     String buildDeleteByIdStatement();
 
-    static ModelAnnotationUtil of(Class<?> modelClass){
+    static IModelAnnotationUtil of(Class<?> modelClass){
         return new ModelAnnotationUtilImpl(modelClass);
     }
 }

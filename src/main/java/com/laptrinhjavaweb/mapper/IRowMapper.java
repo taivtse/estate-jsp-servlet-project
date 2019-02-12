@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 public interface IRowMapper {
 	Object mapRow(ResultSet resultSet) throws Exception;
 
-	static IRowMapper of(Class<?> clazz){
-	    return new RowMapperImpl(clazz);
+	static IRowMapper of(Class<?> modelClass){
+	    return new RowMapperImpl(modelClass);
     }
 }

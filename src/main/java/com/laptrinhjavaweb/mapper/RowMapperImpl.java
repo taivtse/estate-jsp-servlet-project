@@ -2,27 +2,28 @@ package com.laptrinhjavaweb.mapper;
 
 import com.laptrinhjavaweb.core.anotation.Column;
 
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.sql.*;
 
 public class RowMapperImpl implements IRowMapper {
-    private Class<?> clazz;
+    private Class<?> modelClass;
 
-    public RowMapperImpl(Class<?> clazz) {
-        this.clazz = clazz;
+    public RowMapperImpl(Class<?> modelClass) {
+        this.modelClass = modelClass;
     }
 
     @Override
     public Object mapRow(ResultSet resultSet) throws Exception {
-        Object obj = this.clazz.newInstance();
-        Field[] fieldList = this.clazz.getDeclaredFields();
+        Object obj = this.modelClass.newInstance();
+        Field[] fieldList = this.modelClass.getDeclaredFields();
         for (Field field : fieldList) {
             boolean accessible = field.isAccessible();
             field.setAccessible(true);
 
 //          get data from rs and set to obj
-            Object fieldData = this.getResultSetFieldData(resultSet, field);
+            Object fieldData = this.getFieldDataFromResultSet(resultSet, field);
             field.set(obj, fieldData);
 
             field.setAccessible(accessible);
@@ -30,7 +31,7 @@ public class RowMapperImpl implements IRowMapper {
         return obj;
     }
 
-    private Object getResultSetFieldData(ResultSet resultSet, Field field) throws Exception {
+    private Object getFieldDataFromResultSet(ResultSet resultSet, Field field) throws Exception {
         String columnName = field.getAnnotation(Column.class).name();
 
         if (field.getType().isAssignableFrom(Byte.class)) {
@@ -66,8 +67,8 @@ public class RowMapperImpl implements IRowMapper {
         } else if (field.getType().isAssignableFrom(Timestamp.class)) {
             return resultSet.getTimestamp(columnName);
 
-        } else if (field.getType().isAssignableFrom(Blob.class)) {
-            return resultSet.getBlob(columnName);
+        } else if (field.getType().isAssignableFrom(InputStream.class)) {
+            return resultSet.getBlob(columnName).getBinaryStream();
 
         } else {
             throw new Exception("Chưa hỗ trợ field có kiểu: " + field.getClass().getName());
