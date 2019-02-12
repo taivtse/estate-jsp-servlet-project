@@ -2,14 +2,12 @@ package com.laptrinhjavaweb.model;
 
 import com.laptrinhjavaweb.core.anotation.Column;
 import com.laptrinhjavaweb.core.anotation.Entity;
-import com.laptrinhjavaweb.core.anotation.GeneratedValue;
 import com.laptrinhjavaweb.core.anotation.Id;
 
 @Entity(tableName = "user")
 public class User {
-    @Id
+    @Id(autoIncrement = true)
     @Column(name = "id")
-    @GeneratedValue(autoIncrement = true)
     private Integer id;
 
     @Column(name = "username")
@@ -18,7 +16,7 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "fullname")
+    @Column(name = "full_name")
     private String fullName;
 
     @Column(name = "role_id")
