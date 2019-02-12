@@ -5,7 +5,7 @@ import com.laptrinhjavaweb.core.anotation.Entity;
 import com.laptrinhjavaweb.core.anotation.Id;
 
 @Entity(tableName = "user")
-public class User {
+public class UserModel {
     @Id(autoIncrement = true)
     @Column(name = "id")
     private Integer id;

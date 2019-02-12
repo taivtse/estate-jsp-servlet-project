@@ -5,7 +5,7 @@ import com.laptrinhjavaweb.core.anotation.Entity;
 import com.laptrinhjavaweb.core.anotation.Id;
 
 @Entity(tableName = "district")
-public class District {
+public class DistrictModel {
     @Id(autoIncrement = true)
     @Column(name = "id")
     private String id;

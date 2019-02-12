@@ -7,7 +7,7 @@ import com.laptrinhjavaweb.core.anotation.Id;
 import java.io.InputStream;
 
 @Entity(tableName = "building")
-public class Building {
+public class BuildingModel {
     @Id(autoIncrement = true)
     @Column(name = "id")
     private Integer id;

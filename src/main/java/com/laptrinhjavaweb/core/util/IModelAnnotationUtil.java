@@ -17,7 +17,7 @@ public interface ModelAnnotationUtil {
 
     String buildDeleteByIdStatement();
 
-    static ModelAnnotationUtil of(Object model){
-        return new ModelAnnotationUtilImpl(model);
+    static ModelAnnotationUtil of(Class<?> modelClass){
+        return new ModelAnnotationUtilImpl(modelClass);
     }
 }

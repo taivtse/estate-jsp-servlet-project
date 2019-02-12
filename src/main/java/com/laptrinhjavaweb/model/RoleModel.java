@@ -5,7 +5,7 @@ import com.laptrinhjavaweb.core.anotation.Entity;
 import com.laptrinhjavaweb.core.anotation.Id;
 
 @Entity(tableName = "role")
-public class Role {
+public class RoleModel {
     @Id(autoIncrement = false)
     @Column(name = "id")
     private String id;
