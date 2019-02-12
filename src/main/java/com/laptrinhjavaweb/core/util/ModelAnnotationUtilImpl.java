@@ -2,13 +2,9 @@ package com.laptrinhjavaweb.core.util;
 
 import com.laptrinhjavaweb.core.anotation.Column;
 import com.laptrinhjavaweb.core.anotation.Entity;
-import com.laptrinhjavaweb.core.anotation.GeneratedValue;
 import com.laptrinhjavaweb.core.anotation.Id;
-import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ModelAnnotationUtilImpl implements ModelAnnotationUtil {
     private Object model;
@@ -41,7 +37,7 @@ public class ModelAnnotationUtilImpl implements ModelAnnotationUtil {
 
         for (Field field : fieldList) {
             if (field.isAnnotationPresent(Id.class)) {
-                return field.getAnnotation(GeneratedValue.class).autoIncrement();
+                return field.getAnnotation(Id.class).autoIncrement();
             }
         }
 
@@ -50,17 +46,26 @@ public class ModelAnnotationUtilImpl implements ModelAnnotationUtil {
 
     @Override
     public String buildInsertStatement() {
+        Field[] fieldList = this.model.getClass().getDeclaredFields();
+
         StringBuilder statement = new StringBuilder("INSERT INTO ");
-
         statement.append(this.getTableName());
-        statement.append(" VALUES(");
 
-        int fieldsCount = this.model.getClass().getDeclaredFields().length;
-        for (int i = 0; i < fieldsCount; i++) {
+        statement.append("(");
+        for (int i = 0; i < fieldList.length; i++) {
+            statement.append(fieldList[i].getAnnotation(Column.class).name());
+
+            if (i < fieldList.length - 1) {
+                statement.append(", ");
+            }
+        }
+
+        statement.append(") VALUES(");
+        for (int i = 0; i < fieldList.length; i++) {
             statement.append("?");
 
-            if (i < fieldsCount - 1) {
-                statement.append(",");
+            if (i < fieldList.length - 1) {
+                statement.append(", ");
             }
         }
 
@@ -87,7 +92,7 @@ public class ModelAnnotationUtilImpl implements ModelAnnotationUtil {
             statement.append(" = ?");
 
             if (i < fieldList.length - 1) {
-                statement.append(",");
+                statement.append(", ");
             }
         }
 
