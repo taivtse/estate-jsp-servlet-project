@@ -1,4 +1,6 @@
 package com.laptrinhjavaweb.dao;
 
-public interface IRoleDao {
+import com.laptrinhjavaweb.model.RoleModel;
+
+public interface IRoleDao extends IGenericDao<RoleModel, String> {
 }

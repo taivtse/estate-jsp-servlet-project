@@ -1,18 +1,30 @@
 package com.laptrinhjavaweb.dao.impl;
 
+import com.laptrinhjavaweb.core.util.IModelAnnotationUtil;
 import com.laptrinhjavaweb.dao.IGenericDao;
 import com.laptrinhjavaweb.mapper.IRowMapper;
-import com.laptrinhjavaweb.util.ResourceBundleUtil;
 
-import javax.sql.rowset.serial.SerialArray;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AbstractDao<T> implements IGenericDao<T> {
+public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, ID> {
+    private Class<T> modelClass;
     private ResourceBundle resourceBundle = ResourceBundle.getBundle("database");
+    private IRowMapper rowMapper;
+    private IModelAnnotationUtil modelAnnotationUtil;
+
+    public AbstractDao() {
+        this.modelClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        rowMapper = IRowMapper.of(modelClass);
+        modelAnnotationUtil = IModelAnnotationUtil.of(this.modelClass);
+    }
 
     public Connection getConnection() {
         try {
@@ -28,7 +40,7 @@ public class AbstractDao<T> implements IGenericDao<T> {
     }
 
     @Override
-    public List<T> query(String sql, IRowMapper<T> rowMapper, Object... parameters) {
+    public List<T> query(String sql, Object... parameters) {
         List<T> results = new ArrayList<>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -36,11 +48,11 @@ public class AbstractDao<T> implements IGenericDao<T> {
         try {
             connection = getConnection();
             preparedStatement = connection.prepareStatement(sql);
-            setParameters(preparedStatement, parameters);
+            this.setParameters(preparedStatement, parameters);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                results.add(rowMapper.mapRow(resultSet));
+                results.add((T) rowMapper.mapRow(resultSet));
             }
 
             return results;
@@ -100,7 +112,8 @@ public class AbstractDao<T> implements IGenericDao<T> {
     }
 
     @Override
-    public Long insertData(String sql, Object... parameters) throws Exception {
+    public Long save(T model) throws Exception {
+        String sql = modelAnnotationUtil.buildInsertStatement();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -109,7 +122,7 @@ public class AbstractDao<T> implements IGenericDao<T> {
             connection = getConnection();
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            setParameters(preparedStatement, parameters);
+            this.setModelToStatement(preparedStatement, model);
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
 
@@ -176,54 +189,84 @@ public class AbstractDao<T> implements IGenericDao<T> {
         }
     }
 
+    @Override
+    public List<T> findAll() {
+        String sql = modelAnnotationUtil.buildSelectStatement();
+        return this.query(sql);
+    }
+
+    @Override
+    public T findById(ID id) {
+        String sql = modelAnnotationUtil.buildSelectByIdStatement();
+        List<T> resultList = this.query(sql, id);
+        return resultList.size() == 1 ? resultList.get(0) : null;
+    }
+
     private void setParameters(PreparedStatement preparedStatement, Object... parameters) throws Exception {
-        try {
-            for (int i = 0; i < parameters.length; i++) {
-                Object parameter = parameters[i];
-                int index = i + 1;
+        for (int i = 0; i < parameters.length; i++) {
+            Object parameter = parameters[i];
+            int index = i + 1;
 
-                if (parameter instanceof Byte) {
-                    preparedStatement.setByte(index, (Byte) parameter);
+            this.setParameterAt(index, preparedStatement, parameter);
+        }
+    }
 
-                } else if (parameter instanceof Short) {
-                    preparedStatement.setShort(index, (Short) parameter);
+    private void setModelToStatement(PreparedStatement preparedStatement, Object model) throws Exception {
+        Field[] fieldList = model.getClass().getDeclaredFields();
+        int index = 1;
+        for (Field field : fieldList) {
+            boolean accessible = field.isAccessible();
+            field.setAccessible(true);
+//          set data form model to preparedStatement
+            Object fieldData = field.get(model);
+            field.setAccessible(accessible);
 
-                } else if (parameter instanceof Integer) {
-                    preparedStatement.setInt(index, (Integer) parameter);
+            this.setParameterAt(index, preparedStatement, fieldData);
+            index++;
+        }
+    }
 
-                } else if (parameter instanceof Long) {
-                    preparedStatement.setLong(index, (Long) parameter);
+    private void setParameterAt(int index, PreparedStatement preparedStatement, Object parameter) throws Exception {
+        if (parameter instanceof Byte) {
+            preparedStatement.setByte(index, (Byte) parameter);
 
-                } else if (parameter instanceof Float) {
-                    preparedStatement.setFloat(index, (Float) parameter);
+        } else if (parameter instanceof Short) {
+            preparedStatement.setShort(index, (Short) parameter);
 
-                } else if (parameter instanceof Double) {
-                    preparedStatement.setDouble(index, (Double) parameter);
+        } else if (parameter instanceof Integer) {
+            preparedStatement.setInt(index, (Integer) parameter);
 
-                } else if (parameter instanceof BigDecimal) {
-                    preparedStatement.setBigDecimal(index, (BigDecimal) parameter);
+        } else if (parameter instanceof Long) {
+            preparedStatement.setLong(index, (Long) parameter);
 
-                } else if (parameter instanceof String) {
-                    preparedStatement.setString(index, (String) parameter);
+        } else if (parameter instanceof Float) {
+            preparedStatement.setFloat(index, (Float) parameter);
 
-                } else if (parameter instanceof Date) {
-                    preparedStatement.setDate(index, (Date) parameter);
+        } else if (parameter instanceof Double) {
+            preparedStatement.setDouble(index, (Double) parameter);
 
-                } else if (parameter instanceof Time) {
-                    preparedStatement.setTime(index, (Time) parameter);
+        } else if (parameter instanceof BigDecimal) {
+            preparedStatement.setBigDecimal(index, (BigDecimal) parameter);
 
-                } else if (parameter instanceof Timestamp) {
-                    preparedStatement.setTimestamp(index, (Timestamp) parameter);
+        } else if (parameter instanceof String) {
+            preparedStatement.setString(index, (String) parameter);
 
-                } else if (parameter == null) {
-                    preparedStatement.setNull(index, Types.NULL);
-                } else {
-                    throw new Exception("Chưa hỗ trợ parameter có kiểu: " + parameter.getClass().getName());
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
+        } else if (parameter instanceof Date) {
+            preparedStatement.setDate(index, (Date) parameter);
+
+        } else if (parameter instanceof Time) {
+            preparedStatement.setTime(index, (Time) parameter);
+
+        } else if (parameter instanceof Timestamp) {
+            preparedStatement.setTimestamp(index, (Timestamp) parameter);
+
+        } else if (parameter instanceof InputStream) {
+            preparedStatement.setBlob(index, (InputStream) parameter);
+
+        } else if (parameter == null) {
+            preparedStatement.setNull(index, Types.NULL);
+        } else {
+            throw new Exception("Chưa hỗ trợ parameter có kiểu: " + parameter.getClass().getName());
         }
     }
 }

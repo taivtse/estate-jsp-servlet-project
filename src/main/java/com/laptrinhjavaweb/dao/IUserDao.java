@@ -1,4 +1,6 @@
 package com.laptrinhjavaweb.dao;
 
-public interface IUserDao {
+import com.laptrinhjavaweb.model.UserModel;
+
+public interface IUserDao extends IGenericDao<UserModel, Integer> {
 }
