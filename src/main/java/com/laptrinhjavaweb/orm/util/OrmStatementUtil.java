@@ -5,14 +5,14 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.sql.*;
 
-public class StatementUtil {
+public class OrmStatementUtil {
 
     public static void setParametersToStatement(PreparedStatement preparedStatement, Object... parameters) throws Exception {
         for (int i = 0; i < parameters.length; i++) {
             Object parameter = parameters[i];
             int index = i + 1;
 
-            StatementUtil.setParameterAt(index, preparedStatement, parameter);
+            OrmStatementUtil.setParameterAt(index, preparedStatement, parameter);
         }
     }
 
@@ -26,7 +26,7 @@ public class StatementUtil {
             Object fieldData = field.get(model);
             field.setAccessible(accessible);
 
-            StatementUtil.setParameterAt(index, preparedStatement, fieldData);
+            OrmStatementUtil.setParameterAt(index, preparedStatement, fieldData);
             index++;
         }
     }

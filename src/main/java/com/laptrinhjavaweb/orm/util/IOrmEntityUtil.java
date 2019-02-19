@@ -1,6 +1,6 @@
 package com.laptrinhjavaweb.orm.util;
 
-public interface IEntityUtil {
+public interface IOrmEntityUtil {
     String getTableName();
 
     String getIdColumnName();
@@ -17,7 +17,7 @@ public interface IEntityUtil {
 
     String buildDeleteByIdStatement();
 
-    static IEntityUtil of(Class<?> modelClass){
-        return new EntityUtilImpl(modelClass);
+    static IOrmEntityUtil of(Class<?> modelClass){
+        return new OrmEntityUtilImpl(modelClass);
     }
 }

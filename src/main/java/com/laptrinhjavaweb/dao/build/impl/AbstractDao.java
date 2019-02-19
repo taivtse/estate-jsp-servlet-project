@@ -3,8 +3,8 @@ package com.laptrinhjavaweb.dao.build.impl;
 import com.laptrinhjavaweb.dao.build.IGenericDao;
 import com.laptrinhjavaweb.dao.util.JDBCUtil;
 import com.laptrinhjavaweb.orm.mapper.IRowMapper;
-import com.laptrinhjavaweb.orm.util.IEntityUtil;
-import com.laptrinhjavaweb.orm.util.StatementUtil;
+import com.laptrinhjavaweb.orm.util.IOrmEntityUtil;
+import com.laptrinhjavaweb.orm.util.OrmStatementUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -19,12 +19,12 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
     private Class<T> entityClass;
 
     private IRowMapper rowMapper;
-    private IEntityUtil entityUtil;
+    private IOrmEntityUtil ormEntityUtil;
 
     public AbstractDao() {
         this.entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         rowMapper = IRowMapper.of(entityClass);
-        entityUtil = IEntityUtil.of(this.entityClass);
+        ormEntityUtil = IOrmEntityUtil.of(this.entityClass);
     }
 
 
@@ -36,7 +36,7 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
         try {
             connection = JDBCUtil.getConnection();
             preparedStatement = connection.prepareStatement(sql);
-            StatementUtil.setParametersToStatement(preparedStatement, parameters);
+            OrmStatementUtil.setParametersToStatement(preparedStatement, parameters);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -74,7 +74,7 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
             connection = JDBCUtil.getConnection();
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(sql);
-            StatementUtil.setParametersToStatement(preparedStatement, parameters);
+            OrmStatementUtil.setParametersToStatement(preparedStatement, parameters);
 
             preparedStatement.executeUpdate();
             connection.commit();
@@ -99,7 +99,7 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
     }
 
     protected Long save(T entity) throws Exception {
-        String sql = entityUtil.buildInsertStatement();
+        String sql = ormEntityUtil.buildInsertStatement();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -108,7 +108,7 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
             connection = JDBCUtil.getConnection();
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            StatementUtil.setEntityToStatement(preparedStatement, entity);
+            OrmStatementUtil.setEntityToStatement(preparedStatement, entity);
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
 
@@ -149,7 +149,7 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
             Long count = 0L;
             connection = JDBCUtil.getConnection();
             statement = connection.prepareStatement(sql);
-            StatementUtil.setParametersToStatement(statement, parameters);
+            OrmStatementUtil.setParametersToStatement(statement, parameters);
             resultSet = statement.executeQuery();
             resultSet.next();
             count = resultSet.getLong(1);
@@ -176,13 +176,13 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
 
     @Override
     public List<T> findAll() {
-        String sql = entityUtil.buildSelectStatement();
+        String sql = ormEntityUtil.buildSelectStatement();
         return this.query(sql);
     }
 
     @Override
     public T findById(ID id) {
-        String sql = entityUtil.buildSelectByIdStatement();
+        String sql = ormEntityUtil.buildSelectByIdStatement();
         List<T> resultList = this.query(sql, id);
         return resultList.size() == 1 ? resultList.get(0) : null;
     }
