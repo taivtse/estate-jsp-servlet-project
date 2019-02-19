@@ -1,4 +1,4 @@
-package com.laptrinhjavaweb.core.util;
+package com.laptrinhjavaweb.orm.util;
 
 public interface IModelAnnotationUtil {
     String getTableName();
