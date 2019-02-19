@@ -1,6 +1,6 @@
 package com.laptrinhjavaweb.orm.util;
 
-public interface IModelAnnotationUtil {
+public interface IEntityUtil {
     String getTableName();
 
     String getIdColumnName();
@@ -17,7 +17,7 @@ public interface IModelAnnotationUtil {
 
     String buildDeleteByIdStatement();
 
-    static IModelAnnotationUtil of(Class<?> modelClass){
-        return new ModelAnnotationUtilImpl(modelClass);
+    static IEntityUtil of(Class<?> modelClass){
+        return new EntityUtilImpl(modelClass);
     }
 }

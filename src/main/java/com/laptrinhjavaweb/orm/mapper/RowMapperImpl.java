@@ -1,4 +1,4 @@
-package com.laptrinhjavaweb.mapper;
+package com.laptrinhjavaweb.orm.mapper;
 
 import com.laptrinhjavaweb.orm.annotation.Column;
 
@@ -6,16 +6,16 @@ import java.lang.reflect.Field;
 import java.sql.ResultSet;
 
 public class RowMapperImpl implements IRowMapper {
-    private Class<?> modelClass;
+    private Class<?> entityClass;
 
-    public RowMapperImpl(Class<?> modelClass) {
-        this.modelClass = modelClass;
+    public void setEntityClass(Class<?> entityClass) {
+        this.entityClass = entityClass;
     }
 
     @Override
     public Object mapRow(ResultSet resultSet) throws Exception {
-        Object obj = this.modelClass.newInstance();
-        Field[] fieldList = this.modelClass.getDeclaredFields();
+        Object obj = this.entityClass.newInstance();
+        Field[] fieldList = this.entityClass.getDeclaredFields();
         for (Field field : fieldList) {
             boolean accessible = field.isAccessible();
             field.setAccessible(true);

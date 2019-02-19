@@ -1,14 +1,12 @@
 package com.laptrinhjavaweb.dao.impl;
 
-import com.laptrinhjavaweb.orm.util.IModelAnnotationUtil;
 import com.laptrinhjavaweb.dao.IGenericDao;
-import com.laptrinhjavaweb.mapper.IRowMapper;
+import com.laptrinhjavaweb.orm.mapper.IRowMapper;
+import com.laptrinhjavaweb.orm.util.IEntityUtil;
+import com.laptrinhjavaweb.orm.util.StatementUtil;
 
-import java.io.InputStream;
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +16,12 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
     private Class<T> modelClass;
     private ResourceBundle resourceBundle = ResourceBundle.getBundle("database");
     private IRowMapper rowMapper;
-    private IModelAnnotationUtil modelAnnotationUtil;
+    private IEntityUtil modelAnnotationUtil;
 
     public AbstractDao() {
         this.modelClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         rowMapper = IRowMapper.of(modelClass);
-        modelAnnotationUtil = IModelAnnotationUtil.of(this.modelClass);
+        modelAnnotationUtil = IEntityUtil.of(this.modelClass);
     }
 
     public Connection getConnection() {
@@ -48,7 +46,7 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
         try {
             connection = getConnection();
             preparedStatement = connection.prepareStatement(sql);
-            this.setParameters(preparedStatement, parameters);
+            StatementUtil.setParametersToStatement(preparedStatement, parameters);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -87,7 +85,7 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
             connection = getConnection();
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(sql);
-            setParameters(preparedStatement, parameters);
+            StatementUtil.setParametersToStatement(preparedStatement, parameters);
 
             preparedStatement.executeUpdate();
             connection.commit();
@@ -112,7 +110,7 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
     }
 
     @Override
-    public Long save(T model) throws Exception {
+    public Long save(T entity) throws Exception {
         String sql = modelAnnotationUtil.buildInsertStatement();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -122,7 +120,7 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
             connection = getConnection();
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            this.setModelToStatement(preparedStatement, model);
+            StatementUtil.setEntityToStatement(preparedStatement, entity);
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
 
@@ -164,7 +162,7 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
             Long count = 0L;
             connection = getConnection();
             statement = connection.prepareStatement(sql);
-            setParameters(statement, parameters);
+            StatementUtil.setParametersToStatement(statement, parameters);
             resultSet = statement.executeQuery();
             resultSet.next();
             count = resultSet.getLong(1);
@@ -202,71 +200,4 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
         return resultList.size() == 1 ? resultList.get(0) : null;
     }
 
-    private void setParameters(PreparedStatement preparedStatement, Object... parameters) throws Exception {
-        for (int i = 0; i < parameters.length; i++) {
-            Object parameter = parameters[i];
-            int index = i + 1;
-
-            this.setParameterAt(index, preparedStatement, parameter);
-        }
-    }
-
-    private void setModelToStatement(PreparedStatement preparedStatement, Object model) throws Exception {
-        Field[] fieldList = model.getClass().getDeclaredFields();
-        int index = 1;
-        for (Field field : fieldList) {
-            boolean accessible = field.isAccessible();
-            field.setAccessible(true);
-//          set data form entity to preparedStatement
-            Object fieldData = field.get(model);
-            field.setAccessible(accessible);
-
-            this.setParameterAt(index, preparedStatement, fieldData);
-            index++;
-        }
-    }
-
-    private void setParameterAt(int index, PreparedStatement preparedStatement, Object parameter) throws Exception {
-        if (parameter instanceof Byte) {
-            preparedStatement.setByte(index, (Byte) parameter);
-
-        } else if (parameter instanceof Short) {
-            preparedStatement.setShort(index, (Short) parameter);
-
-        } else if (parameter instanceof Integer) {
-            preparedStatement.setInt(index, (Integer) parameter);
-
-        } else if (parameter instanceof Long) {
-            preparedStatement.setLong(index, (Long) parameter);
-
-        } else if (parameter instanceof Float) {
-            preparedStatement.setFloat(index, (Float) parameter);
-
-        } else if (parameter instanceof Double) {
-            preparedStatement.setDouble(index, (Double) parameter);
-
-        } else if (parameter instanceof BigDecimal) {
-            preparedStatement.setBigDecimal(index, (BigDecimal) parameter);
-
-        } else if (parameter instanceof String) {
-            preparedStatement.setString(index, (String) parameter);
-
-        } else if (parameter instanceof Date) {
-            preparedStatement.setDate(index, (Date) parameter);
-
-        } else if (parameter instanceof Time) {
-            preparedStatement.setTime(index, (Time) parameter);
-
-        } else if (parameter instanceof Timestamp) {
-            preparedStatement.setTimestamp(index, (Timestamp) parameter);
-
-        } else if (parameter instanceof InputStream) {
-            preparedStatement.setBlob(index, (InputStream) parameter);
-
-        } else if (parameter == null) {
-            preparedStatement.setNull(index, Types.NULL);
-        } else {
-            throw new Exception("Chưa hỗ trợ parameter có kiểu: " + parameter.getClass().getName());
-        }
-    }
 }

@@ -6,10 +6,10 @@ import com.laptrinhjavaweb.orm.annotation.Id;
 
 import java.lang.reflect.Field;
 
-public class ModelAnnotationUtilImpl implements IModelAnnotationUtil {
+public class EntityUtilImpl implements IEntityUtil {
     private Class<?> modelClass;
 
-    public ModelAnnotationUtilImpl(Class<?> modelClass) {
+    public EntityUtilImpl(Class<?> modelClass) {
         this.modelClass = modelClass;
     }
 
