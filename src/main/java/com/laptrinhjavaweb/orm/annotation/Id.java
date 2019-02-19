@@ -1,4 +1,4 @@
-package com.laptrinhjavaweb.orm.anotation;
+package com.laptrinhjavaweb.orm.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

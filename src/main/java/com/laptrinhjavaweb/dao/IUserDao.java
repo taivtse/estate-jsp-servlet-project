@@ -1,6 +1,6 @@
 package com.laptrinhjavaweb.dao;
 
-import com.laptrinhjavaweb.model.UserModel;
+import com.laptrinhjavaweb.entity.UserEntity;
 
-public interface IUserDao extends IGenericDao<UserModel, Integer> {
+public interface IUserDao extends IGenericDao<UserEntity, Integer> {
 }

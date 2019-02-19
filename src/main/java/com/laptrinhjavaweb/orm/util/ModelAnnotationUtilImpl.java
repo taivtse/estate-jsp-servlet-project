@@ -1,8 +1,8 @@
 package com.laptrinhjavaweb.orm.util;
 
-import com.laptrinhjavaweb.orm.anotation.Column;
-import com.laptrinhjavaweb.orm.anotation.Entity;
-import com.laptrinhjavaweb.orm.anotation.Id;
+import com.laptrinhjavaweb.orm.annotation.Column;
+import com.laptrinhjavaweb.orm.annotation.Entity;
+import com.laptrinhjavaweb.orm.annotation.Id;
 
 import java.lang.reflect.Field;
 

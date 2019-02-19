@@ -1,9 +1,9 @@
 import com.laptrinhjavaweb.orm.util.IModelAnnotationUtil;
-import com.laptrinhjavaweb.model.*;
+import com.laptrinhjavaweb.entity.*;
 
 public class TestAnnotation {
     public static void main(String[] args) {
-        Class<?> modelClass = BuildingModel.class;
+        Class<?> modelClass = BuildingEntity.class;
 
         String sql1 = IModelAnnotationUtil.of(modelClass).buildSelectStatement();
         System.out.println("SELECT ALL: \n" + sql1);

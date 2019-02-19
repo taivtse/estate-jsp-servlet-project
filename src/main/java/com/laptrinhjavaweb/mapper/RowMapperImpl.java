@@ -1,6 +1,6 @@
 package com.laptrinhjavaweb.mapper;
 
-import com.laptrinhjavaweb.orm.anotation.Column;
+import com.laptrinhjavaweb.orm.annotation.Column;
 
 import java.lang.reflect.Field;
 import java.sql.ResultSet;

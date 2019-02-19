@@ -1,13 +1,13 @@
-package com.laptrinhjavaweb.model;
+package com.laptrinhjavaweb.entity;
 
-import com.laptrinhjavaweb.orm.anotation.Column;
-import com.laptrinhjavaweb.orm.anotation.Entity;
-import com.laptrinhjavaweb.orm.anotation.Id;
+import com.laptrinhjavaweb.orm.annotation.Column;
+import com.laptrinhjavaweb.orm.annotation.Entity;
+import com.laptrinhjavaweb.orm.annotation.Id;
 
 import java.io.InputStream;
 
 @Entity(tableName = "building")
-public class BuildingModel {
+public class BuildingEntity {
     @Id(autoIncrement = true)
     @Column(name = "id")
     private Integer id;

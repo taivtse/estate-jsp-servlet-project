@@ -1,27 +1,21 @@
-import com.laptrinhjavaweb.dao.IRoleDao;
-import com.laptrinhjavaweb.dao.IUserDao;
-import com.laptrinhjavaweb.dao.impl.RoleDao;
-import com.laptrinhjavaweb.dao.impl.UserDao;
-import com.laptrinhjavaweb.model.RoleModel;
-import com.laptrinhjavaweb.model.UserModel;
-
-import java.util.List;
+import java.sql.JDBCType;
 
 public class TestDao {
     public static void main(String[] args) throws Exception {
-        IRoleDao roleDao = new RoleDao();
-        List<RoleModel> list = roleDao.findAll();
+//        IRoleDao roleDao = new RoleDao();
+//        List<RoleEntity> list = roleDao.findAll();
+//
+//        IUserDao userDao = new UserDao();
+//        List<UserEntity> list = userDao.findAll();
+//        UserEntity entity = userDao.findById(1);
 
-        IUserDao userDao = new UserDao();
-//        List<UserModel> list = userDao.findAll();
-//        UserModel model = userDao.findById(1);
-
-//        UserModel model = new UserModel();
-//        model.setUsername("duyquang");
-//        model.setPassword("12345");
-//        model.setFullName("Trần Duy Quang");
-//        model.setRoleId("MANAGER");
-//        userDao.save(model);
-//        System.out.println(model.getId());
+//        UserEntity entity = new UserEntity();
+//        entity.setUsername("duyquang");
+//        entity.setPassword("12345");
+//        entity.setFullName("Trần Duy Quang");
+//        entity.setRoleId("MANAGER");
+//        userDao.save(entity);
+//        System.out.println(entity.getId());
+        System.out.println(JDBCType.valueOf("string"));
     }
 }

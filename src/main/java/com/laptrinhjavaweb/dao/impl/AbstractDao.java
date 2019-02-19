@@ -217,7 +217,7 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
         for (Field field : fieldList) {
             boolean accessible = field.isAccessible();
             field.setAccessible(true);
-//          set data form model to preparedStatement
+//          set data form entity to preparedStatement
             Object fieldData = field.get(model);
             field.setAccessible(accessible);
 

@@ -1,6 +1,6 @@
 package com.laptrinhjavaweb.dao;
 
-import com.laptrinhjavaweb.model.RoleModel;
+import com.laptrinhjavaweb.entity.RoleEntity;
 
-public interface IRoleDao extends IGenericDao<RoleModel, String> {
+public interface IRoleDao extends IGenericDao<RoleEntity, String> {
 }

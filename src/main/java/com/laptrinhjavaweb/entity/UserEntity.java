@@ -1,11 +1,11 @@
-package com.laptrinhjavaweb.model;
+package com.laptrinhjavaweb.entity;
 
-import com.laptrinhjavaweb.orm.anotation.Column;
-import com.laptrinhjavaweb.orm.anotation.Entity;
-import com.laptrinhjavaweb.orm.anotation.Id;
+import com.laptrinhjavaweb.orm.annotation.Column;
+import com.laptrinhjavaweb.orm.annotation.Entity;
+import com.laptrinhjavaweb.orm.annotation.Id;
 
 @Entity(tableName = "user")
-public class UserModel {
+public class UserEntity {
     @Id(autoIncrement = true)
     @Column(name = "id")
     private Integer id;
