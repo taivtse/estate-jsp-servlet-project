@@ -1,4 +1,4 @@
-import com.laptrinhjavaweb.core.util.IModelAnnotationUtil;
+import com.laptrinhjavaweb.orm.util.IModelAnnotationUtil;
 import com.laptrinhjavaweb.model.*;
 
 public class TestAnnotation {

@@ -9,19 +9,19 @@ import java.util.List;
 
 public class TestDao {
     public static void main(String[] args) throws Exception {
-        /*IRoleDao roleDao = new RoleDao();
-        List<RoleModel> list = roleDao.findAll();*/
+        IRoleDao roleDao = new RoleDao();
+        List<RoleModel> list = roleDao.findAll();
 
         IUserDao userDao = new UserDao();
 //        List<UserModel> list = userDao.findAll();
 //        UserModel model = userDao.findById(1);
 
-        UserModel model = new UserModel();
-        model.setUsername("duyquang");
-        model.setPassword("12345");
-        model.setFullName("Trần Duy Quang");
-        model.setRoleId("MANAGER");
-        userDao.save(model);
-        System.out.println(model.getId());
+//        UserModel model = new UserModel();
+//        model.setUsername("duyquang");
+//        model.setPassword("12345");
+//        model.setFullName("Trần Duy Quang");
+//        model.setRoleId("MANAGER");
+//        userDao.save(model);
+//        System.out.println(model.getId());
     }
 }
