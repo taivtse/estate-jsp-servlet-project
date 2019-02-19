@@ -1,6 +1,6 @@
 package com.laptrinhjavaweb.dao.impl;
 
-import com.laptrinhjavaweb.core.util.IModelAnnotationUtil;
+import com.laptrinhjavaweb.orm.util.IModelAnnotationUtil;
 import com.laptrinhjavaweb.dao.IGenericDao;
 import com.laptrinhjavaweb.mapper.IRowMapper;
 
