@@ -1,8 +1,8 @@
 package com.laptrinhjavaweb.model;
 
-import com.laptrinhjavaweb.core.anotation.Column;
-import com.laptrinhjavaweb.core.anotation.Entity;
-import com.laptrinhjavaweb.core.anotation.Id;
+import com.laptrinhjavaweb.orm.anotation.Column;
+import com.laptrinhjavaweb.orm.anotation.Entity;
+import com.laptrinhjavaweb.orm.anotation.Id;
 
 @Entity(tableName = "user")
 public class UserModel {
