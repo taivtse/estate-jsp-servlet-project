@@ -1,50 +1,40 @@
-package com.laptrinhjavaweb.dao.impl;
+package com.laptrinhjavaweb.dao.build.impl;
 
-import com.laptrinhjavaweb.dao.IGenericDao;
+import com.laptrinhjavaweb.dao.build.IGenericDao;
+import com.laptrinhjavaweb.dao.util.JDBCUtil;
 import com.laptrinhjavaweb.orm.mapper.IRowMapper;
 import com.laptrinhjavaweb.orm.util.IEntityUtil;
 import com.laptrinhjavaweb.orm.util.StatementUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, ID> {
-    private Class<T> modelClass;
-    private ResourceBundle resourceBundle = ResourceBundle.getBundle("database");
+    private Class<T> entityClass;
+
     private IRowMapper rowMapper;
-    private IEntityUtil modelAnnotationUtil;
+    private IEntityUtil entityUtil;
 
     public AbstractDao() {
-        this.modelClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        rowMapper = IRowMapper.of(modelClass);
-        modelAnnotationUtil = IEntityUtil.of(this.modelClass);
+        this.entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        rowMapper = IRowMapper.of(entityClass);
+        entityUtil = IEntityUtil.of(this.entityClass);
     }
 
-    public Connection getConnection() {
-        try {
-            Class.forName(resourceBundle.getString("db.driver"));
-            String url = resourceBundle.getString("db.url");
-            String user = resourceBundle.getString("db.username");
-            String password = resourceBundle.getString("db.password");
-            return DriverManager.getConnection(url, user, password);
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
-    @Override
-    public List<T> query(String sql, Object... parameters) {
+    protected List<T> query(String sql, Object... parameters) {
         List<T> results = new ArrayList<>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            connection = getConnection();
+            connection = JDBCUtil.getConnection();
             preparedStatement = connection.prepareStatement(sql);
             StatementUtil.setParametersToStatement(preparedStatement, parameters);
             resultSet = preparedStatement.executeQuery();
@@ -77,12 +67,11 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
         }
     }
 
-    @Override
-    public void modifiedData(String sql, Object... parameters) throws Exception {
+    protected void modifiedData(String sql, Object... parameters) throws Exception {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
-            connection = getConnection();
+            connection = JDBCUtil.getConnection();
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(sql);
             StatementUtil.setParametersToStatement(preparedStatement, parameters);
@@ -109,15 +98,14 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
         }
     }
 
-    @Override
-    public Long save(T entity) throws Exception {
-        String sql = modelAnnotationUtil.buildInsertStatement();
+    protected Long save(T entity) throws Exception {
+        String sql = entityUtil.buildInsertStatement();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Long generateId = null;
         try {
-            connection = getConnection();
+            connection = JDBCUtil.getConnection();
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             StatementUtil.setEntityToStatement(preparedStatement, entity);
@@ -153,14 +141,13 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
         }
     }
 
-    @Override
-    public Long count(String sql, Object... parameters) {
+    protected Long count(String sql, Object... parameters) {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
             Long count = 0L;
-            connection = getConnection();
+            connection = JDBCUtil.getConnection();
             statement = connection.prepareStatement(sql);
             StatementUtil.setParametersToStatement(statement, parameters);
             resultSet = statement.executeQuery();
@@ -189,13 +176,13 @@ public class AbstractDao<T, ID extends Serializable> implements IGenericDao<T, I
 
     @Override
     public List<T> findAll() {
-        String sql = modelAnnotationUtil.buildSelectStatement();
+        String sql = entityUtil.buildSelectStatement();
         return this.query(sql);
     }
 
     @Override
     public T findById(ID id) {
-        String sql = modelAnnotationUtil.buildSelectByIdStatement();
+        String sql = entityUtil.buildSelectByIdStatement();
         List<T> resultList = this.query(sql, id);
         return resultList.size() == 1 ? resultList.get(0) : null;
     }

@@ -1,4 +1,4 @@
-package com.laptrinhjavaweb.dao;
+package com.laptrinhjavaweb.dao.build;
 
 import com.laptrinhjavaweb.entity.RoleEntity;
 

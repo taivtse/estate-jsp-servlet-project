@@ -1,5 +1,5 @@
-import com.laptrinhjavaweb.dao.IUserDao;
-import com.laptrinhjavaweb.dao.impl.UserDao;
+import com.laptrinhjavaweb.dao.build.IUserDao;
+import com.laptrinhjavaweb.dao.build.impl.UserDao;
 import com.laptrinhjavaweb.entity.UserEntity;
 
 public class TestDao {
