@@ -16,14 +16,15 @@ public class OrmStatementUtil {
         }
     }
 
-    public static void setEntityToStatement(PreparedStatement preparedStatement, Object model) throws Exception {
-        Field[] fieldList = model.getClass().getDeclaredFields();
+    public static void setEntityToStatement(PreparedStatement preparedStatement, Object entity) throws Exception {
+        Field[] fieldList = entity.getClass().getDeclaredFields();
+
         int index = 1;
         for (Field field : fieldList) {
             boolean accessible = field.isAccessible();
             field.setAccessible(true);
 //          set data form entity to preparedStatement
-            Object fieldData = field.get(model);
+            Object fieldData = field.get(entity);
             field.setAccessible(accessible);
 
             OrmStatementUtil.setParameterAt(index, preparedStatement, fieldData);
@@ -31,7 +32,7 @@ public class OrmStatementUtil {
         }
     }
 
-    private static void setParameterAt(int index, PreparedStatement preparedStatement, Object parameter) throws Exception {
+    public static void setParameterAt(int index, PreparedStatement preparedStatement, Object parameter) throws Exception {
         if (parameter instanceof Byte) {
             preparedStatement.setByte(index, (Byte) parameter);
 
