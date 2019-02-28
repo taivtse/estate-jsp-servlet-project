@@ -1,11 +1,13 @@
 package com.laptrinhjavaweb.orm.mapper;
 
 import com.laptrinhjavaweb.orm.annotation.Column;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.sql.ResultSet;
 
-public class RowMapperImpl implements IRowMapper {
+public class EntityMapperImpl implements EntityMapper {
     private Class<?> entityClass;
 
     public void setEntityClass(Class<?> entityClass) {
@@ -13,20 +15,22 @@ public class RowMapperImpl implements IRowMapper {
     }
 
     @Override
-    public Object mapRow(ResultSet resultSet) throws Exception {
-        Object obj = this.entityClass.newInstance();
+    public Object toEntity(ResultSet resultSet) throws Exception {
+        Object entity = this.entityClass.newInstance();
         Field[] fieldList = this.entityClass.getDeclaredFields();
         for (Field field : fieldList) {
-            boolean accessible = field.isAccessible();
-            field.setAccessible(true);
-
-//          get data from rs and set to obj
+//          get data from result set
             Object fieldData = this.getFieldDataFromResultSet(resultSet, field);
-            field.set(obj, fieldData);
 
-            field.setAccessible(accessible);
+//            build setter method name
+            String fieldName = field.getName();
+            String setterMethodName = "set" + StringUtils.capitalize(fieldName);
+
+//            get setter method and invoke
+            Method setterMethod = this.entityClass.getMethod(setterMethodName, field.getType());
+            setterMethod.invoke(entity, fieldData);
         }
-        return obj;
+        return entity;
     }
 
     private Object getFieldDataFromResultSet(ResultSet resultSet, Field field) throws Exception {
