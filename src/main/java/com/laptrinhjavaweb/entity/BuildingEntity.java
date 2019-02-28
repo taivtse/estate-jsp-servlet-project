@@ -3,10 +3,12 @@ package com.laptrinhjavaweb.entity;
 import com.laptrinhjavaweb.orm.annotation.Column;
 import com.laptrinhjavaweb.orm.annotation.Entity;
 import com.laptrinhjavaweb.orm.annotation.Id;
+import com.laptrinhjavaweb.orm.annotation.IdField;
 
-import java.io.InputStream;
+import java.sql.Date;
 
 @Entity(tableName = "building")
+@IdField(name = "id")
 public class BuildingEntity {
     @Id(autoIncrement = true)
     @Column(name = "id")
@@ -99,11 +101,20 @@ public class BuildingEntity {
     @Column(name = "type_arrays")
     private String typeArrays;
 
-    @Column(name = "image_name")
-    private String imageName;
+    @Column(name = "image")
+    private String image;
 
-    @Column(name = "thumbnail_base64")
-    private InputStream thumbnailBase64;
+    @Column(name = "created_date")
+    private Date createdDate;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "modified_date")
+    private Date modifiedDate;
+
+    @Column(name = "modified_by")
+    private String modifiedBy;
 
     public Integer getId() {
         return id;
@@ -345,19 +356,43 @@ public class BuildingEntity {
         this.typeArrays = typeArrays;
     }
 
-    public String getImageName() {
-        return imageName;
+    public String getImage() {
+        return image;
     }
 
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public InputStream getThumbnailBase64() {
-        return thumbnailBase64;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setThumbnailBase64(InputStream thumbnailBase64) {
-        this.thumbnailBase64 = thumbnailBase64;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 }

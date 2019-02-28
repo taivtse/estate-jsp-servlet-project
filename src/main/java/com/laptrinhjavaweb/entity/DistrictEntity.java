@@ -3,8 +3,10 @@ package com.laptrinhjavaweb.entity;
 import com.laptrinhjavaweb.orm.annotation.Column;
 import com.laptrinhjavaweb.orm.annotation.Entity;
 import com.laptrinhjavaweb.orm.annotation.Id;
+import com.laptrinhjavaweb.orm.annotation.IdField;
 
 @Entity(tableName = "district")
+@IdField(name = "id")
 public class DistrictEntity {
     @Id(autoIncrement = true)
     @Column(name = "id")

@@ -3,8 +3,12 @@ package com.laptrinhjavaweb.entity;
 import com.laptrinhjavaweb.orm.annotation.Column;
 import com.laptrinhjavaweb.orm.annotation.Entity;
 import com.laptrinhjavaweb.orm.annotation.Id;
+import com.laptrinhjavaweb.orm.annotation.IdField;
+
+import java.sql.Date;
 
 @Entity(tableName = "user")
+@IdField(name = "id")
 public class UserEntity {
     @Id(autoIncrement = true)
     @Column(name = "id")
@@ -21,6 +25,12 @@ public class UserEntity {
 
     @Column(name = "role_id")
     private String roleId;
+
+    @Column(name = "created_date")
+    private Date createdDate;
+
+    @Column(name = "created_by")
+    private String createdBy;
 
     public Integer getId() {
         return id;
@@ -60,5 +70,21 @@ public class UserEntity {
 
     public void setRoleId(String roleId) {
         this.roleId = roleId;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 }

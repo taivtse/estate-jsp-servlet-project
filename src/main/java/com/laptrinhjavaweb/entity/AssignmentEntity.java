@@ -2,9 +2,13 @@ package com.laptrinhjavaweb.entity;
 
 import com.laptrinhjavaweb.orm.annotation.Column;
 import com.laptrinhjavaweb.orm.annotation.Entity;
+import com.laptrinhjavaweb.orm.annotation.IdField;
 import com.laptrinhjavaweb.orm.annotation.Id;
 
+import java.sql.Date;
+
 @Entity(tableName = "assignment")
+@IdField(name = "id")
 public class AssignmentEntity {
     @Id(autoIncrement = true)
     @Column(name = "id")
@@ -15,6 +19,12 @@ public class AssignmentEntity {
 
     @Column(name = "user_id")
     private Integer userId;
+
+    @Column(name = "created_date")
+    private Date createdDate;
+
+    @Column(name = "created_by")
+    private String createdBy;
 
     public Integer getId() {
         return id;
@@ -38,5 +48,21 @@ public class AssignmentEntity {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 }
