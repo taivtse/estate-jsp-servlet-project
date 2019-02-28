@@ -6,14 +6,14 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class SessionFactory {
-    private static final ResourceBundle DATABASE = ResourceBundle.getBundle("database");
-    private static final String dbUrl = DATABASE.getString("db.url");
-    private static final String dbUsername = DATABASE.getString("db.username");
-    private static final String dbPassword = DATABASE.getString("db.password");
+    private static final ResourceBundle DATABASE_BUNDLE = ResourceBundle.getBundle("database");
+    private static final String dbUrl = DATABASE_BUNDLE.getString("db.url");
+    private static final String dbUsername = DATABASE_BUNDLE.getString("db.username");
+    private static final String dbPassword = DATABASE_BUNDLE.getString("db.password");
 
     static {
         try {
-            Class.forName(DATABASE.getString("db.driver"));
+            Class.forName(DATABASE_BUNDLE.getString("db.driver"));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

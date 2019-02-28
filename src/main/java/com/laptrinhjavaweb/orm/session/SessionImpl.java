@@ -1,9 +1,11 @@
 package com.laptrinhjavaweb.orm.session;
 
+import com.laptrinhjavaweb.orm.annotation.IdField;
+import com.laptrinhjavaweb.orm.builder.QueryBuilder;
 import com.laptrinhjavaweb.orm.criteria.Criteria;
 import com.laptrinhjavaweb.orm.criteria.CriteriaImpl;
+import com.laptrinhjavaweb.orm.criteria.NamedParamQuery;
 import com.laptrinhjavaweb.orm.mapper.EntityMapper;
-import com.laptrinhjavaweb.orm.statement.OrmStatementUtil;
 
 import java.io.Serializable;
 import java.sql.Connection;
@@ -22,12 +24,37 @@ public class SessionImpl implements Session {
 
     @Override
     public <T> List<T> findAll(Class<T> entityClass) {
-        Criteria criteria = new CriteriaImpl(connection, entityClass);
+        Criteria criteria = this.createQuery(entityClass);
         return criteria.list();
     }
 
     @Override
     public <T, ID extends Serializable> T findOneById(Class<T> entityClass, ID id) {
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
+        Object result = null;
+        try {
+            String sql = QueryBuilder.of(entityClass).buildSelectByIdQuery();
+            NamedParamQuery query = new NamedParamQuery(this.connection);
+            query.setSqlQuery(sql);
+
+            String idFieldName = entityClass.getAnnotation(IdField.class).name();
+            query.setParam(idFieldName, id);
+
+            preparedStatement = query.getPreparedStatement();
+
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                result = EntityMapper.of(entityClass).toEntity(resultSet);
+            }
+
+            return (T) result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            this.closeAfterQuery(this.connection, preparedStatement, resultSet);
+        }
         return null;
     }
 
@@ -51,6 +78,22 @@ public class SessionImpl implements Session {
         return new CriteriaImpl(connection, entityClass);
     }
 
+    private void closeAfterQuery(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (resultSet != null) {
+                resultSet.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     protected <T> List<T> executeQuery(Class<T> entityClass, String sql, Object... parameters) {
         List<T> results = new ArrayList<>();
         Connection connection = null;
@@ -59,7 +102,7 @@ public class SessionImpl implements Session {
         try {
 //            connection = SessionFactory.openSession();
             preparedStatement = connection.prepareStatement(sql);
-            OrmStatementUtil.setParametersToStatement(preparedStatement, parameters);
+//            OrmStatementUtil.setParametersToStatement(preparedStatement, parameters);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {

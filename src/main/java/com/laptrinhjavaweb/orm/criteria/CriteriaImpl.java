@@ -64,11 +64,11 @@ public class CriteriaImpl implements Criteria {
 
     private void closeAfterQuery(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) {
         try {
-            if (this.connection != null) {
-                this.connection.close();
+            if (connection != null) {
+                connection.close();
             }
-            if (this.query.getPreparedStatement() != null) {
-                this.query.getPreparedStatement().close();
+            if (preparedStatement != null) {
+                preparedStatement.close();
             }
             if (resultSet != null) {
                 resultSet.close();

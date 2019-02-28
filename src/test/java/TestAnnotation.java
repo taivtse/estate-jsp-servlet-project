@@ -1,8 +1,10 @@
 import com.laptrinhjavaweb.orm.builder.QueryBuilder;
 import com.laptrinhjavaweb.entity.*;
+import org.testng.annotations.Test;
 
 public class TestAnnotation {
-    public static void main(String[] args) throws Exception {
+    @Test
+    public void test() throws Exception {
         Class<?> modelClass = AssignmentEntity.class;
 
         String sql1 = QueryBuilder.of(modelClass).buildSelectQuery();
