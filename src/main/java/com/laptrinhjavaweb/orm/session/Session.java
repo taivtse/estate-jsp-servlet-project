@@ -15,5 +15,5 @@ public interface Session {
 
     <T> void delete(T entity);
 
-    <T> Criteria createQuery(Class<T> entityClass);
+    <T> Criteria createCriteria(Class<T> entityClass);
 }

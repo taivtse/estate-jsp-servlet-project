@@ -36,7 +36,7 @@ public class EntityMapperImpl implements EntityMapper {
         return entity;
     }
 
-    private Object getFieldDataFromResultSet(ResultSet resultSet, Field field) throws Exception {
+    private Object getFieldDataFromResultSet(ResultSet resultSet, Field field) {
         String columnName = field.getAnnotation(Column.class).name();
 
         Object value = null;

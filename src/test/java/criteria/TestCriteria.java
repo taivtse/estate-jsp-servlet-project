@@ -7,7 +7,7 @@ import com.laptrinhjavaweb.orm.criteria.criterion.MatchMode;
 import com.laptrinhjavaweb.orm.criteria.criterion.Restrictions;
 import org.testng.annotations.Test;
 
-public class criteria {
+public class TestCriteria {
     @Test
     public void testBuildWhere() {
         Criteria criteria = new CriteriaImpl(null, UserEntity.class);

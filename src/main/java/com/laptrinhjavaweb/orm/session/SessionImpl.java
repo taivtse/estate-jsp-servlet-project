@@ -22,7 +22,7 @@ public class SessionImpl implements Session {
 
     @Override
     public <T> List<T> findAll(Class<T> entityClass) {
-        Criteria criteria = this.createQuery(entityClass);
+        Criteria criteria = this.createCriteria(entityClass);
         return criteria.list();
     }
 
@@ -77,7 +77,7 @@ public class SessionImpl implements Session {
     }
 
     @Override
-    public <T> Criteria createQuery(Class<T> entityClass) {
+    public <T> Criteria createCriteria(Class<T> entityClass) {
         return new CriteriaImpl(connection, entityClass);
     }
 

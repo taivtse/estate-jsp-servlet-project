@@ -29,7 +29,7 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
     public List<T> findAll() {
         List<T> entityList;
         Session session = this.getSession();
-        entityList = session.createQuery(this.entityClass).list();
+        entityList = session.createCriteria(this.entityClass).list();
         return entityList;
     }
 
