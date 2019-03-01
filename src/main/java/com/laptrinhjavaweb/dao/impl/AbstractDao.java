@@ -12,7 +12,6 @@ import java.util.List;
 public class AbstractDao<T, ID> implements GenericDao<T, ID> {
     @Inject
     private SessionFactory sessionFactory;
-
     private Class<T> entityClass;
 
     public AbstractDao() {
