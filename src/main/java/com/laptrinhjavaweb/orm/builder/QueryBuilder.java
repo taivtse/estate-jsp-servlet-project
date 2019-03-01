@@ -5,16 +5,6 @@ import com.laptrinhjavaweb.orm.annotation.Entity;
 public interface QueryBuilder {
     QueryBuilderImpl QUERY_BUILDER = new QueryBuilderImpl();
 
-    String getTableName();
-
-    String getIdColumnName();
-
-    String getIdFieldName();
-
-    Object getIdColumnValue(Object entity);
-
-    boolean isAutoIncrement();
-
     String buildSelectQuery();
 
     String buildSelectByIdQuery();

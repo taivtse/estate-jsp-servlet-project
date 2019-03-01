@@ -1,6 +1,7 @@
 package com.laptrinhjavaweb.dao.impl;
 
+import com.laptrinhjavaweb.dao.UserDao;
 import com.laptrinhjavaweb.entity.UserEntity;
 
-public class UserDaoImpl extends AbstractDao<UserEntity, Integer> implements com.laptrinhjavaweb.dao.UserDao {
+public class UserDaoImpl extends AbstractDao<UserEntity, Integer> implements UserDao {
 }
