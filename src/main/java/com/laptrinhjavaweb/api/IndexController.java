@@ -1,4 +1,4 @@
-package com.laptrinhjavaweb.controller;
+package com.laptrinhjavaweb.api;
 
 
 import javax.servlet.ServletException;
