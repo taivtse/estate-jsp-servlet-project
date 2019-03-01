@@ -7,8 +7,8 @@ import com.laptrinhjavaweb.orm.criteria.CriteriaImpl;
 import com.laptrinhjavaweb.orm.criteria.NamedParamStatement;
 import com.laptrinhjavaweb.orm.mapper.EntityMapper;
 
-import java.io.Serializable;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -29,6 +29,7 @@ public class SessionImpl implements Session {
     @Override
     public <T, ID> T findOneById(Class<T> entityClass, ID id) {
         ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
         Object result = null;
         try {
             String sql = QueryBuilder.of(entityClass).buildSelectByIdQuery();
@@ -37,6 +38,8 @@ public class SessionImpl implements Session {
 
             String idFieldName = entityClass.getAnnotation(IdField.class).name();
             statement.setParam(idFieldName, id);
+
+            preparedStatement = statement.getPreparedStatement();
 
             resultSet = statement.executeQuery();
 
@@ -48,12 +51,11 @@ public class SessionImpl implements Session {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+            try {
+                this.closeAllAfterQuery(connection, preparedStatement, resultSet);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return null;
             }
         }
         return null;
@@ -77,5 +79,17 @@ public class SessionImpl implements Session {
     @Override
     public <T> Criteria createQuery(Class<T> entityClass) {
         return new CriteriaImpl(connection, entityClass);
+    }
+
+    private void closeAllAfterQuery(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) throws SQLException {
+        if (connection != null) {
+            connection.close();
+        }
+        if (preparedStatement != null) {
+            preparedStatement.close();
+        }
+        if (resultSet != null) {
+            resultSet.close();
+        }
     }
 }

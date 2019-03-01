@@ -41,7 +41,7 @@ public class CriteriaImpl implements Criteria {
     @Override
     public List list() {
         ResultSet resultSet = null;
-        List resultList = new ArrayList<>();
+        List resultList = null;
         try {
             String sql = this.processGenericQuery();
             this.statement.setSqlStatement(sql);
@@ -52,8 +52,12 @@ public class CriteriaImpl implements Criteria {
 
             resultSet = this.statement.executeQuery();
 
-            while (resultSet.next()) {
-                resultList.add(EntityMapper.of(this.entityClass).toEntity(resultSet));
+            if (resultSet.isBeforeFirst()){
+                 resultList = new ArrayList<>();
+
+                while (resultSet.next()) {
+                    resultList.add(EntityMapper.of(this.entityClass).toEntity(resultSet));
+                }
             }
 
             return resultList;
