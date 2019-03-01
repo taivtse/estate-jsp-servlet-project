@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class HttpUtil {
+    private static ObjectMapper mapper = new ObjectMapper();
     private String value;
 
     public HttpUtil(String value) {
@@ -15,7 +16,6 @@ public class HttpUtil {
 
     public <T> T toModel(Class<T> clazz) {
         T model = null;
-        ObjectMapper mapper = new ObjectMapper();
         try {
             model = mapper.readValue(value, clazz);
         } catch (IOException e) {
@@ -38,11 +38,19 @@ public class HttpUtil {
     }
 
     public static void writeValue(OutputStream out, Object value) {
-        ObjectMapper mapper = new ObjectMapper();
         try {
             mapper.writeValue(out, value);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String writeValueAsString(Object value) {
+        try {
+            return mapper.writeValueAsString(value);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "{}";
     }
 }

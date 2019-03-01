@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 22/02/2019 22:18:30
+ Date: 01/03/2019 21:57:09
 */
 
 SET NAMES utf8mb4;
@@ -64,18 +64,16 @@ CREATE TABLE `building` (
   `time_decorator` varchar(50) DEFAULT NULL,
   `manager_name` varchar(255) DEFAULT NULL,
   `manager_phone` varchar(20) DEFAULT NULL,
-  `commission_cost` int(10) unsigned NOT NULL,
+  `commission_cost` int(10) unsigned DEFAULT NULL,
   `note` text,
   `link` varchar(255) DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
   `type_arrays` varchar(255) DEFAULT NULL,
-  `image_name` varchar(255) DEFAULT NULL,
-  `thumbnail_base64` blob,
-  `created_date` timestamp NULL DEFAULT NULL,
+  `image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `created_date` date DEFAULT NULL,
   `created_by` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `modify_date` timestamp NULL DEFAULT NULL,
-  `modify_by` varchar(255) DEFAULT NULL,
-  `is_deleted` bit(1) NOT NULL DEFAULT b'1',
+  `modified_date` date DEFAULT NULL,
+  `modified_by` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -85,7 +83,6 @@ CREATE TABLE `building` (
 DROP TABLE IF EXISTS `district`;
 CREATE TABLE `district` (
   `id` varchar(10) NOT NULL,
-  `code` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -118,11 +115,8 @@ CREATE TABLE `user` (
   `password` varchar(50) NOT NULL,
   `full_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `role_id` varchar(20) NOT NULL,
-  `created_date` timestamp NULL DEFAULT NULL,
+  `created_date` date DEFAULT NULL,
   `created_by` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `modify_date` timestamp NULL DEFAULT NULL,
-  `modify_by` varchar(255) DEFAULT NULL,
-  `is_deleted` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   KEY `FK_USER_ROLE` (`role_id`),
   CONSTRAINT `FK_USER_ROLE` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
@@ -132,10 +126,10 @@ CREATE TABLE `user` (
 -- Records of user
 -- ----------------------------
 BEGIN;
-INSERT INTO `user` VALUES (1, 'thanhtai', '12345', 'Võ Thành Tài', 'MANAGER', NULL, NULL, NULL, NULL, b'1');
-INSERT INTO `user` VALUES (2, 'haimy', '12345', 'Trần Hải My', 'USER', NULL, NULL, NULL, NULL, b'1');
-INSERT INTO `user` VALUES (3, 'duyquang', '12345', 'Trần Duy Quang', 'MANAGER', NULL, NULL, NULL, NULL, b'1');
-INSERT INTO `user` VALUES (4, 'duyquang', '12345', 'Trần Duy Quang', 'MANAGER', NULL, NULL, NULL, NULL, b'1');
+INSERT INTO `user` VALUES (1, 'thanhtai', '12345', 'Võ Thành Tài', 'MANAGER', NULL, NULL);
+INSERT INTO `user` VALUES (2, 'haimy', '12345', 'Trần Hải My', 'USER', NULL, NULL);
+INSERT INTO `user` VALUES (3, 'duyquang', '12345', 'Trần Duy Quang', 'MANAGER', NULL, NULL);
+INSERT INTO `user` VALUES (4, 'duyquang', '12345', 'Trần Duy Quang', 'MANAGER', NULL, NULL);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
