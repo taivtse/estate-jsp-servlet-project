@@ -3,12 +3,10 @@ package com.laptrinhjavaweb.orm.criteria;
 import com.laptrinhjavaweb.orm.criteria.criterion.SimpleExpression;
 import com.laptrinhjavaweb.orm.mapper.EntityMapper;
 import com.laptrinhjavaweb.orm.util.EntityUtil;
+import com.laptrinhjavaweb.orm.util.CloseExecutorUtil;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +27,7 @@ public class CriteriaImpl implements Criteria {
     String limit = "";
     String offset = "";
 
-    Map<String, SimpleExpression> whereExpressionMap = new TreeMap<>();
+    Map<String, SimpleExpression> expressionMap = new TreeMap<>();
 
     public CriteriaImpl(Connection connection, Class entityClass) {
         this.entityClass = entityClass;
@@ -41,41 +39,40 @@ public class CriteriaImpl implements Criteria {
     @Override
     public List list() {
         ResultSet resultSet = null;
-        List resultList = null;
+        List resultList = new ArrayList<>();
         try {
-            String sql = this.processGenericQuery();
-            this.statement.setSqlStatement(sql);
-
-            whereExpressionMap.forEach((key, simpleExpression) -> {
-                this.statement.setParam(key, simpleExpression.getValue());
-            });
-
-            resultSet = this.statement.executeQuery();
-
-            if (resultSet.isBeforeFirst()){
-                 resultList = new ArrayList<>();
-
-                while (resultSet.next()) {
-                    resultList.add(EntityMapper.of(this.entityClass).toEntity(resultSet));
-                }
+            resultSet = this.executeQuery();
+            while (resultSet.next()) {
+                resultList.add(EntityMapper.of(this.entityClass).toEntity(resultSet));
             }
 
             return resultList;
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            try {
-                this.closeAllAfterQuery(resultSet);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return null;
-            }
+            CloseExecutorUtil.closeAllAfterExecute(this.statement, resultSet);
         }
     }
 
     @Override
     public Object uniqueResult() {
-        return null;
+        ResultSet resultSet = null;
+        Object object = null;
+        try {
+            this.setMaxResults(1);
+            this.setFirstResult(0);
+            resultSet = this.executeQuery();
+
+            if (resultSet.next()) {
+                object = EntityMapper.of(this.entityClass).toEntity(resultSet);
+            }
+
+            return object;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            CloseExecutorUtil.closeAllAfterExecute(this.statement, resultSet);
+        }
     }
 
     @Override
@@ -98,22 +95,13 @@ public class CriteriaImpl implements Criteria {
 
     @Override
     public Criteria addWhere(SimpleExpression expression) {
-        String propertyName = expression.getPropertyName();
-
-        propertyName = this.getNextWhereNamedParam(propertyName);
-
-        whereExpressionMap.put(propertyName, expression);
+        this.addExpression(expression);
 
         if (where.length() == 0) {
             where.append(" WHERE ");
         } else {
             where.append(" AND ");
         }
-
-//            set column name for expression
-        String columnName = EntityUtil.of(entityClass).getColumnName(expression.getPropertyName());
-        expression.setColumnName(columnName);
-        expression.setPropertyName(propertyName);
 
         where.append(expression.toSqlString());
         return this;
@@ -130,37 +118,18 @@ public class CriteriaImpl implements Criteria {
     }
 
     @Override
-    public Criteria setLimit(int limit) {
+    public Criteria setMaxResults(int limit) {
         this.limit = " LIMIT " + limit;
         return this;
     }
 
     @Override
-    public Criteria setOffset(int offset) {
+    public Criteria setFirstResult(int offset) {
         this.offset = " OFFSET " + offset;
         return this;
     }
 
-    private <T> void setEntityToQuery(T entity) throws Exception {
-        Class entityClass = entity.getClass();
-        Field[] fieldList = entityClass.getDeclaredFields();
-
-        for (Field field : fieldList) {
-            String fieldName = field.getName();
-//            upper case the first letter of field name
-            fieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-
-//            build getter method name
-            String getterMethodName = "get" + fieldName;
-
-            Method getterMethod = entityClass.getMethod(getterMethodName);
-            Object fieldData = getterMethod.invoke(entity);
-
-            statement.setParam(fieldName, fieldData);
-        }
-    }
-
-    private String processGenericQuery() {
+    private String handleGenericQuery() {
         this.genericQuery = genericQuery.replace("{selectColumns}", selectColumns);
         this.genericQuery = genericQuery.replace("{tableName}", tableName);
         this.genericQuery = genericQuery.replace("{where}", where);
@@ -169,27 +138,17 @@ public class CriteriaImpl implements Criteria {
         this.genericQuery = genericQuery.replace("{orderBy}", orderBy);
         this.genericQuery = genericQuery.replace("{limit}", limit);
         this.genericQuery = genericQuery.replace("{offset}", offset);
-        return genericQuery;
+        return this.genericQuery;
     }
 
-    private void closeAllAfterQuery(ResultSet resultSet) throws SQLException {
-        if (statement.getConnection() != null) {
-            statement.getConnection().close();
-        }
-        if (statement.getPreparedStatement() != null) {
-            statement.getPreparedStatement().close();
-        }
-        if (resultSet != null) {
-            resultSet.close();
-        }
-    }
+    private void addExpression(SimpleExpression expression) {
+        String propertyName = expression.getPropertyName();
 
-    private String getNextWhereNamedParam(String propertyName) {
-        if (whereExpressionMap.containsKey(propertyName)) {
+        if (this.expressionMap.containsKey(propertyName)) {
             AtomicInteger nextWhereId = new AtomicInteger(1);
 
             String finalPropertyName = propertyName;
-            whereExpressionMap.forEach((key, simpleExpression) -> {
+            this.expressionMap.forEach((key, simpleExpression) -> {
                 if (key.startsWith(finalPropertyName)) {
 //                    get index of "_" character
                     int separatorIndex = key.lastIndexOf("_");
@@ -207,6 +166,27 @@ public class CriteriaImpl implements Criteria {
             propertyName = propertyName + "_" + nextWhereId;
         }
 
-        return propertyName;
+        this.expressionMap.put(propertyName, expression);
+
+//            set column name for expression
+        String columnName = EntityUtil.of(entityClass).getColumnName(expression.getPropertyName());
+        expression.setColumnName(columnName);
+        expression.setPropertyName(propertyName);
+    }
+
+    public ResultSet executeQuery() {
+        ResultSet resultSet;
+        List resultList = null;
+        try {
+            String sql = this.handleGenericQuery();
+            this.statement.setSqlStatement(sql);
+            this.statement.setParamMap(this.expressionMap);
+
+            resultSet = this.statement.executeQuery();
+
+            return resultSet;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

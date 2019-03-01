@@ -1,11 +1,14 @@
 package com.laptrinhjavaweb.orm.criteria;
 
+import com.laptrinhjavaweb.orm.criteria.criterion.SimpleExpression;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class NamedParamStatement {
     private Connection connection;
@@ -58,6 +61,12 @@ public class NamedParamStatement {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void setParamMap(Map<String, SimpleExpression> simpleExpressionMap) {
+        simpleExpressionMap.forEach((key, simpleExpression) -> {
+            this.setParam(key, simpleExpression.getValue());
+        });
     }
 
     private int getIndex(String name) {

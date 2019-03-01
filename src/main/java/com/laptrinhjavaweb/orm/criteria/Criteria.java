@@ -19,7 +19,7 @@ public interface Criteria {
 
     Criteria addProjection(String projection);
 
-    Criteria setLimit(int limit);
+    Criteria setMaxResults(int limit);
 
-    Criteria setOffset(int offset);
+    Criteria setFirstResult(int offset);
 }

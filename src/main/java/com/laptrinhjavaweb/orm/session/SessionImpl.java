@@ -1,12 +1,13 @@
 package com.laptrinhjavaweb.orm.session;
 
 import com.laptrinhjavaweb.orm.annotation.IdField;
-import com.laptrinhjavaweb.orm.builder.QueryBuilder;
 import com.laptrinhjavaweb.orm.criteria.Criteria;
 import com.laptrinhjavaweb.orm.criteria.CriteriaImpl;
 import com.laptrinhjavaweb.orm.criteria.NamedParamStatement;
-import com.laptrinhjavaweb.orm.mapper.EntityMapper;
+import com.laptrinhjavaweb.orm.criteria.criterion.Restrictions;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,37 +29,10 @@ public class SessionImpl implements Session {
 
     @Override
     public <T, ID> T findOneById(Class<T> entityClass, ID id) {
-        ResultSet resultSet = null;
-        PreparedStatement preparedStatement = null;
-        Object result = null;
-        try {
-            String sql = QueryBuilder.of(entityClass).buildSelectByIdQuery();
-            NamedParamStatement statement = new NamedParamStatement(this.connection);
-            statement.setSqlStatement(sql);
-
-            String idFieldName = entityClass.getAnnotation(IdField.class).name();
-            statement.setParam(idFieldName, id);
-
-            preparedStatement = statement.getPreparedStatement();
-
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                result = EntityMapper.of(entityClass).toEntity(resultSet);
-            }
-
-            return (T) result;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                this.closeAllAfterQuery(connection, preparedStatement, resultSet);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-        return null;
+        String idFieldName = entityClass.getAnnotation(IdField.class).name();
+        Criteria criteria = this.createCriteria(entityClass);
+        criteria.addWhere(Restrictions.eq(idFieldName, id));
+        return (T) criteria.uniqueResult();
     }
 
     @Override
@@ -81,7 +55,7 @@ public class SessionImpl implements Session {
         return new CriteriaImpl(connection, entityClass);
     }
 
-    private void closeAllAfterQuery(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) throws SQLException {
+    private void closeAllAfterExecute(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) throws SQLException {
         if (connection != null) {
             connection.close();
         }
@@ -90,6 +64,25 @@ public class SessionImpl implements Session {
         }
         if (resultSet != null) {
             resultSet.close();
+        }
+    }
+
+    private <T> void setEntityToStatement(T entity, NamedParamStatement statement) throws Exception {
+        Class entityClass = entity.getClass();
+        Field[] fieldList = entityClass.getDeclaredFields();
+
+        for (Field field : fieldList) {
+            String fieldName = field.getName();
+//            upper case the first letter of field name
+            fieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+
+//            build getter method name
+            String getterMethodName = "get" + fieldName;
+
+            Method getterMethod = entityClass.getMethod(getterMethodName);
+            Object fieldData = getterMethod.invoke(entity);
+
+            statement.setParam(fieldName, fieldData);
         }
     }
 }
