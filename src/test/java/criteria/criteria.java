@@ -1,3 +1,5 @@
+package criteria;
+
 import com.laptrinhjavaweb.entity.UserEntity;
 import com.laptrinhjavaweb.orm.criteria.Criteria;
 import com.laptrinhjavaweb.orm.criteria.CriteriaImpl;

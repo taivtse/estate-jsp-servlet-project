@@ -5,12 +5,11 @@ import com.laptrinhjavaweb.orm.session.Session;
 import com.laptrinhjavaweb.orm.session.SessionFactory;
 
 import javax.inject.Inject;
-import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class AbstractDao<T, ID extends Serializable> implements GenericDao<T, ID> {
+public class AbstractDao<T, ID> implements GenericDao<T, ID> {
     @Inject
     private SessionFactory sessionFactory;
 

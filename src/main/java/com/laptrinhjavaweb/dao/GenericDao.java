@@ -1,9 +1,8 @@
 package com.laptrinhjavaweb.dao;
 
-import java.io.Serializable;
 import java.util.List;
 
-public interface GenericDao<T, ID extends Serializable> {
+public interface GenericDao<T, ID> {
     List<T> findAll();
 
 //    List<T> findByProperties(List<>);

@@ -27,7 +27,7 @@ public class SessionImpl implements Session {
     }
 
     @Override
-    public <T, ID extends Serializable> T findOneById(Class<T> entityClass, ID id) {
+    public <T, ID> T findOneById(Class<T> entityClass, ID id) {
         ResultSet resultSet = null;
         Object result = null;
         try {
@@ -48,7 +48,7 @@ public class SessionImpl implements Session {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (resultSet != null){
+            if (resultSet != null) {
                 try {
                     resultSet.close();
                 } catch (SQLException e) {
