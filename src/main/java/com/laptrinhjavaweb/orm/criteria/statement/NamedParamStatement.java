@@ -1,6 +1,4 @@
-package com.laptrinhjavaweb.orm.criteria;
-
-import com.laptrinhjavaweb.orm.criteria.criterion.SimpleExpression;
+package com.laptrinhjavaweb.orm.criteria.statement;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,15 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 public class NamedParamStatement {
-    private Connection connection;
     private PreparedStatement preparedStatement;
     private List<String> paramList = new ArrayList<>();
 
-    public NamedParamStatement(Connection connection) {
-        this.connection = connection;
-    }
-
-    public void setSqlStatement(String sql) throws SQLException {
+    public NamedParamStatement(Connection connection, String sql) throws SQLException {
         int pos;
         while ((pos = sql.indexOf(":")) != -1) {
             int end = sql.substring(pos).indexOf(" ");
@@ -30,7 +23,7 @@ public class NamedParamStatement {
             paramList.add(sql.substring(pos + 1, end));
             sql = sql.substring(0, pos) + "?" + sql.substring(end);
         }
-        this.preparedStatement = this.connection.prepareStatement(sql);
+        this.preparedStatement = connection.prepareStatement(sql);
     }
 
     public ResultSet executeQuery() throws SQLException {
@@ -47,11 +40,7 @@ public class NamedParamStatement {
         return preparedStatement;
     }
 
-    public Connection getConnection() {
-        return connection;
-    }
-
-    public void setParam(String name, Object value) {
+    public void setParameter(String name, Object value) {
         int paramIndex = this.getIndex(name);
         if (paramIndex == -1) {
             throw new RuntimeException("Param " + name + " does not exists");
@@ -63,10 +52,12 @@ public class NamedParamStatement {
         }
     }
 
-    public void setParamMap(Map<String, SimpleExpression> simpleExpressionMap) {
-        simpleExpressionMap.forEach((key, simpleExpression) -> {
-            this.setParam(key, simpleExpression.getValue());
-        });
+    public void setNamedParamMap(Map<String, NamedParam> criterionMap) {
+//        criterionMap.forEach((key, criterion) -> {
+//            if (!criterion.isIgnore()) {
+//                this.setParameter(key, criterion.getValue());
+//            }
+//        });
     }
 
     private int getIndex(String name) {

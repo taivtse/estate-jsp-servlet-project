@@ -3,20 +3,16 @@ package criteria;
 import com.laptrinhjavaweb.entity.UserEntity;
 import com.laptrinhjavaweb.orm.criteria.Criteria;
 import com.laptrinhjavaweb.orm.criteria.CriteriaImpl;
-import com.laptrinhjavaweb.orm.criteria.criterion.MatchMode;
-import com.laptrinhjavaweb.orm.criteria.criterion.Restrictions;
+import com.laptrinhjavaweb.orm.criteria.criterion.Restriction;
 import org.testng.annotations.Test;
 
 public class TestCriteria {
     @Test
     public void testBuildWhere() {
         Criteria criteria = new CriteriaImpl(null, UserEntity.class);
-        criteria.addSelectField("username");
-        criteria.addSelectField("fullName");
-        criteria.addWhere(Restrictions.eq("username", "thanhtai"));
-        criteria.addWhere(Restrictions.like("username", "thanhtai123", MatchMode.ANYWHERE));
-        criteria.addWhere(Restrictions.gt("username", "thanhtai12345"));
-        criteria.addWhere(Restrictions.ne("password", "123"));
-        criteria.addWhere(Restrictions.eq("fullName", "123"));
+        criteria.addRestriction(Restriction.and().eq("username", "thanhtai"));
+        criteria.addRestriction(Restriction.and().eq("fullName", "1"));
+        criteria.addRestriction(Restriction.or().eq("fullName", "tha2nhtai"));
+        criteria.addRestriction(Restriction.or().eq("fullName", "3"));
     }
 }

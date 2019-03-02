@@ -1,9 +1,12 @@
 package com.laptrinhjavaweb.orm.criteria;
 
-import com.laptrinhjavaweb.orm.criteria.criterion.SimpleExpression;
+import com.laptrinhjavaweb.orm.criteria.criterion.Order;
+import com.laptrinhjavaweb.orm.criteria.criterion.Restriction;
+import com.laptrinhjavaweb.orm.criteria.statement.NamedParam;
+import com.laptrinhjavaweb.orm.criteria.statement.NamedParamStatement;
 import com.laptrinhjavaweb.orm.mapper.EntityMapper;
-import com.laptrinhjavaweb.orm.util.EntityUtil;
 import com.laptrinhjavaweb.orm.util.CloseExecutorUtil;
+import com.laptrinhjavaweb.orm.util.EntityUtil;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -11,34 +14,44 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class CriteriaImpl implements Criteria {
+    private Connection connection;
     private Class entityClass;
     private NamedParamStatement statement;
 
-    String genericQuery = "SELECT {selectColumns} FROM {tableName}{where}{groupBy}{having}{orderBy}{limit}{offset}";
-    String selectColumns = "";
-    String tableName = "";
-    StringBuilder where = new StringBuilder();
-    String groupBy = "";
-    String having = "";
-    String orderBy = "";
-    String limit = "";
-    String offset = "";
+    private String genericQuery = "SELECT {selectColumns} FROM {tableName}{where}{groupBy}{having}{orderBy}{limit}{offset}";
+    private String selectColumns = "";
+    private String tableName = "";
+    private StringBuilder where = new StringBuilder(" WHERE 1=1");
+    private String groupBy = "";
+    private String having = "";
+    private String orderBy = "";
+    private String limit = "";
+    private String offset = "";
 
-    Map<String, SimpleExpression> expressionMap = new TreeMap<>();
+    private Map<String, NamedParam> namedParamMap = new TreeMap<>();
 
     public CriteriaImpl(Connection connection, Class entityClass) {
+        this.connection = connection;
         this.entityClass = entityClass;
-        statement = new NamedParamStatement(connection);
         this.selectColumns = "*";
         this.tableName = EntityUtil.of(entityClass).getTableName();
     }
 
     @Override
+    public Class getEntityClass() {
+        return this.entityClass;
+    }
+
+    @Override
+    public Map<String, NamedParam> getNamedParamMap() {
+        return namedParamMap;
+    }
+
+    @Override
     public List list() {
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         List resultList = new ArrayList<>();
         try {
             resultSet = this.executeQuery();
@@ -50,13 +63,13 @@ public class CriteriaImpl implements Criteria {
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            CloseExecutorUtil.closeAllAfterExecute(this.statement, resultSet);
+            CloseExecutorUtil.closeAllAfterExecute(this.statement.getPreparedStatement());
         }
     }
 
     @Override
     public Object uniqueResult() {
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         Object object = null;
         try {
             this.setMaxResults(1);
@@ -71,17 +84,12 @@ public class CriteriaImpl implements Criteria {
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            CloseExecutorUtil.closeAllAfterExecute(this.statement, resultSet);
+            CloseExecutorUtil.closeAllAfterExecute(this.statement.getPreparedStatement());
         }
     }
 
     @Override
-    public Criteria addEntity(Class entityClass) {
-        return this;
-    }
-
-    @Override
-    public Criteria addSelectField(String fieldName) {
+    public Criteria addSelection(String fieldName) {
         if (this.selectColumns.equals("*")) {
             this.selectColumns = "";
         }
@@ -94,21 +102,15 @@ public class CriteriaImpl implements Criteria {
     }
 
     @Override
-    public Criteria addWhere(SimpleExpression expression) {
-        this.addExpression(expression);
-
-        if (where.length() == 0) {
-            where.append(" WHERE ");
-        } else {
-            where.append(" AND ");
-        }
-
-        where.append(expression.toSqlString());
+    public Criteria addRestriction(Restriction restriction) {
+        where.append(restriction.getPrefixLogical());
+        where.append(restriction.getCriterion().toSqlString(this));
         return this;
     }
 
     @Override
-    public Criteria addOrder(String order) {
+    public Criteria addOrder(Order order) {
+        orderBy = order.getExpression();
         return this;
     }
 
@@ -141,46 +143,12 @@ public class CriteriaImpl implements Criteria {
         return this.genericQuery;
     }
 
-    private void addExpression(SimpleExpression expression) {
-        String propertyName = expression.getPropertyName();
-
-        if (this.expressionMap.containsKey(propertyName)) {
-            AtomicInteger nextWhereId = new AtomicInteger(1);
-
-            String finalPropertyName = propertyName;
-            this.expressionMap.forEach((key, simpleExpression) -> {
-                if (key.startsWith(finalPropertyName)) {
-//                    get index of "_" character
-                    int separatorIndex = key.lastIndexOf("_");
-
-                    if (separatorIndex != -1) {
-                        int curWhereId = Integer.parseInt(key.substring(separatorIndex + 1));
-                        if (curWhereId >= nextWhereId.get()) {
-                            nextWhereId.set(curWhereId + 1);
-                        }
-                    }
-                }
-            });
-
-//            set new property name to avoid multiple property name in a query
-            propertyName = propertyName + "_" + nextWhereId;
-        }
-
-        this.expressionMap.put(propertyName, expression);
-
-//            set column name for expression
-        String columnName = EntityUtil.of(entityClass).getColumnName(expression.getPropertyName());
-        expression.setColumnName(columnName);
-        expression.setPropertyName(propertyName);
-    }
-
     public ResultSet executeQuery() {
         ResultSet resultSet;
-        List resultList = null;
         try {
             String sql = this.handleGenericQuery();
-            this.statement.setSqlStatement(sql);
-            this.statement.setParamMap(this.expressionMap);
+            this.statement = new NamedParamStatement(connection, sql);
+            this.statement.setNamedParamMap(namedParamMap);
 
             resultSet = this.statement.executeQuery();
 

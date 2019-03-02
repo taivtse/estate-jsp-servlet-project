@@ -1,8 +1,11 @@
 package com.laptrinhjavaweb.dao.impl;
 
 import com.laptrinhjavaweb.dao.GenericDao;
+import com.laptrinhjavaweb.orm.criteria.Criteria;
+import com.laptrinhjavaweb.orm.criteria.criterion.Restriction;
 import com.laptrinhjavaweb.orm.session.Session;
 import com.laptrinhjavaweb.orm.session.SessionFactory;
+import com.laptrinhjavaweb.paging.Pageable;
 
 import javax.inject.Inject;
 import java.lang.reflect.ParameterizedType;
@@ -34,9 +37,41 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
     }
 
     @Override
+    public List<T> findByProperties(Pageable pageable, List<Restriction> restrictionList) {
+        Session session = this.getSession();
+        Criteria criteria = session.createCriteria(this.entityClass);
+
+        if (pageable != null) {
+//            set start position offset
+            if (pageable.getOffset() != null && pageable.getOffset() >= 0) {
+                criteria.setFirstResult(pageable.getOffset());
+            }
+
+//            set limit row
+            if (pageable.getLimit() != null && pageable.getLimit() >= 0) {
+                criteria.setMaxResults(pageable.getLimit());
+            }
+
+//            set sorter
+            if (pageable.getSorter() != null
+                    && !pageable.getSorter().getPropertyName().isEmpty()
+                    && !pageable.getSorter().getDirection().isEmpty()) {
+                criteria.addOrder(pageable.getSorter().getOrder());
+            }
+        }
+
+//        set properties search
+        if (restrictionList != null) {
+            restrictionList.forEach(restriction -> criteria.addRestriction(restriction));
+        }
+
+        return criteria.list();
+    }
+
+    @Override
     public T findOneById(ID id) {
         Session session = this.getSession();
-        return session.findOneById(this.entityClass, id);
+        return session.get(this.entityClass, id);
     }
 
 }

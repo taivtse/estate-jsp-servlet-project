@@ -3,8 +3,8 @@ package com.laptrinhjavaweb.orm.session;
 import com.laptrinhjavaweb.orm.annotation.IdField;
 import com.laptrinhjavaweb.orm.criteria.Criteria;
 import com.laptrinhjavaweb.orm.criteria.CriteriaImpl;
-import com.laptrinhjavaweb.orm.criteria.NamedParamStatement;
-import com.laptrinhjavaweb.orm.criteria.criterion.Restrictions;
+import com.laptrinhjavaweb.orm.criteria.criterion.Restriction;
+import com.laptrinhjavaweb.orm.criteria.statement.NamedParamStatement;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -12,7 +12,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 public class SessionImpl implements Session {
     private Connection connection;
@@ -22,16 +21,10 @@ public class SessionImpl implements Session {
     }
 
     @Override
-    public <T> List<T> findAll(Class<T> entityClass) {
-        Criteria criteria = this.createCriteria(entityClass);
-        return criteria.list();
-    }
-
-    @Override
-    public <T, ID> T findOneById(Class<T> entityClass, ID id) {
+    public <T, ID> T get(Class<T> entityClass, ID id) {
         String idFieldName = entityClass.getAnnotation(IdField.class).name();
         Criteria criteria = this.createCriteria(entityClass);
-        criteria.addWhere(Restrictions.eq(idFieldName, id));
+        criteria.addRestriction(Restriction.and().eq(idFieldName, id));
         return (T) criteria.uniqueResult();
     }
 
@@ -82,7 +75,7 @@ public class SessionImpl implements Session {
             Method getterMethod = entityClass.getMethod(getterMethodName);
             Object fieldData = getterMethod.invoke(entity);
 
-            statement.setParam(fieldName, fieldData);
+            statement.setParameter(fieldName, fieldData);
         }
     }
 }

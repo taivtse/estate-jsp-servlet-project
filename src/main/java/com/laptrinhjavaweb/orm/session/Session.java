@@ -2,12 +2,8 @@ package com.laptrinhjavaweb.orm.session;
 
 import com.laptrinhjavaweb.orm.criteria.Criteria;
 
-import java.util.List;
-
 public interface Session {
-    <T> List<T> findAll(Class<T> entityClass);
-
-    <T, ID> T findOneById(Class<T> entityClass, ID id);
+    <T, ID> T get(Class<T> entityClass, ID id);
 
     <T> void save(T entity);
 

@@ -26,7 +26,7 @@ public class AbstractService<ID, D, E> implements GenericService<ID, D, E> {
             dtoList = new ArrayList<>();
         }
 
-//        convert entity to dto and add it to dto list
+//        convert entity to dto and addRestriction it to dto list
         for (E entity : entityList) {
             dtoList.add(converter.entityToDto(entity));
         }
