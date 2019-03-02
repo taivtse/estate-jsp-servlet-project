@@ -1,5 +1,6 @@
 package com.laptrinhjavaweb.paging;
 
+import com.laptrinhjavaweb.constant.SystemConstant;
 import com.laptrinhjavaweb.orm.criteria.criterion.Order;
 
 public class Sorter {
@@ -12,12 +13,11 @@ public class Sorter {
     }
 
     public Order getOrder() {
-//        if (direction.equals(SystemConstant.SORT_ASC)) {
-//            return Order.asc(propertyName);
-//        } else {
-//            return Order.desc(propertyName);
-//        }
-        return null;
+        if (direction.equals(SystemConstant.SORT_ASC)) {
+            return Order.asc(propertyName);
+        } else {
+            return Order.desc(propertyName);
+        }
     }
 
     public String getPropertyName() {
