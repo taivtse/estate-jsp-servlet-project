@@ -14,16 +14,13 @@ public class NamedParamStatement {
 
     public NamedParamStatement(Connection connection, String sql) throws SQLException {
         int pos;
-        while ((pos = sql.indexOf(":")) != -1) {
-            int end = sql.substring(pos).indexOf(" ");
-            if (end == -1)
-                end = sql.length();
-            else
-                end += pos;
-            paramList.add(sql.substring(pos + 1, end));
-            sql = sql.substring(0, pos) + "?" + sql.substring(end);
+        StringBuilder sqlBuilder = new StringBuilder(sql);
+        while ((pos = sqlBuilder.indexOf("{")) != -1) {
+            int end = sqlBuilder.indexOf("}", pos);
+            paramList.add(sqlBuilder.substring(pos + 1, end));
+            sqlBuilder.replace(pos, end + 1, "?");
         }
-        this.preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+        this.preparedStatement = connection.prepareStatement(sqlBuilder.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
     }
 
     public ResultSet executeQuery() throws SQLException {

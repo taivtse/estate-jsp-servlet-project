@@ -36,8 +36,9 @@ public class SimpleExpression implements Criterion {
         fragment.append(columnName);
         fragment.append(" ");
         fragment.append(this.op);
-        fragment.append(" :");
+        fragment.append(" {");
         fragment.append(namedParam);
+        fragment.append("}");
         return fragment.toString();
     }
 }

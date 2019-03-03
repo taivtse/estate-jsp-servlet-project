@@ -14,7 +14,7 @@ public class StatementBuilderImpl implements StatementBuilder {
     }
 
     @Override
-    public String buildSelectQuery(){
+    public String buildSelectQuery() {
         StringBuilder statement = new StringBuilder("SELECT * FROM ");
         statement.append(EntityUtil.of(entityClass).getTableName());
 
@@ -22,27 +22,27 @@ public class StatementBuilderImpl implements StatementBuilder {
     }
 
     @Override
-    public String buildSelectByIdQuery(){
+    public String buildSelectByIdQuery() {
         String idColumnName = EntityUtil.of(entityClass).getIdColumnName();
         String selectStatement = this.buildSelectQuery();
 
         StringBuilder statement = new StringBuilder(selectStatement);
         statement.append(" WHERE ");
         statement.append(idColumnName);
-        statement.append(" = :");
+        statement.append(" = {");
         statement.append(EntityUtil.of(entityClass).getIdFieldName());
-
+        statement.append("}");
         return statement.toString();
     }
 
     @Override
-    public String buildInsertStatement(){
+    public String buildInsertStatement() {
         Field[] fieldList = this.entityClass.getDeclaredFields();
 
         StringBuilder statement = new StringBuilder("INSERT INTO ");
         statement.append(EntityUtil.of(entityClass).getTableName());
 
-        statement.append("(");
+        statement.append(" (");
         for (int i = 0; i < fieldList.length; i++) {
             statement.append(fieldList[i].getAnnotation(Column.class).name());
 
@@ -51,17 +51,17 @@ public class StatementBuilderImpl implements StatementBuilder {
             }
         }
 
-        statement.append(") VALUES( ");
+        statement.append(") VALUES (");
         for (int i = 0; i < fieldList.length; i++) {
-            statement.append(":");
+            statement.append("{");
             statement.append(fieldList[i].getName());
 
             if (i < fieldList.length - 1) {
-                statement.append(" , ");
+                statement.append("}, ");
             }
         }
 
-        statement.append(" )");
+        statement.append("})");
 
         return statement.toString();
     }
@@ -81,18 +81,19 @@ public class StatementBuilderImpl implements StatementBuilder {
 
             String columnName = fieldList[i].getAnnotation(Column.class).name();
             statement.append(columnName);
-            statement.append(" = :");
+            statement.append(" = {");
             statement.append(fieldList[i].getName());
 
             if (i < fieldList.length - 1) {
-                statement.append(" , ");
+                statement.append("}, ");
             }
         }
 
-        statement.append(" WHERE ");
+        statement.append("} WHERE ");
         statement.append(EntityUtil.of(entityClass).getIdColumnName());
-        statement.append(" = :");
+        statement.append(" = {");
         statement.append(EntityUtil.of(entityClass).getIdFieldName());
+        statement.append("}");
 
         return statement.toString();
     }
@@ -103,8 +104,9 @@ public class StatementBuilderImpl implements StatementBuilder {
         statement.append(EntityUtil.of(entityClass).getTableName());
         statement.append(" WHERE ");
         statement.append(EntityUtil.of(entityClass).getIdColumnName());
-        statement.append(" = :");
+        statement.append(" = {");
         statement.append(EntityUtil.of(entityClass).getIdFieldName());
+        statement.append("}");
 
         return statement.toString();
     }

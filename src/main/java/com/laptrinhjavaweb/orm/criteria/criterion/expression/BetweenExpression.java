@@ -28,11 +28,13 @@ public class BetweenExpression implements Criterion {
         StringBuilder fragment = new StringBuilder(" ");
         fragment.append(columnName);
         fragment.append(" BETWEEN");
-        fragment.append(" :");
+        fragment.append(" {");
         fragment.append(namedParamLow);
+        fragment.append("}");
         fragment.append(" AND");
-        fragment.append(" :");
+        fragment.append(" {");
         fragment.append(namedParamHigh);
+        fragment.append("}");
         return fragment.toString();
     }
 }
