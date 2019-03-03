@@ -6,7 +6,7 @@ import com.laptrinhjavaweb.orm.util.EntityUtil;
 
 import java.lang.reflect.Field;
 
-public class QueryBuilderImpl implements QueryBuilder {
+public class StatementBuilderImpl implements StatementBuilder {
     private Class<?> entityClass;
 
     public void setEntityClass(Class entityClass) {
@@ -36,7 +36,7 @@ public class QueryBuilderImpl implements QueryBuilder {
     }
 
     @Override
-    public String buildInsertQuery(){
+    public String buildInsertStatement(){
         Field[] fieldList = this.entityClass.getDeclaredFields();
 
         StringBuilder statement = new StringBuilder("INSERT INTO ");
@@ -51,23 +51,23 @@ public class QueryBuilderImpl implements QueryBuilder {
             }
         }
 
-        statement.append(") VALUES(");
+        statement.append(") VALUES( ");
         for (int i = 0; i < fieldList.length; i++) {
             statement.append(":");
             statement.append(fieldList[i].getName());
 
             if (i < fieldList.length - 1) {
-                statement.append(", ");
+                statement.append(" , ");
             }
         }
 
-        statement.append(")");
+        statement.append(" )");
 
         return statement.toString();
     }
 
     @Override
-    public String buildUpdateQuery() {
+    public String buildUpdateStatement() {
         StringBuilder statement = new StringBuilder("UPDATE ");
         statement.append(EntityUtil.of(entityClass).getTableName());
         statement.append(" SET ");
@@ -85,7 +85,7 @@ public class QueryBuilderImpl implements QueryBuilder {
             statement.append(fieldList[i].getName());
 
             if (i < fieldList.length - 1) {
-                statement.append(", ");
+                statement.append(" , ");
             }
         }
 
@@ -98,7 +98,7 @@ public class QueryBuilderImpl implements QueryBuilder {
     }
 
     @Override
-    public String buildDeleteQuery() {
+    public String buildDeleteStatement() {
         StringBuilder statement = new StringBuilder("DELETE FROM ");
         statement.append(EntityUtil.of(entityClass).getTableName());
         statement.append(" WHERE ");

@@ -7,13 +7,14 @@ import java.util.ResourceBundle;
 
 public class SessionFactory {
     private static final ResourceBundle DATABASE_BUNDLE = ResourceBundle.getBundle("database");
-    private static final String dbUrl = DATABASE_BUNDLE.getString("db.url");
-    private static final String dbUsername = DATABASE_BUNDLE.getString("db.username");
-    private static final String dbPassword = DATABASE_BUNDLE.getString("db.password");
+    private static final String DB_URL = DATABASE_BUNDLE.getString("db.url");
+    private static final String DB_USERNAME = DATABASE_BUNDLE.getString("db.username");
+    private static final String DB_PASSWORD = DATABASE_BUNDLE.getString("db.password");
+    private static final String DB_DRIVER = DATABASE_BUNDLE.getString("db.driver");
 
     static {
         try {
-            Class.forName(DATABASE_BUNDLE.getString("db.driver"));
+            Class.forName(DB_DRIVER);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -21,7 +22,7 @@ public class SessionFactory {
 
     public static Session openSession() {
         try {
-            Connection connection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
             connection.setAutoCommit(false);
 
             return new SessionImpl(connection);

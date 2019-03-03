@@ -1,6 +1,6 @@
 package com.laptrinhjavaweb.orm.criteria.util;
 
-import com.laptrinhjavaweb.orm.criteria.statement.NamedParam;
+import com.laptrinhjavaweb.orm.statement.NamedParam;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;

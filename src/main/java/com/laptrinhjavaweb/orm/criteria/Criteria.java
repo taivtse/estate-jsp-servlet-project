@@ -2,7 +2,7 @@ package com.laptrinhjavaweb.orm.criteria;
 
 import com.laptrinhjavaweb.orm.criteria.criterion.Order;
 import com.laptrinhjavaweb.orm.criteria.criterion.Restriction;
-import com.laptrinhjavaweb.orm.criteria.statement.NamedParam;
+import com.laptrinhjavaweb.orm.statement.NamedParam;
 
 import java.util.List;
 import java.util.Map;

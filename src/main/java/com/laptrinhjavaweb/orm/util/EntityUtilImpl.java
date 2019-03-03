@@ -2,7 +2,6 @@ package com.laptrinhjavaweb.orm.util;
 
 import com.laptrinhjavaweb.orm.annotation.Column;
 import com.laptrinhjavaweb.orm.annotation.Entity;
-import com.laptrinhjavaweb.orm.annotation.Id;
 import com.laptrinhjavaweb.orm.annotation.IdField;
 
 import java.lang.reflect.Field;
@@ -21,7 +20,7 @@ public class EntityUtilImpl implements EntityUtil {
 
     @Override
     public String getIdColumnName() {
-        String idFieldName = entityClass.getAnnotation(IdField.class).name();
+        String idFieldName = this.getIdFieldName();
         return this.getColumnName(idFieldName);
     }
 
@@ -41,35 +40,22 @@ public class EntityUtilImpl implements EntityUtil {
     }
 
     @Override
-    public Object getIdColumnValue(Object entity) {
-//        String idColumnName = this.getIdColumnName();
-//        try {
-//            Field idField = entityClass.getDeclaredField(idColumnName);
-//            boolean accessible = idField.isAccessible();
-//            idField.setAccessible(true);
-//
-//            Object fieldData = idField.get(entity);
-//            idField.setAccessible(accessible);
-//
-//            return fieldData;
-//        } catch (NoSuchFieldException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
-        return null;
-    }
+    public Object getIdFieldData(Object entity) {
+        String idFieldName = this.getIdFieldName();
+        try {
+            Field idField = entityClass.getDeclaredField(idFieldName);
+            boolean accessible = idField.isAccessible();
+            idField.setAccessible(true);
 
-    @Override
-    public boolean isAutoIncrement() {
-        Field[] fieldList = this.entityClass.getDeclaredFields();
+            Object fieldData = idField.get(entity);
+            idField.setAccessible(accessible);
 
-        for (Field field : fieldList) {
-            if (field.isAnnotationPresent(Id.class)) {
-                return field.getAnnotation(Id.class).autoIncrement();
-            }
+            return fieldData;
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
-
-        return false;
+        return null;
     }
 }

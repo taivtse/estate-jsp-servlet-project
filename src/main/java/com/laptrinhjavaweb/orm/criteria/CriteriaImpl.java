@@ -2,14 +2,15 @@ package com.laptrinhjavaweb.orm.criteria;
 
 import com.laptrinhjavaweb.orm.criteria.criterion.Order;
 import com.laptrinhjavaweb.orm.criteria.criterion.Restriction;
-import com.laptrinhjavaweb.orm.criteria.statement.NamedParam;
-import com.laptrinhjavaweb.orm.criteria.statement.NamedParamStatement;
+import com.laptrinhjavaweb.orm.statement.NamedParam;
+import com.laptrinhjavaweb.orm.statement.NamedParamStatement;
 import com.laptrinhjavaweb.orm.mapper.EntityMapper;
-import com.laptrinhjavaweb.orm.util.CloseExecutorUtil;
+import com.laptrinhjavaweb.orm.session.util.CloseExecutorUtil;
 import com.laptrinhjavaweb.orm.util.EntityUtil;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -61,10 +62,12 @@ public class CriteriaImpl implements Criteria {
 
             return resultList;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         } finally {
-            CloseExecutorUtil.closeAllAfterExecute(this.statement.getPreparedStatement());
+            this.close();
         }
+
+        return resultList;
     }
 
     @Override
@@ -80,12 +83,13 @@ public class CriteriaImpl implements Criteria {
                 object = EntityMapper.of(this.entityClass).toEntity(resultSet);
             }
 
-            return object;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         } finally {
-            CloseExecutorUtil.closeAllAfterExecute(this.statement.getPreparedStatement());
+            this.close();
         }
+
+        return object;
     }
 
     @Override
@@ -131,6 +135,14 @@ public class CriteriaImpl implements Criteria {
         return this;
     }
 
+    public void close() {
+        try {
+            CloseExecutorUtil.closeNamedParamStatement(statement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private String handleGenericQuery() {
         this.genericQuery = genericQuery.replace("{selectColumns}", selectColumns);
         this.genericQuery = genericQuery.replace("{tableName}", tableName);
@@ -143,7 +155,7 @@ public class CriteriaImpl implements Criteria {
         return this.genericQuery;
     }
 
-    public ResultSet executeQuery() {
+    private ResultSet executeQuery() {
         ResultSet resultSet;
         try {
             String sql = this.handleGenericQuery();

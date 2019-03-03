@@ -13,11 +13,9 @@ public interface EntityUtil {
 
     String getColumnName(String fieldName);
 
-    Object getIdColumnValue(Object entity);
+    Object getIdFieldData(Object entity);
 
-    boolean isAutoIncrement();
-
-    static EntityUtil of(Class entityClass){
+    static EntityUtil of(Class entityClass) {
         if (!entityClass.isAnnotationPresent(Entity.class)) {
             throw new RuntimeException(entityClass.getName() + " is not an entity");
         }

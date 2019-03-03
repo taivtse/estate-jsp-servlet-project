@@ -1,4 +1,4 @@
-package com.laptrinhjavaweb.orm.criteria.statement;
+package com.laptrinhjavaweb.orm.statement;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +23,7 @@ public class NamedParamStatement {
             paramList.add(sql.substring(pos + 1, end));
             sql = sql.substring(0, pos) + "?" + sql.substring(end);
         }
-        this.preparedStatement = connection.prepareStatement(sql);
+        this.preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
     }
 
     public ResultSet executeQuery() throws SQLException {
@@ -32,32 +32,39 @@ public class NamedParamStatement {
     }
 
     public Integer executeUpdate() throws SQLException {
-        Integer rowEffect = this.preparedStatement.executeUpdate();
-        return rowEffect;
+        return this.preparedStatement.executeUpdate();
+    }
+
+    public Long executeInsert() throws SQLException {
+        this.preparedStatement.executeUpdate();
+        ResultSet resultSet = this.preparedStatement.getGeneratedKeys();
+
+        if (resultSet != null && resultSet.next()) {
+            return resultSet.getLong(1);
+        }
+
+        return null;
     }
 
     public PreparedStatement getPreparedStatement() {
         return preparedStatement;
     }
 
-    public void setParameter(String name, Object value) {
+    public void setParameter(String name, Object value) throws SQLException {
         int paramIndex = this.getIndex(name);
         if (paramIndex == -1) {
             throw new RuntimeException("Param " + name + " does not exists");
         }
-        try {
-            this.setParamAt(paramIndex, preparedStatement, value);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
+        this.setParamAt(paramIndex, preparedStatement, value);
     }
 
-    public void setNamedParamMap(Map<String, NamedParam> criterionMap) {
-//        criterionMap.forEach((key, criterion) -> {
-//            if (!criterion.isIgnore()) {
-//                this.setParameter(key, criterion.getValue());
-//            }
-//        });
+    public void setNamedParamMap(Map<String, NamedParam> namedParamMap) throws SQLException {
+        for (Map.Entry<String, NamedParam> entry : namedParamMap.entrySet()) {
+            String key = entry.getKey();
+            Object namedParamValue = entry.getValue().getValue();
+            this.setParameter(key, namedParamValue);
+        }
     }
 
     private int getIndex(String name) {
@@ -67,5 +74,4 @@ public class NamedParamStatement {
     private static void setParamAt(int index, PreparedStatement preparedStatement, Object parameter) throws SQLException {
         preparedStatement.setObject(index, parameter);
     }
-
 }

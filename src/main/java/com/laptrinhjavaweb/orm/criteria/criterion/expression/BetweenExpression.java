@@ -2,7 +2,7 @@ package com.laptrinhjavaweb.orm.criteria.criterion.expression;
 
 import com.laptrinhjavaweb.orm.criteria.Criteria;
 import com.laptrinhjavaweb.orm.criteria.criterion.Criterion;
-import com.laptrinhjavaweb.orm.criteria.statement.NamedParam;
+import com.laptrinhjavaweb.orm.statement.NamedParam;
 import com.laptrinhjavaweb.orm.criteria.util.NamedParamUtil;
 import com.laptrinhjavaweb.orm.util.EntityUtil;
 
