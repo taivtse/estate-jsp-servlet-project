@@ -33,6 +33,7 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
         List<T> entityList;
         Session session = this.getSession();
         entityList = session.createCriteria(this.entityClass).list();
+        session.close();
         return entityList;
     }
 
@@ -65,13 +66,16 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
             restrictionList.forEach(restriction -> criteria.addRestriction(restriction));
         }
 
+        session.close();
         return criteria.list();
     }
 
     @Override
     public T findOneById(ID id) {
         Session session = this.getSession();
-        return session.get(this.entityClass, id);
+        T entity = session.get(this.entityClass, id);
+        session.close();
+        return entity;
     }
 
 }

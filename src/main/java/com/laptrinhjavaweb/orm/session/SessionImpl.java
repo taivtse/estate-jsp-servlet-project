@@ -87,7 +87,7 @@ public class SessionImpl implements Session {
     @Override
     public void close() {
         try {
-            CloseExecutorUtil.closeNamedParamStatement(statement);
+            CloseExecutorUtil.closeAllAfterExecute(statement);
         } catch (SQLException e) {
             e.printStackTrace();
         }
