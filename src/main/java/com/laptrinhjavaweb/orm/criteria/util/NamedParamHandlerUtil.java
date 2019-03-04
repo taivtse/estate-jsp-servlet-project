@@ -5,8 +5,8 @@ import com.laptrinhjavaweb.orm.statement.NamedParam;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class NamedParamUtil {
-    public static void handleNamedParamProperty(Map<String, NamedParam> namedParamMap, NamedParam namedParam) {
+public class NamedParamHandlerUtil {
+    private static void handleNamedParam(Map<String, Object> namedParamMap, NamedParam namedParam) {
         String propertyName = namedParam.getPropertyName();
 
         if (namedParamMap.containsKey(propertyName)) {
@@ -31,13 +31,11 @@ public class NamedParamUtil {
             propertyName = propertyName + "_" + nextWhereId;
             namedParam.setPropertyName(propertyName);
         }
-
-        namedParamMap.put(propertyName, namedParam);
     }
 
-    public static NamedParam createNewNamedParam(Map<String, NamedParam> namedParamMap, String propertyName, Object value) {
+    public static NamedParam createNewNamedParam(Map<String, Object> namedParamMap, String propertyName, Object value) {
         NamedParam namedParam = new NamedParam(propertyName, value);
-        NamedParamUtil.handleNamedParamProperty(namedParamMap, namedParam);
+        NamedParamHandlerUtil.handleNamedParam(namedParamMap, namedParam);
 
         return namedParam;
     }

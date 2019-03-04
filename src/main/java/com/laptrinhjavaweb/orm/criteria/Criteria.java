@@ -1,8 +1,7 @@
 package com.laptrinhjavaweb.orm.criteria;
 
+import com.laptrinhjavaweb.orm.criteria.criterion.Criterion;
 import com.laptrinhjavaweb.orm.criteria.criterion.Order;
-import com.laptrinhjavaweb.orm.criteria.criterion.Restriction;
-import com.laptrinhjavaweb.orm.statement.NamedParam;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +9,7 @@ import java.util.Map;
 public interface Criteria {
     Class getEntityClass();
 
-    Map<String, NamedParam> getNamedParamMap();
+    Map<String, Object> getNamedParamMap();
 
     List list();
 
@@ -18,7 +17,7 @@ public interface Criteria {
 
     Criteria addSelection(String fieldName);
 
-    Criteria addRestriction(Restriction restriction);
+    Criteria add(Criterion criterion);
 
     Criteria addOrder(Order order);
 

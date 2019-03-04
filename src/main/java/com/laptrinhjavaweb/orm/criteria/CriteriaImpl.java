@@ -1,11 +1,10 @@
 package com.laptrinhjavaweb.orm.criteria;
 
+import com.laptrinhjavaweb.orm.criteria.criterion.Criterion;
 import com.laptrinhjavaweb.orm.criteria.criterion.Order;
-import com.laptrinhjavaweb.orm.criteria.criterion.Restriction;
-import com.laptrinhjavaweb.orm.statement.NamedParam;
-import com.laptrinhjavaweb.orm.statement.NamedParamStatement;
 import com.laptrinhjavaweb.orm.mapper.EntityMapper;
 import com.laptrinhjavaweb.orm.session.util.CloseExecutorUtil;
+import com.laptrinhjavaweb.orm.statement.NamedParamStatement;
 import com.laptrinhjavaweb.orm.util.EntityUtil;
 
 import java.sql.Connection;
@@ -31,7 +30,7 @@ public class CriteriaImpl implements Criteria {
     private String limit = "";
     private String offset = "";
 
-    private Map<String, NamedParam> namedParamMap = new TreeMap<>();
+    private Map<String, Object> namedParamMap = new TreeMap<>();
 
     public CriteriaImpl(Connection connection, Class entityClass) {
         this.connection = connection;
@@ -46,7 +45,7 @@ public class CriteriaImpl implements Criteria {
     }
 
     @Override
-    public Map<String, NamedParam> getNamedParamMap() {
+    public Map<String, Object> getNamedParamMap() {
         return namedParamMap;
     }
 
@@ -97,7 +96,7 @@ public class CriteriaImpl implements Criteria {
         if (this.selectColumns.equals("*")) {
             this.selectColumns = "";
         }
-        if (!this.selectColumns.equals("*") && !this.selectColumns.equals("")) {
+        if (!this.selectColumns.equals("*") && !this.selectColumns.isEmpty()) {
             this.selectColumns += ", ";
         }
 
@@ -106,9 +105,10 @@ public class CriteriaImpl implements Criteria {
     }
 
     @Override
-    public Criteria addRestriction(Restriction restriction) {
-        where.append(restriction.getPrefixLogical());
-        where.append(restriction.getCriterion().toSqlString(this));
+    public Criteria add(Criterion criterion) {
+        criterion.buildFragment(this);
+        where.append(criterion.toSqlString());
+        this.namedParamMap.putAll(criterion.getNamedParamMap());
         return this;
     }
 

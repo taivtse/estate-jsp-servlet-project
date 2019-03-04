@@ -2,7 +2,7 @@ package com.laptrinhjavaweb.dao.impl;
 
 import com.laptrinhjavaweb.dao.GenericDao;
 import com.laptrinhjavaweb.orm.criteria.Criteria;
-import com.laptrinhjavaweb.orm.criteria.criterion.Restriction;
+import com.laptrinhjavaweb.orm.criteria.criterion.Criterion;
 import com.laptrinhjavaweb.orm.session.Session;
 import com.laptrinhjavaweb.orm.session.SessionFactory;
 import com.laptrinhjavaweb.paging.Pageable;
@@ -38,7 +38,7 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
     }
 
     @Override
-    public List<T> findByProperties(Pageable pageable, List<Restriction> restrictionList) {
+    public List<T> findByProperties(Pageable pageable, List<Criterion> criterionList) {
         Session session = this.getSession();
         Criteria criteria = session.createCriteria(this.entityClass);
 
@@ -62,8 +62,8 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
         }
 
 //        set properties search
-        if (restrictionList != null) {
-            restrictionList.forEach(restriction -> criteria.addRestriction(restriction));
+        if (criterionList != null) {
+            criterionList.forEach(criterion -> criteria.add(criterion));
         }
 
         session.close();

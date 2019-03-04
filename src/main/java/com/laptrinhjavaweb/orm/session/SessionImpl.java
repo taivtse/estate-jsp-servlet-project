@@ -4,7 +4,7 @@ import com.laptrinhjavaweb.orm.annotation.IdField;
 import com.laptrinhjavaweb.orm.builder.StatementBuilder;
 import com.laptrinhjavaweb.orm.criteria.Criteria;
 import com.laptrinhjavaweb.orm.criteria.CriteriaImpl;
-import com.laptrinhjavaweb.orm.criteria.criterion.Restriction;
+import com.laptrinhjavaweb.orm.criteria.criterion.Restrictions;
 import com.laptrinhjavaweb.orm.session.util.CloseExecutorUtil;
 import com.laptrinhjavaweb.orm.statement.NamedParamStatement;
 import com.laptrinhjavaweb.orm.transaction.Transaction;
@@ -28,7 +28,7 @@ public class SessionImpl implements Session {
     public <T, ID> T get(Class<T> entityClass, ID id) {
         String idFieldName = entityClass.getAnnotation(IdField.class).name();
         Criteria criteria = this.createCriteria(entityClass);
-        criteria.addRestriction(Restriction.and().eq(idFieldName, id));
+        criteria.add(Restrictions.and().eq(idFieldName, id));
         return (T) criteria.uniqueResult();
     }
 
