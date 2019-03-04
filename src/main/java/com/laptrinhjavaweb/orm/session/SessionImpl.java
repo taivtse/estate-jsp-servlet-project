@@ -97,7 +97,10 @@ public class SessionImpl implements Session {
     @Override
     public void close() {
         try {
-            CloseExecutorUtil.closeAllAfterExecute(statement);
+            if (statement != null) {
+                CloseExecutorUtil.closeStatement(statement.getPreparedStatement());
+            }
+            CloseExecutorUtil.closeConnection(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -112,7 +115,6 @@ public class SessionImpl implements Session {
             try {
                 fieldData = ObjectAccessUtil.getFieldData(entity, field);
             } catch (ReflectiveOperationException e) {
-                e.printStackTrace();
                 throw new RuntimeException(e);
             }
             statement.setNamedParam(field.getName(), fieldData);

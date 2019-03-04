@@ -1,11 +1,14 @@
 package com.laptrinhjavaweb.orm.query.sqlquery;
 
-import com.laptrinhjavaweb.orm.session.util.CloseExecutorUtil;
 import com.laptrinhjavaweb.orm.query.statement.NamedParamStatement;
+import com.laptrinhjavaweb.orm.session.util.CloseExecutorUtil;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SqlQueryImpl implements SqlQuery {
     private NamedParamStatement statement;
@@ -19,50 +22,54 @@ public class SqlQueryImpl implements SqlQuery {
     }
 
     @Override
-    public ResultSet list() {
+    public List<Object[]> list() {
+        List<Object[]> resultList = new ArrayList<>();
         try {
-            return this.statement.executeQuery();
+            ResultSet resultSet = this.statement.executeQuery();
+
+            List<Object> row = new ArrayList<>();
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnsCount = metaData.getColumnCount();
+
+            while (resultSet.next()) {
+                for (int i = 1; i <= columnsCount; i++) {
+                    row.add(resultSet.getObject(i));
+                }
+
+                resultList.add(row.toArray());
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             this.close();
         }
-        return null;
+        return resultList;
     }
 
     @Override
-    public int executeUpdate() {
+    public int executeUpdate() throws SQLException {
         try {
             return this.statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             this.close();
         }
-        return 0;
     }
 
     @Override
-    public void setParameter(int index, Object parameter) {
-        try {
-            this.statement.setParamAt(index, parameter);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public void setParameter(int index, Object parameter) throws SQLException {
+        this.statement.setParamAt(index, parameter);
     }
 
     @Override
-    public void setParameter(String namedParam, Object parameter) {
-        try {
-            this.statement.setNamedParam(namedParam, parameter);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public void setParameter(String namedParam, Object parameter) throws SQLException {
+        this.statement.setNamedParam(namedParam, parameter);
     }
 
     private void close() {
         try {
-            CloseExecutorUtil.closeNamedParamStatement(statement);
+            CloseExecutorUtil.closeStatement(statement.getPreparedStatement());
         } catch (SQLException e) {
             e.printStackTrace();
         }

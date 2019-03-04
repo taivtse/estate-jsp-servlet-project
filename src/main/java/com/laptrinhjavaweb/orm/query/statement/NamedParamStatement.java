@@ -24,12 +24,12 @@ public class NamedParamStatement extends NativeSQLStatement {
     }
 
     public void setNamedParam(String name, Object value) throws SQLException {
-        int paramIndex = this.getIndex(name);
+        int paramIndex = paramList.indexOf(name);
         if (paramIndex == -1) {
-            throw new RuntimeException("Param " + name + " does not exists");
+            throw new SQLException("Param " + name + " does not exists");
         }
 
-        super.setParamAt(paramIndex, value);
+        super.setParamAt(paramIndex + 1, value);
     }
 
     public void setNamedParamMap(Map<String, NamedParam> namedParamMap) throws SQLException {
@@ -37,9 +37,5 @@ public class NamedParamStatement extends NativeSQLStatement {
             NamedParam namedParam = entry.getValue();
             this.setNamedParam(namedParam.getPropertyName(), namedParam.getValue());
         }
-    }
-
-    private int getIndex(String name) {
-        return paramList.indexOf(name) + 1;
     }
 }

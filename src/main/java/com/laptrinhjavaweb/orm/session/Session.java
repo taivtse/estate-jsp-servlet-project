@@ -15,7 +15,7 @@ public interface Session {
 
     <T> void delete(T entity) throws SQLException;
 
-    SqlQuery createSQLQuery(String sql);
+    SqlQuery createSQLQuery(String sql) throws SQLException;
 
     <T> Criteria createCriteria(Class<T> entityClass);
 

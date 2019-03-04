@@ -139,7 +139,7 @@ public class CriteriaImpl implements Criteria {
 
     private void close() {
         try {
-            CloseExecutorUtil.closeNamedParamStatement(statement);
+            CloseExecutorUtil.closeStatement(statement.getPreparedStatement());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -157,18 +157,12 @@ public class CriteriaImpl implements Criteria {
         return this.genericQuery;
     }
 
-    private ResultSet executeQuery() {
+    private ResultSet executeQuery() throws SQLException {
         ResultSet resultSet;
-        try {
-            String sql = this.handleGenericQuery();
-            this.statement = new NamedParamStatement(connection, sql);
-            this.statement.setNamedParamMap(namedParamMap);
-
-            resultSet = this.statement.executeQuery();
-
-            return resultSet;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        String sql = this.handleGenericQuery();
+        this.statement = new NamedParamStatement(connection, sql);
+        this.statement.setNamedParamMap(namedParamMap);
+        resultSet = this.statement.executeQuery();
+        return resultSet;
     }
 }

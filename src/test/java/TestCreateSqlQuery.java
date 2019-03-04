@@ -1,23 +1,34 @@
+import com.laptrinhjavaweb.orm.query.sqlquery.SqlQuery;
 import com.laptrinhjavaweb.orm.session.Session;
 import com.laptrinhjavaweb.orm.session.SessionFactory;
-import com.laptrinhjavaweb.orm.query.statement.NamedParamStatement;
 import org.testng.annotations.Test;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class TestCreateSqlQuery {
 
     @Test
     public void test() {
         Session session = SessionFactory.openSession();
-        NamedParamStatement statement = session.createSQLQuery("Select * from role where id = {id}");
+        SqlQuery statement;
         try {
-            statement.setNamedParam("id", "AA");
-        }catch (SQLException e) {
+            statement = session.createSQLQuery("Select * from role where id = ?");
+            statement.setParameter(1, "AA");
+
+            List<Object[]> objectList = statement.list();
+
+            objectList.forEach(objects -> {
+                for (Object object : objects) {
+                    System.out.print(object + "\t");
+                }
+                System.out.println();
+            });
+
+        } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             session.close();
         }
-
     }
 }

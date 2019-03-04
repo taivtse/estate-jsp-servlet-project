@@ -1,13 +1,14 @@
 package com.laptrinhjavaweb.orm.query.sqlquery;
 
-import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 public interface SqlQuery {
-    ResultSet list();
+    List<Object[]> list();
 
-    int executeUpdate();
+    int executeUpdate() throws SQLException;
 
-    void setParameter(int index, Object parameter);
+    void setParameter(int index, Object parameter) throws SQLException;
 
-    void setParameter(String namedParam, Object parameter);
+    void setParameter(String namedParam, Object parameter) throws SQLException;
 }
