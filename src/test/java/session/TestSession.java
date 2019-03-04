@@ -8,14 +8,14 @@ import org.testng.annotations.Test;
 
 public class TestSession {
     @Test
-    public void save() {
+    public void test() {
         RoleEntity entity = new RoleEntity();
         entity.setId("AA");
-        entity.setName("HUHU");
+        entity.setName("HIXHIX");
         Session session = SessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         try {
-            session.save(entity);
+            session.delete(entity);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();

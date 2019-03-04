@@ -148,7 +148,7 @@ public class CriteriaImpl implements Criteria {
     private String handleGenericQuery() {
         this.genericQuery = genericQuery.replace("{selectColumns}", selectColumns);
         this.genericQuery = genericQuery.replace("{tableName}", tableName);
-        this.genericQuery = genericQuery.replace("{where}", where);
+        this.genericQuery = genericQuery.replace("{where}", where.toString().equals(" WHERE ") ? "" : where);
         this.genericQuery = genericQuery.replace("{groupBy}", groupBy);
         this.genericQuery = genericQuery.replace("{having}", having);
         this.genericQuery = genericQuery.replace("{orderBy}", orderBy);

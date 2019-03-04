@@ -1,6 +1,5 @@
 package com.laptrinhjavaweb.orm.query.statement;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,10 +8,6 @@ public class NativeSQLStatement {
     protected PreparedStatement preparedStatement;
 
     public NativeSQLStatement() {
-    }
-
-    public NativeSQLStatement(Connection connection, String sql) throws SQLException {
-        this.preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
     }
 
     public ResultSet executeQuery() throws SQLException {
