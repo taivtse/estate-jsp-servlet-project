@@ -1,7 +1,7 @@
 package com.laptrinhjavaweb.orm.query.sqlquery;
 
 import com.laptrinhjavaweb.orm.session.util.CloseExecutorUtil;
-import com.laptrinhjavaweb.orm.statement.NamedParamStatement;
+import com.laptrinhjavaweb.orm.query.statement.NamedParamStatement;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

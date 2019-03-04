@@ -1,6 +1,6 @@
 import com.laptrinhjavaweb.orm.session.Session;
 import com.laptrinhjavaweb.orm.session.SessionFactory;
-import com.laptrinhjavaweb.orm.statement.NamedParamStatement;
+import com.laptrinhjavaweb.orm.query.statement.NamedParamStatement;
 import org.testng.annotations.Test;
 
 import java.sql.SQLException;

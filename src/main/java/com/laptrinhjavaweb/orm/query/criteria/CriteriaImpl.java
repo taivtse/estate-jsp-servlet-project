@@ -5,7 +5,7 @@ import com.laptrinhjavaweb.orm.query.criteria.criterion.Order;
 import com.laptrinhjavaweb.orm.mapper.EntityMapper;
 import com.laptrinhjavaweb.orm.session.util.CloseExecutorUtil;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.NamedParam;
-import com.laptrinhjavaweb.orm.statement.NamedParamStatement;
+import com.laptrinhjavaweb.orm.query.statement.NamedParamStatement;
 import com.laptrinhjavaweb.orm.util.EntityUtil;
 
 import java.sql.Connection;

@@ -7,7 +7,7 @@ import com.laptrinhjavaweb.orm.query.criteria.criterion.Logical;
 import com.laptrinhjavaweb.orm.query.sqlquery.SqlQuery;
 import com.laptrinhjavaweb.orm.query.sqlquery.SqlQueryImpl;
 import com.laptrinhjavaweb.orm.session.util.CloseExecutorUtil;
-import com.laptrinhjavaweb.orm.statement.NamedParamStatement;
+import com.laptrinhjavaweb.orm.query.statement.NamedParamStatement;
 import com.laptrinhjavaweb.orm.transaction.Transaction;
 import com.laptrinhjavaweb.orm.transaction.TransactionImpl;
 import com.laptrinhjavaweb.orm.util.EntityUtil;

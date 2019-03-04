@@ -1,4 +1,4 @@
-package com.laptrinhjavaweb.orm.statement;
+package com.laptrinhjavaweb.orm.query.statement;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

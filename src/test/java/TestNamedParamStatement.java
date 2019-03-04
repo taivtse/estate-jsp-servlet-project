@@ -1,6 +1,6 @@
 import com.laptrinhjavaweb.entity.UserEntity;
 import com.laptrinhjavaweb.orm.builder.StatementBuilder;
-import com.laptrinhjavaweb.orm.statement.NamedParamStatement;
+import com.laptrinhjavaweb.orm.query.statement.NamedParamStatement;
 import org.testng.annotations.Test;
 
 import java.sql.SQLException;

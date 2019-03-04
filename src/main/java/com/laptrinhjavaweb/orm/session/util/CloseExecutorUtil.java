@@ -1,6 +1,6 @@
 package com.laptrinhjavaweb.orm.session.util;
 
-import com.laptrinhjavaweb.orm.statement.NamedParamStatement;
+import com.laptrinhjavaweb.orm.query.statement.NamedParamStatement;
 
 import java.sql.*;
 
