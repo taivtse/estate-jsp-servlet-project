@@ -4,7 +4,7 @@ import com.laptrinhjavaweb.orm.annotation.IdField;
 import com.laptrinhjavaweb.orm.builder.StatementBuilder;
 import com.laptrinhjavaweb.orm.criteria.Criteria;
 import com.laptrinhjavaweb.orm.criteria.CriteriaImpl;
-import com.laptrinhjavaweb.orm.criteria.criterion.Restrictions;
+import com.laptrinhjavaweb.orm.criteria.criterion.Logical;
 import com.laptrinhjavaweb.orm.session.util.CloseExecutorUtil;
 import com.laptrinhjavaweb.orm.statement.NamedParamStatement;
 import com.laptrinhjavaweb.orm.transaction.Transaction;
@@ -28,12 +28,13 @@ public class SessionImpl implements Session {
     public <T, ID> T get(Class<T> entityClass, ID id) {
         String idFieldName = entityClass.getAnnotation(IdField.class).name();
         Criteria criteria = this.createCriteria(entityClass);
-        criteria.add(Restrictions.and().eq(idFieldName, id));
+        criteria.add(Logical.and(idFieldName).eq(id));
         return (T) criteria.uniqueResult();
     }
 
     @Override
     public <T> void save(T entity) throws SQLException {
+        Class entityClass = entity.getClass();
         String sql = StatementBuilder.buildInsertStatement(entity.getClass());
         statement = new NamedParamStatement(connection, sql);
         this.setEntityToStatement(entity, statement);
@@ -41,15 +42,16 @@ public class SessionImpl implements Session {
 
 //            lấy lại giá trị của entity trong trường hợp có những giá trị do trigger sinh ra.
         if (generateId != null) {
-            entity = (T) this.get(entity.getClass(), generateId);
+            entity = (T) this.get(entityClass, generateId);
         } else {
-            Object id = EntityUtil.getIdFieldData(entity);
-            entity = (T) this.get(entity.getClass(), id);
+            Object id = EntityUtil.getIdFieldData(entityClass, entity);
+            entity = (T) this.get(entityClass, id);
         }
     }
 
     @Override
     public <T> void update(T entity) throws SQLException {
+        Class entityClass = entity.getClass();
         String sql = StatementBuilder.buildUpdateStatement(entity.getClass());
         statement = new NamedParamStatement(connection, sql);
         this.setEntityToStatement(entity, statement);
@@ -57,18 +59,20 @@ public class SessionImpl implements Session {
 
 //            lấy lại giá trị của entity trong trường hợp có những giá trị do trigger sinh ra.
         if (rowsEffect > 0) {
-            Object id = EntityUtil.getIdFieldData(entity.getClass(), entity);
-            entity = (T) this.get(entity.getClass(), id);
+            Object id = EntityUtil.getIdFieldData(entityClass, entity);
+            entity = (T) this.get(entityClass, id);
         }
     }
 
     @Override
     public <T> void delete(T entity) throws SQLException {
-        //        lấy tên của field id và giá trị của id để set param cho câu statement
-        Object id = EntityUtil.getIdFieldData(entity.getClass(), entity);
-        String idFieldName = EntityUtil.getIdFieldName(entity.getClass());
+        Class entityClass = entity.getClass();
 
-        String sql = StatementBuilder.buildDeleteStatement(entity.getClass());
+//        lấy tên của field id và giá trị của id để set param cho câu statement
+        Object id = EntityUtil.getIdFieldData(entityClass, entity);
+        String idFieldName = EntityUtil.getIdFieldName(entityClass);
+
+        String sql = StatementBuilder.buildDeleteStatement(entityClass);
         statement = new NamedParamStatement(connection, sql);
         statement.setParameter(idFieldName, id);
         statement.executeUpdate();

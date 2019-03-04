@@ -4,7 +4,9 @@ import com.laptrinhjavaweb.orm.criteria.criterion.Criterion;
 import com.laptrinhjavaweb.orm.criteria.criterion.Order;
 import com.laptrinhjavaweb.orm.mapper.EntityMapper;
 import com.laptrinhjavaweb.orm.session.util.CloseExecutorUtil;
+import com.laptrinhjavaweb.orm.statement.NamedParam;
 import com.laptrinhjavaweb.orm.statement.NamedParamStatement;
+import com.laptrinhjavaweb.orm.util.EntityUtil;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -22,20 +24,20 @@ public class CriteriaImpl implements Criteria {
     private String genericQuery = "SELECT {selectColumns} FROM {tableName}{where}{groupBy}{having}{orderBy}{limit}{offset}";
     private String selectColumns = "";
     private String tableName = "";
-    private StringBuilder where = new StringBuilder(" WHERE 1=1");
+    private StringBuilder where = new StringBuilder(" WHERE ");
     private String groupBy = "";
     private String having = "";
     private String orderBy = "";
     private String limit = "";
     private String offset = "";
 
-    private Map<String, Object> namedParamMap = new TreeMap<>();
+    private Map<String, NamedParam> namedParamMap = new TreeMap<>();
 
     public CriteriaImpl(Connection connection, Class entityClass) {
         this.connection = connection;
         this.entityClass = entityClass;
         this.selectColumns = "*";
-        this.tableName = EntityUtil.of(entityClass).getTableName();
+        this.tableName = EntityUtil.getTableName(entityClass);
     }
 
     @Override
@@ -44,7 +46,7 @@ public class CriteriaImpl implements Criteria {
     }
 
     @Override
-    public Map<String, Object> getNamedParamMap() {
+    public Map<String, NamedParam> getNamedParamMap() {
         return namedParamMap;
     }
 
@@ -99,15 +101,16 @@ public class CriteriaImpl implements Criteria {
             this.selectColumns += ", ";
         }
 
-        this.selectColumns += EntityUtil.of(entityClass).getColumnName(fieldName);
+        this.selectColumns += EntityUtil.getColumnName(entityClass, fieldName);
         return this;
     }
 
     @Override
     public Criteria add(Criterion criterion) {
-        criterion.buildFragment(this);
-        where.append(criterion.toSqlString());
-        this.namedParamMap.putAll(criterion.getNamedParamMap());
+        if (where.toString().equals(" WHERE ")) {
+            criterion.setPrefixLogical("");
+        }
+        where.append(criterion.toSqlString(this));
         return this;
     }
 

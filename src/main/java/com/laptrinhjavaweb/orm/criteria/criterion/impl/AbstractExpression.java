@@ -1,12 +1,9 @@
 package com.laptrinhjavaweb.orm.criteria.criterion.impl;
 
+import com.laptrinhjavaweb.orm.criteria.Criteria;
 import com.laptrinhjavaweb.orm.criteria.criterion.Criterion;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 public abstract class AbstractExpression implements Criterion {
-    protected Map<String, Object> namedParamMap = new TreeMap<>();
     protected StringBuilder fragment;
     protected String prefixLogical;
 
@@ -15,15 +12,9 @@ public abstract class AbstractExpression implements Criterion {
         this.fragment = new StringBuilder();
         this.prefixLogical = prefixLogical;
 
-        if (prefixLogical.isEmpty()) {
-            this.fragment.append(prefixLogical);
-            this.fragment.append(" ");
+        if (!prefixLogical.isEmpty()) {
+            this.prefixLogical = this.prefixLogical.concat(" ");
         }
-    }
-
-    @Override
-    public Map<String, Object> getNamedParamMap() {
-        return namedParamMap;
     }
 
     @Override
@@ -36,13 +27,11 @@ public abstract class AbstractExpression implements Criterion {
         this.prefixLogical = prefixLogical;
     }
 
-    @Override
-    public String toSqlString() {
-        return this.fragment.toString();
-    }
+    abstract void buildFragment(Criteria criteria);
 
     @Override
-    public String toString() {
+    public String toSqlString(Criteria criteria) {
+        this.buildFragment(criteria);
         return this.fragment.toString();
     }
 }

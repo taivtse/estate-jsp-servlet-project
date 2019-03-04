@@ -56,11 +56,10 @@ public class NamedParamStatement {
         this.setParamAt(paramIndex, preparedStatement, value);
     }
 
-    public void setNamedParamMap(Map<String, Object> namedParamMap) throws SQLException {
-        for (Map.Entry<String, Object> entry : namedParamMap.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
-            this.setParameter(key, value);
+    public void setNamedParamMap(Map<String, NamedParam> namedParamMap) throws SQLException {
+        for (Map.Entry<String, NamedParam> entry : namedParamMap.entrySet()) {
+            NamedParam namedParam = entry.getValue();
+            this.setParameter(namedParam.getPropertyName(), namedParam.getValue());
         }
     }
 

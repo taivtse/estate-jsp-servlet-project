@@ -2,6 +2,7 @@ package com.laptrinhjavaweb.orm.criteria;
 
 import com.laptrinhjavaweb.orm.criteria.criterion.Criterion;
 import com.laptrinhjavaweb.orm.criteria.criterion.Order;
+import com.laptrinhjavaweb.orm.statement.NamedParam;
 
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.Map;
 public interface Criteria {
     Class getEntityClass();
 
-    Map<String, Object> getNamedParamMap();
+    Map<String, NamedParam> getNamedParamMap();
 
     List list();
 

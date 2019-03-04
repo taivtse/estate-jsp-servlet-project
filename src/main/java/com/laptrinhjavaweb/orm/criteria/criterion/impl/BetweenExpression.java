@@ -2,6 +2,9 @@ package com.laptrinhjavaweb.orm.criteria.criterion.impl;
 
 import com.laptrinhjavaweb.orm.criteria.Criteria;
 import com.laptrinhjavaweb.orm.criteria.criterion.Criterion;
+import com.laptrinhjavaweb.orm.criteria.util.NamedParamHandlerUtil;
+import com.laptrinhjavaweb.orm.statement.NamedParam;
+import com.laptrinhjavaweb.orm.util.EntityUtil;
 
 public class BetweenExpression extends AbstractExpression implements Criterion {
     private final String propertyName;
@@ -17,11 +20,17 @@ public class BetweenExpression extends AbstractExpression implements Criterion {
 
     @Override
     public void buildFragment(Criteria criteria) {
+        NamedParam namedParamLow = NamedParamHandlerUtil.createNewNamedParam(criteria.getNamedParamMap(), propertyName, low);
+        criteria.getNamedParamMap().put(namedParamLow.getPropertyName(), namedParamLow);
+
+        NamedParam namedParamHigh = NamedParamHandlerUtil.createNewNamedParam(criteria.getNamedParamMap(), propertyName, high);
+        criteria.getNamedParamMap().put(namedParamHigh.getPropertyName(), namedParamHigh);
+
 //        lấy tên cột tương ứng với tên thuộc tính của entity
-        String columnName = EntityUtil.of(criteria.getEntityClass()).getColumnName(propertyName);
+        String columnName = EntityUtil.getColumnName(criteria.getEntityClass(), propertyName);
 
-
-
+//        tạo fragment
+        super.fragment.append(super.prefixLogical);
         super.fragment.append(columnName);
         super.fragment.append(" BETWEEN");
         super.fragment.append(" {");
