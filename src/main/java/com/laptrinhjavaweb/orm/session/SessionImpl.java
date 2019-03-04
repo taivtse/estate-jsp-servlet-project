@@ -34,7 +34,7 @@ public class SessionImpl implements Session {
 
     @Override
     public <T> void save(T entity) throws SQLException {
-        String sql = StatementBuilder.of(entity.getClass()).buildInsertStatement();
+        String sql = StatementBuilder.buildInsertStatement(entity.getClass());
         statement = new NamedParamStatement(connection, sql);
         this.setEntityToStatement(entity, statement);
         Long generateId = statement.executeInsert();
@@ -43,21 +43,21 @@ public class SessionImpl implements Session {
         if (generateId != null) {
             entity = (T) this.get(entity.getClass(), generateId);
         } else {
-            Object id = EntityUtil.of(entity.getClass()).getIdFieldData(entity);
+            Object id = EntityUtil.getIdFieldData(entity);
             entity = (T) this.get(entity.getClass(), id);
         }
     }
 
     @Override
     public <T> void update(T entity) throws SQLException {
-        String sql = StatementBuilder.of(entity.getClass()).buildUpdateStatement();
+        String sql = StatementBuilder.buildUpdateStatement(entity.getClass());
         statement = new NamedParamStatement(connection, sql);
         this.setEntityToStatement(entity, statement);
         Integer rowsEffect = statement.executeUpdate();
 
 //            lấy lại giá trị của entity trong trường hợp có những giá trị do trigger sinh ra.
         if (rowsEffect > 0) {
-            Object id = EntityUtil.of(entity.getClass()).getIdFieldData(entity);
+            Object id = EntityUtil.getIdFieldData(entity.getClass(), entity);
             entity = (T) this.get(entity.getClass(), id);
         }
     }
@@ -65,10 +65,10 @@ public class SessionImpl implements Session {
     @Override
     public <T> void delete(T entity) throws SQLException {
         //        lấy tên của field id và giá trị của id để set param cho câu statement
-        Object id = EntityUtil.of(entity.getClass()).getIdFieldData(entity);
-        String idFieldName = EntityUtil.of(entity.getClass()).getIdFieldName();
+        Object id = EntityUtil.getIdFieldData(entity.getClass(), entity);
+        String idFieldName = EntityUtil.getIdFieldName(entity.getClass());
 
-        String sql = StatementBuilder.of(entity.getClass()).buildDeleteStatement();
+        String sql = StatementBuilder.buildDeleteStatement(entity.getClass());
         statement = new NamedParamStatement(connection, sql);
         statement.setParameter(idFieldName, id);
         statement.executeUpdate();

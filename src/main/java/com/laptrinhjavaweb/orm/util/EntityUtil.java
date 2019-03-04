@@ -1,26 +1,50 @@
 package com.laptrinhjavaweb.orm.util;
 
+import com.laptrinhjavaweb.orm.annotation.Column;
 import com.laptrinhjavaweb.orm.annotation.Entity;
+import com.laptrinhjavaweb.orm.annotation.IdField;
 
-public interface EntityUtil {
-    EntityUtilImpl ENTITY_UTIL = new EntityUtilImpl();
+import java.lang.reflect.Field;
 
-    String getTableName();
+public class EntityUtil {
+    public static String getTableName(Class<?> entityClass) {
+        return entityClass.getAnnotation(Entity.class).tableName();
+    }
 
-    String getIdColumnName();
+    public static String getIdColumnName(Class<?> entityClass) {
+        String idFieldName = getIdFieldName(entityClass);
+        return getColumnName(entityClass, idFieldName);
+    }
 
-    String getIdFieldName();
+    public static String getIdFieldName(Class<?> entityClass) {
+        return entityClass.getAnnotation(IdField.class).name();
+    }
 
-    String getColumnName(String fieldName);
-
-    Object getIdFieldData(Object entity);
-
-    static EntityUtil of(Class entityClass) {
-        if (!entityClass.isAnnotationPresent(Entity.class)) {
-            throw new RuntimeException(entityClass.getName() + " is not an entity");
+    public static String getColumnName(Class<?> entityClass, String fieldName) {
+        try {
+            return entityClass.getDeclaredField(fieldName).getAnnotation(Column.class).name();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+            throw new RuntimeException("No field with name: " + fieldName);
         }
+    }
 
-        ENTITY_UTIL.setEntityClass(entityClass);
-        return ENTITY_UTIL;
+    public static Object getIdFieldData(Class<?> entityClass, Object entity) {
+        String idFieldName = getIdFieldName(entityClass);
+        try {
+            Field idField = entityClass.getDeclaredField(idFieldName);
+            boolean accessible = idField.isAccessible();
+            idField.setAccessible(true);
+
+            Object fieldData = idField.get(entity);
+            idField.setAccessible(accessible);
+
+            return fieldData;
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

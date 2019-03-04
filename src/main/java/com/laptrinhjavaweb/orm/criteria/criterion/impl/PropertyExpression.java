@@ -19,7 +19,7 @@ public class PropertyExpression extends AbstractExpression implements Criterion 
     @Override
     public void buildFragment(Criteria criteria) {
 //        lấy tên cột tương ứng với tên thuộc tính của entity
-        String columnName = EntityUtil.of(criteria.getEntityClass()).getColumnName(propertyName);
+        String columnName = EntityUtil.getColumnName(criteria.getEntityClass(), propertyName);
         NamedParam namedParam = NamedParamHandlerUtil.createNewNamedParam(criteria.getNamedParamMap(), propertyName, value);
         super.namedParamMap.put(namedParam.getPropertyName(), namedParam.getValue());
     }

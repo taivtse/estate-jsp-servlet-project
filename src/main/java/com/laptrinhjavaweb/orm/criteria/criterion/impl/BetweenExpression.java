@@ -2,9 +2,6 @@ package com.laptrinhjavaweb.orm.criteria.criterion.impl;
 
 import com.laptrinhjavaweb.orm.criteria.Criteria;
 import com.laptrinhjavaweb.orm.criteria.criterion.Criterion;
-import com.laptrinhjavaweb.orm.statement.NamedParam;
-import com.laptrinhjavaweb.orm.criteria.util.NamedParamHandlerUtil;
-import com.laptrinhjavaweb.orm.util.EntityUtil;
 
 public class BetweenExpression extends AbstractExpression implements Criterion {
     private final String propertyName;
