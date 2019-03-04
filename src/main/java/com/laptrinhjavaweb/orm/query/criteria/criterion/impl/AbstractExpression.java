@@ -1,7 +1,7 @@
-package com.laptrinhjavaweb.orm.criteria.criterion.impl;
+package com.laptrinhjavaweb.orm.query.criteria.criterion.impl;
 
-import com.laptrinhjavaweb.orm.criteria.Criteria;
-import com.laptrinhjavaweb.orm.criteria.criterion.Criterion;
+import com.laptrinhjavaweb.orm.query.criteria.Criteria;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
 
 public abstract class AbstractExpression implements Criterion {
     protected StringBuilder fragment;

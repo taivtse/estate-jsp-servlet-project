@@ -1,9 +1,9 @@
-package com.laptrinhjavaweb.orm.criteria.criterion.impl;
+package com.laptrinhjavaweb.orm.query.criteria.criterion.impl;
 
-import com.laptrinhjavaweb.orm.criteria.Criteria;
-import com.laptrinhjavaweb.orm.criteria.criterion.Criterion;
-import com.laptrinhjavaweb.orm.criteria.util.NamedParamHandlerUtil;
-import com.laptrinhjavaweb.orm.statement.NamedParam;
+import com.laptrinhjavaweb.orm.query.criteria.Criteria;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
+import com.laptrinhjavaweb.orm.query.criteria.util.NamedParamHandlerUtil;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.NamedParam;
 
 public class PropertyExpression extends AbstractExpression implements Criterion {
     private final String propertyName;

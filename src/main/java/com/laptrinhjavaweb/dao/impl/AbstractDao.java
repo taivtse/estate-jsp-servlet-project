@@ -1,8 +1,8 @@
 package com.laptrinhjavaweb.dao.impl;
 
 import com.laptrinhjavaweb.dao.GenericDao;
-import com.laptrinhjavaweb.orm.criteria.Criteria;
-import com.laptrinhjavaweb.orm.criteria.criterion.Criterion;
+import com.laptrinhjavaweb.orm.query.criteria.Criteria;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
 import com.laptrinhjavaweb.orm.session.Session;
 import com.laptrinhjavaweb.orm.session.SessionFactory;
 import com.laptrinhjavaweb.paging.Pageable;

@@ -1,8 +1,8 @@
-package com.laptrinhjavaweb.orm.criteria;
+package com.laptrinhjavaweb.orm.query.criteria;
 
-import com.laptrinhjavaweb.orm.criteria.criterion.Criterion;
-import com.laptrinhjavaweb.orm.criteria.criterion.Order;
-import com.laptrinhjavaweb.orm.statement.NamedParam;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.Order;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.NamedParam;
 
 import java.util.List;
 import java.util.Map;

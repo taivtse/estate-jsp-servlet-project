@@ -1,6 +1,6 @@
-package com.laptrinhjavaweb.orm.criteria.criterion;
+package com.laptrinhjavaweb.orm.query.criteria.criterion;
 
-import com.laptrinhjavaweb.orm.criteria.Criteria;
+import com.laptrinhjavaweb.orm.query.criteria.Criteria;
 
 public interface Criterion {
     String getPrefixLogical();

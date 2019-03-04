@@ -1,4 +1,4 @@
-package com.laptrinhjavaweb.orm.statement;
+package com.laptrinhjavaweb.orm.query.criteria.criterion;
 
 public class NamedParam {
     private String propertyName;

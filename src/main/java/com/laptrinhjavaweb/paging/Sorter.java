@@ -1,7 +1,7 @@
 package com.laptrinhjavaweb.paging;
 
 import com.laptrinhjavaweb.constant.SystemConstant;
-import com.laptrinhjavaweb.orm.criteria.criterion.Order;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.Order;
 
 public class Sorter {
     private String propertyName;

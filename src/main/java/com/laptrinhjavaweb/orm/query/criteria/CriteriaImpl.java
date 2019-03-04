@@ -1,10 +1,10 @@
-package com.laptrinhjavaweb.orm.criteria;
+package com.laptrinhjavaweb.orm.query.criteria;
 
-import com.laptrinhjavaweb.orm.criteria.criterion.Criterion;
-import com.laptrinhjavaweb.orm.criteria.criterion.Order;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.Order;
 import com.laptrinhjavaweb.orm.mapper.EntityMapper;
 import com.laptrinhjavaweb.orm.session.util.CloseExecutorUtil;
-import com.laptrinhjavaweb.orm.statement.NamedParam;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.NamedParam;
 import com.laptrinhjavaweb.orm.statement.NamedParamStatement;
 import com.laptrinhjavaweb.orm.util.EntityUtil;
 
@@ -137,7 +137,7 @@ public class CriteriaImpl implements Criteria {
         return this;
     }
 
-    public void close() {
+    private void close() {
         try {
             CloseExecutorUtil.closeNamedParamStatement(statement);
         } catch (SQLException e) {

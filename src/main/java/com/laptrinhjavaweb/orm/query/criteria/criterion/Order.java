@@ -1,4 +1,4 @@
-package com.laptrinhjavaweb.orm.criteria.criterion;
+package com.laptrinhjavaweb.orm.query.criteria.criterion;
 
 public class Order {
     private String expression;

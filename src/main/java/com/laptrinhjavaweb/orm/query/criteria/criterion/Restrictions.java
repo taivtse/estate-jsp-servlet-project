@@ -1,7 +1,7 @@
-package com.laptrinhjavaweb.orm.criteria.criterion;
+package com.laptrinhjavaweb.orm.query.criteria.criterion;
 
-import com.laptrinhjavaweb.orm.criteria.criterion.impl.BetweenExpression;
-import com.laptrinhjavaweb.orm.criteria.criterion.impl.SimpleExpression;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.impl.BetweenExpression;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.impl.SimpleExpression;
 
 public class Restrictions {
     private String expressionPrefixLogical;

@@ -1,11 +1,11 @@
 package criteria;
 
 import com.laptrinhjavaweb.entity.UserEntity;
-import com.laptrinhjavaweb.orm.criteria.Criteria;
-import com.laptrinhjavaweb.orm.criteria.CriteriaImpl;
-import com.laptrinhjavaweb.orm.criteria.criterion.Logical;
-import com.laptrinhjavaweb.orm.criteria.criterion.MatchMode;
-import com.laptrinhjavaweb.orm.criteria.criterion.impl.GroupExpression;
+import com.laptrinhjavaweb.orm.query.criteria.Criteria;
+import com.laptrinhjavaweb.orm.query.criteria.CriteriaImpl;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.Logical;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.MatchMode;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.impl.GroupExpression;
 import org.testng.annotations.Test;
 
 public class TestCriteria {

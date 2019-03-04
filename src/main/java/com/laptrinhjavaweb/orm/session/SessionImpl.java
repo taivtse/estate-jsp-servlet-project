@@ -1,10 +1,11 @@
 package com.laptrinhjavaweb.orm.session;
 
-import com.laptrinhjavaweb.orm.annotation.IdField;
 import com.laptrinhjavaweb.orm.builder.StatementBuilder;
-import com.laptrinhjavaweb.orm.criteria.Criteria;
-import com.laptrinhjavaweb.orm.criteria.CriteriaImpl;
-import com.laptrinhjavaweb.orm.criteria.criterion.Logical;
+import com.laptrinhjavaweb.orm.query.criteria.Criteria;
+import com.laptrinhjavaweb.orm.query.criteria.CriteriaImpl;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.Logical;
+import com.laptrinhjavaweb.orm.query.sqlquery.SqlQuery;
+import com.laptrinhjavaweb.orm.query.sqlquery.SqlQueryImpl;
 import com.laptrinhjavaweb.orm.session.util.CloseExecutorUtil;
 import com.laptrinhjavaweb.orm.statement.NamedParamStatement;
 import com.laptrinhjavaweb.orm.transaction.Transaction;
@@ -26,7 +27,7 @@ public class SessionImpl implements Session {
 
     @Override
     public <T, ID> T get(Class<T> entityClass, ID id) {
-        String idFieldName = entityClass.getAnnotation(IdField.class).name();
+        String idFieldName = EntityUtil.getIdFieldName(entityClass);
         Criteria criteria = this.createCriteria(entityClass);
         criteria.add(Logical.and(idFieldName).eq(id));
         return (T) criteria.uniqueResult();
@@ -74,8 +75,13 @@ public class SessionImpl implements Session {
 
         String sql = StatementBuilder.buildDeleteStatement(entityClass);
         statement = new NamedParamStatement(connection, sql);
-        statement.setParameter(idFieldName, id);
+        statement.setNamedParam(idFieldName, id);
         statement.executeUpdate();
+    }
+
+    @Override
+    public SqlQuery createSQLQuery(String sql) {
+        return new SqlQueryImpl(connection, sql);
     }
 
     @Override
@@ -109,7 +115,7 @@ public class SessionImpl implements Session {
                 e.printStackTrace();
                 throw new RuntimeException(e);
             }
-            statement.setParameter(field.getName(), fieldData);
+            statement.setNamedParam(field.getName(), fieldData);
         }
     }
 }
