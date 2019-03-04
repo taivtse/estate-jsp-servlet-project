@@ -1,6 +1,6 @@
 package com.laptrinhjavaweb.orm.criteria.criterion;
 
-import com.laptrinhjavaweb.orm.criteria.criterion.impl.JunctionExpression;
+import com.laptrinhjavaweb.orm.criteria.criterion.impl.GroupExpression;
 
 public class Logical {
     private static final String prefixAnd = " AND";
@@ -18,15 +18,15 @@ public class Logical {
         return new Restrictions(Logical.prefixAnd, propertyName);
     }
 
-    public static JunctionExpression andJunction() {
-        return new JunctionExpression(Logical.prefixAnd);
+    public static GroupExpression andGroup() {
+        return new GroupExpression(Logical.prefixAnd);
     }
 
-    public static JunctionExpression orJunction() {
-        return new JunctionExpression(Logical.prefixOr);
+    public static GroupExpression orGroup() {
+        return new GroupExpression(Logical.prefixOr);
     }
 
-    public static JunctionExpression noPrefixJunction() {
-        return new JunctionExpression("");
+    public static GroupExpression noPrefixGroup() {
+        return new GroupExpression("");
     }
 }

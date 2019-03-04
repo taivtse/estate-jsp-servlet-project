@@ -5,7 +5,7 @@ import com.laptrinhjavaweb.orm.criteria.Criteria;
 import com.laptrinhjavaweb.orm.criteria.CriteriaImpl;
 import com.laptrinhjavaweb.orm.criteria.criterion.Logical;
 import com.laptrinhjavaweb.orm.criteria.criterion.MatchMode;
-import com.laptrinhjavaweb.orm.criteria.criterion.impl.JunctionExpression;
+import com.laptrinhjavaweb.orm.criteria.criterion.impl.GroupExpression;
 import org.testng.annotations.Test;
 
 public class TestCriteria {
@@ -17,11 +17,11 @@ public class TestCriteria {
 //        criteria.add(Logical.or("fullName").eq("3"));
 //        criteria.add(Logical.or("fullName").between("-1", "10"));
 
-        JunctionExpression junction = Logical.noPrefixJunction();
-        junction.add(Logical.noPrefix("username").eq("1"))
+        GroupExpression groupExpression = Logical.noPrefixGroup();
+        groupExpression.add(Logical.noPrefix("username").eq("1"))
                 .add(Logical.and("fullName").like("ahihi", MatchMode.START))
                 .add(Logical.and("fullName").between("-1", "10"));
 
-        criteria.add(junction);
+        criteria.add(groupExpression);
     }
 }
