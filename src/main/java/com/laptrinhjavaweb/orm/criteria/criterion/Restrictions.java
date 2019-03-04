@@ -1,12 +1,15 @@
 package com.laptrinhjavaweb.orm.criteria.criterion;
 
 import com.laptrinhjavaweb.orm.criteria.criterion.impl.BetweenExpression;
-import com.laptrinhjavaweb.orm.criteria.criterion.impl.JunctionExpression;
 import com.laptrinhjavaweb.orm.criteria.criterion.impl.SimpleExpression;
 
 public class Restrictions {
     private String expressionPrefixLogical;
     private String expressionPropertyName;
+
+    public Restrictions(String expressionPrefixLogical) {
+        this.expressionPrefixLogical = expressionPrefixLogical;
+    }
 
     public Restrictions(String prefixLogical, String expressionPropertyName) {
         this.expressionPrefixLogical = prefixLogical;
@@ -43,9 +46,5 @@ public class Restrictions {
 
     public Criterion between(Object low, Object high) {
         return new BetweenExpression(this.expressionPrefixLogical, this.expressionPropertyName, low, high);
-    }
-
-    public Criterion junction(Criterion... predicates) {
-        return new JunctionExpression(this.expressionPrefixLogical, predicates);
     }
 }

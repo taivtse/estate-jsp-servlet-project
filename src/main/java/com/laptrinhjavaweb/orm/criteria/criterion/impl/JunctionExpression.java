@@ -3,12 +3,19 @@ package com.laptrinhjavaweb.orm.criteria.criterion.impl;
 import com.laptrinhjavaweb.orm.criteria.Criteria;
 import com.laptrinhjavaweb.orm.criteria.criterion.Criterion;
 
-public class JunctionExpression extends AbstractExpression implements Criterion {
-    private final Criterion[] criterionArray;
+import java.util.ArrayList;
+import java.util.List;
 
-    public JunctionExpression(String prefixLogical, Criterion... criterionArray) {
+public class JunctionExpression extends AbstractExpression implements Criterion {
+    private final List<Criterion> criterionList = new ArrayList<>();
+
+    public JunctionExpression(String prefixLogical) {
         super(prefixLogical);
-        this.criterionArray = criterionArray;
+    }
+
+    public JunctionExpression add(Criterion criterion) {
+        criterionList.add(criterion);
+        return this;
     }
 
     @Override
@@ -16,12 +23,12 @@ public class JunctionExpression extends AbstractExpression implements Criterion 
 //        tạo fragment
         super.fragment.append(super.prefixLogical);
         super.fragment.append("(");
-        for (int i = 0; i < criterionArray.length; i++) {
+        for (int i = 0; i < criterionList.size(); i++) {
             if (i == 0) {
-                criterionArray[i].setPrefixLogical("");
+                criterionList.get(i).setPrefixLogical("");
             }
 
-            super.fragment.append(criterionArray[i].toSqlString(criteria));
+            super.fragment.append(criterionList.get(i).toSqlString(criteria));
         }
 
         super.fragment.append(")");
