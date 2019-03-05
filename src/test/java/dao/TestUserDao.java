@@ -6,7 +6,6 @@ import com.laptrinhjavaweb.entity.UserEntity;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Logical;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.MatchMode;
-import com.laptrinhjavaweb.orm.query.criteria.criterion.NamedParam;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -46,13 +45,4 @@ public class TestUserDao {
         Long count = userDao.countByProperties(criterionList);
     }
 
-    @Test
-    public void test(){
-        NamedParam namedParam = new NamedParam("aaaa", "bbbb");
-        namedParam = this.test1(namedParam);
-    }
-    public NamedParam test1(NamedParam namedParam){
-        namedParam = new NamedParam("ahihi", "uhuhu");
-        return namedParam;
-    }
 }

@@ -15,16 +15,10 @@
         <div class="nano-content">
             <nav id="menu" class="nav-main" role="navigation">
                 <ul class="nav nav-main">
-                    <li ${pageContext.request.requestURI eq '/admin' ? 'class="nav-expanded nav-active"':''}>
-                        <a href="/">
-                            <i class="fa fa-home" aria-hidden="true"></i>
-                            <span><spring:message code="label.board"/></span>
-                        </a>
-                    </li>
-                    <li ${fn:startsWith(pageContext.request.requestURI, '/admin/depart') ? 'class="nav-expanded nav-active"':''}>
-                        <a href="<c:url value='/admin/depart'/>">
+                    <li ${fn:startsWith(pageContext.request.requestURI, '/admin/building/list') ? 'class="nav-expanded nav-active"':''}>
+                        <a href="<c:url value='/admin/building/list'/>">
                             <i class="fa fa-building" aria-hidden="true"></i>
-                            <span><spring:message code="label.depart.page.title"/></span>
+                            <span>Quản lý toà nhà</span>
                         </a>
                     </li>
                 </ul>

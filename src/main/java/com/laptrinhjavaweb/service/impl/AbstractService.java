@@ -1,6 +1,5 @@
 package com.laptrinhjavaweb.service.impl;
 
-import com.laptrinhjavaweb.converter.AbstractConverter;
 import com.laptrinhjavaweb.converter.GenericConverter;
 import com.laptrinhjavaweb.dao.GenericDao;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
@@ -11,13 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AbstractService<ID, D, E> implements GenericService<ID, D> {
-    private GenericConverter<D, E> converter;
-    private GenericDao<E, ID> genericDao;
-
-    public AbstractService(GenericDao genericDao, AbstractConverter abstractConverter) {
-        this.converter = abstractConverter;
-        this.genericDao = genericDao;
-    }
+    protected GenericConverter<D, E> converter;
+    protected GenericDao<E, ID> genericDao;
 
     @Override
     public List<D> findAll() {

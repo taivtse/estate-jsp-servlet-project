@@ -2,6 +2,8 @@ package com.laptrinhjavaweb.controller.admin;
 
 import com.laptrinhjavaweb.command.BuildingCommand;
 import com.laptrinhjavaweb.constant.SystemConstant;
+import com.laptrinhjavaweb.service.BuildingService;
+import com.laptrinhjavaweb.service.impl.BuildingServiceImpl;
 import com.laptrinhjavaweb.util.FormUtil;
 
 import javax.servlet.ServletException;
@@ -15,6 +17,8 @@ import java.io.IOException;
 public class BuildingController extends HttpServlet {
     private final String prefixRootPath = "/views/admin/building/";
 
+    private BuildingService buildingService = new BuildingServiceImpl();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String type = req.getPathInfo();
@@ -25,6 +29,7 @@ public class BuildingController extends HttpServlet {
         BuildingCommand command = FormUtil.populate(BuildingCommand.class, req);
 
         if (type.startsWith(SystemConstant.TYPE_LIST)) {
+            command.setListResult(buildingService.findAll());
             req.setAttribute(SystemConstant.COMMAND, command);
             req.getRequestDispatcher(prefixRootPath.concat("list.jsp")).forward(req, resp);
         } else if (type.startsWith(SystemConstant.TYPE_EDIT)) {

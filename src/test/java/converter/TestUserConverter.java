@@ -5,21 +5,10 @@ import com.laptrinhjavaweb.dto.UserDto;
 import com.laptrinhjavaweb.entity.UserEntity;
 import org.testng.annotations.Test;
 
-import javax.inject.Inject;
 import java.util.Date;
 
 public class TestUserConverter {
-
-//    @Inject
-//    private UserConverter injectUserConverter;
-
-    @Inject
     private UserConverter userConverter;
-
-//    @PostConstruct
-//    public void init(){
-//        userConverter = injectUserConverter;
-//    }
 
     @Test
     public void entityToDto() {

@@ -2,7 +2,6 @@
 <decorators defaultdir="/decorators">
 	<!-- Any urls that are excluded will never be decorated by Sitemesh -->
 	<excludes>
-        <pattern>/dang-nhap*</pattern>
 		<pattern>/api*</pattern>
 	</excludes>
 

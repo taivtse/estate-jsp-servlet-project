@@ -4,6 +4,10 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
     <display-name>Toeic Online Learning</display-name>
+    
+    <welcome-file-list>
+        <welcome-file>/admin/building/</welcome-file>
+    </welcome-file-list>
 
     <jsp-config>
         <jsp-property-group>
@@ -11,11 +15,6 @@
             <page-encoding>UTF-8</page-encoding>
         </jsp-property-group>
     </jsp-config>
-
-    <!-- add listener for servlet weld -->
-    <listener>
-        <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
-    </listener>
 
     <!-- UTF 8 Filer-->
     <filter>

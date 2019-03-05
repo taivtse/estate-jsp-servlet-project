@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="<c:url value='/template/admin/vendor/magnific-popup/magnific-popup.css'/>"/>
     <link rel="stylesheet" href="<c:url value='/template/admin/vendor/pnotify/pnotify.custom.css'/>"/>
     <link rel="stylesheet" href="<c:url value='/template/admin/vendor/select2/select2.css'/>"/>
+    <link rel="stylesheet"
+          href="<c:url value='/template/admin/vendor/jquery-datatables-bs3/assets/css/datatables.css'/>"/>
 
     <!-- Specific Page Vendor CSS -->
     <decorator:getProperty property="page.specific_css"></decorator:getProperty>
@@ -69,6 +71,8 @@
     <script src="<c:url value='/template/admin/vendor/magnific-popup/magnific-popup.js'/>"></script>
     <script src="<c:url value='/template/admin/vendor/pnotify/pnotify.custom.js'/>"></script>
     <script src="<c:url value='/template/admin/vendor/select2/select2.js'/>"></script>
+    <script src="<c:url value='/template/admin/vendor/jquery-datatables/jquery.dataTables.min.js'/>"></script>
+    <script src="<c:url value='/template/admin/vendor/jquery-datatables-bs3/assets/js/datatables.js'/>"></script>
 
     <!-- Specific Page Vendor -->
     <decorator:getProperty property="page.specific_script"></decorator:getProperty>
@@ -84,16 +88,16 @@
 
     <decorator:getProperty property="page.local_script"></decorator:getProperty>
 
-    <%-- change language script --%>
+    <%-- Pnotify script --%>
     <script type="application/javascript">
         $(document).ready(function () {
-            $(".language-change").click(function (e) {
-                e.preventDefault();
-
-                $.get("?language=" + $(this).data("language"), function () {
-                    location.reload();
-                })
-            })
+            <c:if test="${not empty command.pNotifyDto}">
+            new PNotify({
+                title: '${command.pNotifyDto.title}',
+                text: '${command.pNotifyDto.text}  ',
+                type: '${command.pNotifyDto.type}'
+            });
+            </c:if>
         });
     </script>
 </section>

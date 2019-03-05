@@ -14,7 +14,8 @@ public class SystemConstant {
     public static final String SUCCESS = "success";
     public static final String ERROR = "error";
     public static final String PNOTIFY = "pNotify";
-    public static final Integer PASSWORD_GENERATE_LENGTH = 10;
+    public static final String TYPE_LIST = "list";
+    public static final String TYPE_EDIT = "edit";
 
     public static final String SESSION_USER = "session_user";
     public static final String ROLE_MANAGER = "MANAGER";

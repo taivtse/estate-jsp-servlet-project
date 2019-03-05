@@ -5,7 +5,6 @@ import com.laptrinhjavaweb.dto.UserDto;
 import com.laptrinhjavaweb.service.UserService;
 import com.laptrinhjavaweb.util.HttpUtil;
 
-import javax.inject.Inject;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +15,8 @@ import java.util.List;
 @WebServlet("/api/user")
 public class UserApi extends HttpServlet {
 
-    @Inject
+//    @Inject
+//    @Named("userServiceImpl")
     private UserService userService;
 
     @Override

@@ -1,0 +1,189 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: vothanhtai
+  Date: 1/24/19
+  Time: 22:35
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@include file="/common/taglib.jsp" %>
+<c:url var="searchUrl" value="/admin/building/list"></c:url>
+<c:url var="editUrl" value="/admin/building/edit"></c:url>
+<html>
+<head>
+    <title>Quản lý toà nhà</title>
+</head>
+<body>
+<section role="main" class="content-body">
+    <header class="page-header">
+        <h2>Quản lý toà nhà</h2>
+    </header>
+
+    <!-- start: page -->
+    <section class="panel panel-featured">
+        <header class="panel-heading">
+            <h2 class="panel-title">Danh sách toà nhà</h2>
+        </header>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="mb-md">
+                        <a href="${editUrl}" id="addToTable" class="btn btn-primary">
+                            Thêm
+                            <i class="fa fa-plus"></i></a>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <form action="${searchUrl}" method="get">
+                        <div class="pull-right col-sm-8" style="padding: 0;">
+                            <input type="text" name="name" value="${param.name}" class="form-control"
+                                   placeholder="Search">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <form action="">
+                <table class="table table-bordered table-striped mb-none" id="datatable-default">
+                    <thead>
+                    <tr>
+                        <th>
+                            <div class="checkbox-custom checkbox-default">
+                                <input type="checkbox" checked="" id="chkDeleteAll">
+                                <label for="chkDeleteAll"></label>
+                            </div>
+                        </th>
+                        <th>Ngày</th>
+                        <th>Tên toà nhà</th>
+                        <th>Địa chỉ</th>
+                        <th>Người quản lý</th>
+                        <th>Số điện thoại</th>
+                        <th>DT sàn</th>
+                        <th>DT trống</th>
+                        <th>Giá thuê</th>
+                        <th>Phí dịch vụ</th>
+                        <th>Phí môi giới</th>
+                        <th>Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="dto" items="${command.listResult}">
+                        <tr>
+                            <td>
+                                <div class="checkbox-custom checkbox-default">
+                                    <input type="checkbox" checked="">
+                                    <label></label>
+                                </div>
+                            </td>
+                            <td>${dto.createdDate}</td>
+                            <td>${dto.name}</td>
+                            <td>${dto.address}</td>
+                            <td>${dto.managerName}</td>
+                            <td>${dto.managerPhone}</td>
+                            <td>${dto.buildingArea}</td>
+                            <td>${dto.rentalArea}</td>
+                            <td>${dto.rentalCost}</td>
+                            <td>${dto.serviceCost}</td>
+                            <td>${dto.commissionCost}</td>
+                            <td class="actions">
+                                <a href="<c:url value='${editUrl}${dto.id}'/>" class="on-default edit-row"><i
+                                        class="fa fa-pencil"></i></a>
+                                <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </section>
+    <!-- end: page -->
+</section>
+
+<content tag="specific_html">
+    <div id="dialog" class="modal-block mfp-hide">
+        <section class="panel panel-featured">
+            <header class="panel-heading">
+                <h2 class="panel-title">
+                    Xác nhận xoá
+                </h2>
+            </header>
+            <div class="panel-body">
+                <div class="modal-wrapper">
+                    <div class="modal-text">
+                        <p>
+                            Bạn có chắc chắn muốn toà nhà đã chọn?
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <footer class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button id="dialogConfirm" class="btn btn-primary">
+                            Xác nhận
+                        </button>
+                        <button id="dialogCancel" class="btn btn-default">
+                            Huỷ
+                        </button>
+                    </div>
+                </div>
+            </footer>
+        </section>
+    </div>
+</content>
+
+<content tag="local_script">
+    <script src="<c:url value='/template/admin/javascripts/tables/staff.datatables.default.js'/>"></script>
+    <script type="application/javascript">
+        $(document).ready(function () {
+            addEventDeleteButton();
+        });
+
+        function addEventDeleteButton() {
+            $('.remove-row').on('click', function (e) {
+                e.preventDefault();
+                $.magnificPopup.open({
+                    items: {
+                        src: '#dialog',
+                        type: 'inline'
+                    },
+                    preloader: false,
+                    modal: true,
+                    callbacks: {
+                        open: function () {
+                            $('#dialogConfirm').on('click', function (e) {
+                                e.preventDefault();
+                                $.magnificPopup.close();
+
+                                deleteBuilding();
+                            });
+
+                            $('#dialogCancel').on('click', function (e) {
+                                $.magnificPopup.close();
+                            });
+
+                        },
+                        close: function () {
+                            $('#dialogConfirm').off('click');
+                            $('#dialogCancel').off('click');
+                        }
+                    }
+                });
+            })
+        }
+
+        function deleteBuilding() {
+            $.ajax({
+                type: "DELETE",
+                url: "/admin/building/",
+                success: function (msg) {
+
+                },
+                error: function (error) {
+                    console.log("ERROR: ", error);
+                }
+            });
+        }
+    </script>
+</content>
+</body>
+</html>

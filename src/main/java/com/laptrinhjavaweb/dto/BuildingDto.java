@@ -8,6 +8,7 @@ public class BuildingDto {
     private String district;
     private String ward;
     private String street;
+    private String address;
     private String structure;
     private Integer numberOfBasement;
     private Integer buildingArea;
@@ -77,6 +78,14 @@ public class BuildingDto {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getStructure() {

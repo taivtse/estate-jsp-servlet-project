@@ -11,7 +11,6 @@ import com.laptrinhjavaweb.orm.util.EntityUtil;
 import com.laptrinhjavaweb.orm.util.ObjectAccessUtil;
 import com.laptrinhjavaweb.paging.Pageable;
 
-import javax.inject.Inject;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -20,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AbstractDao<T, ID> implements GenericDao<T, ID> {
-    @Inject
-    private SessionFactory sessionFactory;
     private Class<T> entityClass;
 
     public AbstractDao() {
