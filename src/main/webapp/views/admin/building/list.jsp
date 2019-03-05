@@ -32,14 +32,6 @@
                             <i class="fa fa-plus"></i></a>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <form action="${searchUrl}" method="get">
-                        <div class="pull-right col-sm-8" style="padding: 0;">
-                            <input type="text" name="name" value="${param.name}" class="form-control"
-                                   placeholder="Search">
-                        </div>
-                    </form>
-                </div>
             </div>
             <form action="">
                 <table class="table table-bordered table-striped mb-none" id="datatable-default">
@@ -84,7 +76,7 @@
                             <td>${dto.serviceCost}</td>
                             <td>${dto.commissionCost}</td>
                             <td class="actions">
-                                <a href="<c:url value='${editUrl}${dto.id}'/>" class="on-default edit-row"><i
+                                <a href="<c:url value='${editUrl}/${dto.id}'/>" class="on-default edit-row"><i
                                         class="fa fa-pencil"></i></a>
                                 <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
                             </td>
@@ -132,9 +124,14 @@
 </content>
 
 <content tag="local_script">
-    <script src="<c:url value='/template/admin/javascripts/tables/staff.datatables.default.js'/>"></script>
     <script type="application/javascript">
         $(document).ready(function () {
+            $('#datatable-default').DataTable({
+                // tai edited here
+                paging: false,
+                info: false
+            });
+
             addEventDeleteButton();
         });
 
