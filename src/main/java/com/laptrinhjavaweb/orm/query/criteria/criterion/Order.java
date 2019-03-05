@@ -1,10 +1,10 @@
 package com.laptrinhjavaweb.orm.query.criteria.criterion;
 
 public class Order {
-    private String expression;
+    private String fragment;
 
-    public Order(String expression) {
-        this.expression = expression;
+    private Order(String fragment) {
+        this.fragment = fragment;
     }
 
     public static Order asc(String propertyName) {
@@ -15,11 +15,7 @@ public class Order {
         return new Order(" ORDER BY " + propertyName + " DESC");
     }
 
-    public void setExpression(String expression) {
-        this.expression = expression;
-    }
-
-    public String getExpression() {
-        return expression;
+    public String toSqlString() {
+        return fragment;
     }
 }

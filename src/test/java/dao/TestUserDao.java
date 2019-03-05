@@ -36,4 +36,11 @@ public class TestUserDao {
         criterionList.add(Logical.and("username").like("duy", MatchMode.START));
         List<UserEntity> list = userDao.findAllByProperties(null, criterionList);
     }
+
+    @Test
+    public void rowCount() {
+        List<Criterion> criterionList = new ArrayList<>();
+        criterionList.add(Logical.and("username").like("duy", MatchMode.START));
+        Long count = userDao.countByProperties(criterionList);
+    }
 }

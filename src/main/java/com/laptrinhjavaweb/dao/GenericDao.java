@@ -11,6 +11,8 @@ public interface GenericDao<T, ID> {
 
     List<T> findAllByProperties(Pageable pageable, List<Criterion> criterionList);
 
+    Long countByProperties(List<Criterion> criterionList);
+
     T findOneById(ID id);
 
     T findOneByProperties(List<Criterion> criterionList);

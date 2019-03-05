@@ -3,6 +3,7 @@ package com.laptrinhjavaweb.dao.impl;
 import com.laptrinhjavaweb.dao.GenericDao;
 import com.laptrinhjavaweb.orm.query.criteria.Criteria;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.projection.Projections;
 import com.laptrinhjavaweb.orm.session.Session;
 import com.laptrinhjavaweb.orm.session.SessionFactory;
 import com.laptrinhjavaweb.orm.transaction.Transaction;
@@ -76,6 +77,20 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
         session.close();
 
         return entityList;
+    }
+
+    @Override
+    public Long countByProperties(List<Criterion> criterionList) {
+        Session session = this.getSession();
+        Criteria cr = session.createCriteria(this.entityClass);
+
+//        set properties search
+        if (criterionList != null) {
+            criterionList.forEach(criterion -> cr.add(criterion));
+        }
+
+        cr.setProjection(Projections.rowCount());
+        return (Long) cr.uniqueResult();
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.laptrinhjavaweb.orm.query.criteria;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Order;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.NamedParam;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.projection.Projection;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ public interface Criteria {
 
     Criteria addOrder(Order order);
 
-    Criteria addProjection(String projection);
+    Criteria setProjection(Projection projection);
 
     Criteria setMaxResults(int limit);
 

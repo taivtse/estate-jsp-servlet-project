@@ -3,6 +3,7 @@ package com.laptrinhjavaweb.orm.query.criteria;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Order;
 import com.laptrinhjavaweb.orm.mapper.EntityMapper;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.projection.Projection;
 import com.laptrinhjavaweb.orm.session.util.CloseExecutorUtil;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.NamedParam;
 import com.laptrinhjavaweb.orm.query.statement.NamedParamStatement;
@@ -30,6 +31,7 @@ public class CriteriaImpl implements Criteria {
     private String orderBy = "";
     private String limit = "";
     private String offset = "";
+    private boolean isMappedToEntity = true;
 
     private Map<String, NamedParam> namedParamMap = new TreeMap<>();
 
@@ -57,7 +59,11 @@ public class CriteriaImpl implements Criteria {
         try {
             resultSet = this.executeQuery();
             while (resultSet.next()) {
-                resultList.add(EntityMapper.of(this.entityClass).toEntity(resultSet));
+                if (isMappedToEntity) {
+                    resultList.add(EntityMapper.of(this.entityClass).toEntity(resultSet));
+                } else {
+                    resultList.add(resultSet.getObject(1));
+                }
             }
 
             return resultList;
@@ -80,9 +86,12 @@ public class CriteriaImpl implements Criteria {
             resultSet = this.executeQuery();
 
             if (resultSet.next()) {
-                object = EntityMapper.of(this.entityClass).toEntity(resultSet);
+                if (isMappedToEntity) {
+                    object = EntityMapper.of(this.entityClass).toEntity(resultSet);
+                } else {
+                    object = resultSet.getObject(1);
+                }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -116,12 +125,14 @@ public class CriteriaImpl implements Criteria {
 
     @Override
     public Criteria addOrder(Order order) {
-        orderBy = order.getExpression();
+        orderBy = order.toSqlString();
         return this;
     }
 
     @Override
-    public Criteria addProjection(String projection) {
+    public Criteria setProjection(Projection projection) {
+        selectColumns = projection.toSqlString(this);
+        this.isMappedToEntity = false;
         return this;
     }
 

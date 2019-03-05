@@ -6,10 +6,11 @@ import com.laptrinhjavaweb.orm.query.criteria.CriteriaImpl;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Logical;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.MatchMode;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.expression.GroupExpression;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.projection.Projections;
 import org.testng.annotations.Test;
 
 public class TestCriteria {
-    @Test
+//    @Test
     public void testBuildWhere() {
         Criteria criteria = new CriteriaImpl(null, UserEntity.class);
 //        criteria.add(Logical.and("username").eq("thanhtai"));
@@ -23,5 +24,13 @@ public class TestCriteria {
                 .add(Logical.and("fullName").between("-1", "10"));
 
         criteria.add(groupExpression);
+    }
+
+    @Test
+    public void testProjection(){
+        Criteria criteria = new CriteriaImpl(null, UserEntity.class);
+//        criteria.setProjection(Projections.avg("id"));
+        criteria.setProjection(Projections.countDistinct("id"));
+//        criteria.setProjection(Projections.alias(Projections.rowCount(), "ahihi"));
     }
 }
