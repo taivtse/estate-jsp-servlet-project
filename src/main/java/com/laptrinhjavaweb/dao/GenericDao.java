@@ -17,9 +17,9 @@ public interface GenericDao<T, ID> {
 
     T findOneByProperties(List<Criterion> criterionList);
 
-    void save(T entity) throws SQLException;
+    T save(T entity) throws SQLException;
 
-    void update(T entity) throws SQLException;
+    T update(T entity) throws SQLException;
 
     void delete(T entity) throws SQLException;
 

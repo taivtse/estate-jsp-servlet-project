@@ -9,9 +9,9 @@ import java.sql.SQLException;
 public interface Session {
     <T, ID> T get(Class<T> entityClass, ID id);
 
-    <T> void save(T entity) throws SQLException;
+    <T> T save(T entity) throws SQLException;
 
-    <T> void update(T entity) throws SQLException;
+    <T> T update(T entity) throws SQLException;
 
     <T> void delete(T entity) throws SQLException;
 

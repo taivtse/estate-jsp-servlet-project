@@ -145,12 +145,12 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
     }
 
     @Override
-    public void save(T entity) throws SQLException {
+    public T save(T entity) throws SQLException {
         Session session = this.getSession();
         Transaction transaction = session.beginTransaction();
 
         try {
-            session.save(entity);
+            entity = session.save(entity);
             transaction.commit();
         } catch (SQLException e) {
             transaction.rollback();
@@ -158,15 +158,17 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
         } finally {
             session.close();
         }
+
+        return entity;
     }
 
     @Override
-    public void update(T entity) throws SQLException {
+    public T update(T entity) throws SQLException {
         Session session = this.getSession();
         Transaction transaction = session.beginTransaction();
 
         try {
-            session.update(entity);
+            entity = session.update(entity);
             transaction.commit();
         } catch (SQLException e) {
             transaction.rollback();
@@ -174,6 +176,8 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
         } finally {
             session.close();
         }
+
+        return entity;
     }
 
     @Override

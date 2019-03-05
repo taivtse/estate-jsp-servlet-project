@@ -34,7 +34,7 @@ public class SessionImpl implements Session {
     }
 
     @Override
-    public <T> void save(T entity) throws SQLException {
+    public <T> T save(T entity) throws SQLException {
         Class entityClass = entity.getClass();
         String sql = StatementBuilder.buildInsertStatement(entity.getClass());
         statement = new NamedParamStatement(connection, sql);
@@ -48,10 +48,12 @@ public class SessionImpl implements Session {
             Object id = EntityUtil.getIdFieldData(entityClass, entity);
             entity = (T) this.get(entityClass, id);
         }
+
+        return entity;
     }
 
     @Override
-    public <T> void update(T entity) throws SQLException {
+    public <T> T update(T entity) throws SQLException {
         Class entityClass = entity.getClass();
         String sql = StatementBuilder.buildUpdateStatement(entity.getClass());
         statement = new NamedParamStatement(connection, sql);
@@ -63,6 +65,8 @@ public class SessionImpl implements Session {
             Object id = EntityUtil.getIdFieldData(entityClass, entity);
             entity = (T) this.get(entityClass, id);
         }
+
+        return entity;
     }
 
     @Override
