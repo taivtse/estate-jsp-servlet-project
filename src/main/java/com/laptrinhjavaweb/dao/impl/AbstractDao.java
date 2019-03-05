@@ -16,6 +16,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AbstractDao<T, ID> implements GenericDao<T, ID> {
@@ -36,16 +37,23 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
 
     @Override
     public List<T> findAll() {
-        List<T> entityList;
+        List<T> entityList = new ArrayList<>();
         Session session = this.getSession();
-        entityList = session.createCriteria(this.entityClass).list();
-        session.close();
+
+        try {
+            entityList = session.createCriteria(this.entityClass).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
         return entityList;
     }
 
     @Override
     public List<T> findAllByProperties(Pageable pageable, List<Criterion> criterionList) {
-        List<T> entityList;
+        List<T> entityList = new ArrayList<>();
         Session session = this.getSession();
         Criteria criteria = session.createCriteria(this.entityClass);
 
@@ -68,13 +76,17 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
             }
         }
 
+        try {
 //        set properties search
-        if (criterionList != null) {
-            criterionList.forEach(criterion -> criteria.add(criterion));
+            if (criterionList != null) {
+                criterionList.forEach(criterion -> criteria.add(criterion));
+            }
+            entityList = criteria.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
         }
-
-        entityList = criteria.list();
-        session.close();
 
         return entityList;
     }
@@ -83,21 +95,38 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
     public Long countByProperties(List<Criterion> criterionList) {
         Session session = this.getSession();
         Criteria cr = session.createCriteria(this.entityClass);
+        Long rowCount = 0L;
 
+        try {
 //        set properties search
-        if (criterionList != null) {
-            criterionList.forEach(criterion -> cr.add(criterion));
+            if (criterionList != null) {
+                criterionList.forEach(criterion -> cr.add(criterion));
+            }
+
+            cr.setProjection(Projections.rowCount());
+            rowCount = (Long) cr.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
         }
 
-        cr.setProjection(Projections.rowCount());
-        return (Long) cr.uniqueResult();
+        return rowCount;
     }
 
     @Override
     public T findOneById(ID id) {
         Session session = this.getSession();
-        T entity = session.get(this.entityClass, id);
-        session.close();
+        T entity = null;
+
+        try {
+            entity = session.get(this.entityClass, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
         return entity;
     }
 
@@ -111,6 +140,7 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
         }
         entity = (T) cr.uniqueResult();
         session.close();
+
         return entity;
     }
 
@@ -118,6 +148,7 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
     public void save(T entity) throws SQLException {
         Session session = this.getSession();
         Transaction transaction = session.beginTransaction();
+
         try {
             session.save(entity);
             transaction.commit();
@@ -133,6 +164,7 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
     public void update(T entity) throws SQLException {
         Session session = this.getSession();
         Transaction transaction = session.beginTransaction();
+
         try {
             session.update(entity);
             transaction.commit();
@@ -148,6 +180,7 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
     public void delete(T entity) throws SQLException {
         Session session = this.getSession();
         Transaction transaction = session.beginTransaction();
+
         try {
             session.delete(entity);
             transaction.commit();
@@ -168,11 +201,9 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
             ObjectAccessUtil.setFieldData(entity, id, idField);
 
             this.delete(entity);
-        } catch (InstantiationException | NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ReflectiveOperationException e) {
+        } catch (SQLException e) {
+            throw e;
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
