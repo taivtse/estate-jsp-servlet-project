@@ -7,11 +7,11 @@ import java.util.List;
 public class AbstractCommand<T> {
     protected T pojo;
     private List<T> listResult;
-    private int maxPageItems = 5;
-    private int totalItems = 0;
-    private int firstItem = 0;
-    private int page = 1;
-    private int totalPages;
+    private Integer maxPageItems = 5;
+    private Integer totalItems = 0;
+    private Integer firstItem = 0;
+    private Integer page = 1;
+    private Integer totalPages = 0;
     private String sortExpression;
     private String sortDirection;
     private String[] checkList;
@@ -57,6 +57,22 @@ public class AbstractCommand<T> {
         this.firstItem = firstItem;
     }
 
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
+    }
+
     public String getSortExpression() {
         return sortExpression;
     }
@@ -79,22 +95,6 @@ public class AbstractCommand<T> {
 
     public void setCheckList(String[] checkList) {
         this.checkList = checkList;
-    }
-
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public int getTotalPages() {
-        return totalPages;
-    }
-
-    public void setTotalPages(int totalPages) {
-        this.totalPages = totalPages;
     }
 
     public PNotifyDto getpNotifyDto() {
