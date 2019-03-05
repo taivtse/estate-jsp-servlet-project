@@ -1,6 +1,6 @@
 package com.laptrinhjavaweb.orm.query.criteria.criterion;
 
-import com.laptrinhjavaweb.orm.query.criteria.criterion.impl.GroupExpression;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.expression.GroupExpression;
 
 public class Logical {
     private static final String prefixAnd = " AND";

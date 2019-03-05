@@ -1,4 +1,4 @@
-package com.laptrinhjavaweb.orm.query.criteria.criterion.impl;
+package com.laptrinhjavaweb.orm.query.criteria.criterion.expression;
 
 import com.laptrinhjavaweb.orm.query.criteria.Criteria;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;

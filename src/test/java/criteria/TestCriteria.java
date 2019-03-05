@@ -5,7 +5,7 @@ import com.laptrinhjavaweb.orm.query.criteria.Criteria;
 import com.laptrinhjavaweb.orm.query.criteria.CriteriaImpl;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Logical;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.MatchMode;
-import com.laptrinhjavaweb.orm.query.criteria.criterion.impl.GroupExpression;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.expression.GroupExpression;
 import org.testng.annotations.Test;
 
 public class TestCriteria {

@@ -1,15 +1,15 @@
-package com.laptrinhjavaweb.orm.query.criteria.criterion.impl;
+package com.laptrinhjavaweb.orm.query.criteria.criterion.expression;
 
 import com.laptrinhjavaweb.orm.query.criteria.Criteria;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
 import com.laptrinhjavaweb.orm.query.criteria.util.NamedParamHandlerUtil;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.NamedParam;
 
-public class PropertyExpression extends AbstractExpression implements Criterion {
+public class NoneExpression extends AbstractExpression implements Criterion {
     private final String propertyName;
     private final Object value;
 
-    public PropertyExpression(String prefixLogical, String propertyName, Object value) {
+    public NoneExpression(String prefixLogical, String propertyName, Object value) {
         super(prefixLogical);
         this.propertyName = propertyName;
         this.value = value;
