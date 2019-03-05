@@ -5,11 +5,16 @@ import com.laptrinhjavaweb.orm.query.criteria.Criteria;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
 import com.laptrinhjavaweb.orm.session.Session;
 import com.laptrinhjavaweb.orm.session.SessionFactory;
+import com.laptrinhjavaweb.orm.transaction.Transaction;
+import com.laptrinhjavaweb.orm.util.EntityUtil;
+import com.laptrinhjavaweb.orm.util.ObjectAccessUtil;
 import com.laptrinhjavaweb.paging.Pageable;
 
 import javax.inject.Inject;
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.sql.SQLException;
 import java.util.List;
 
 public class AbstractDao<T, ID> implements GenericDao<T, ID> {
@@ -25,7 +30,7 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
     }
 
     protected Session getSession() {
-        return this.sessionFactory.openSession();
+        return SessionFactory.openSession();
     }
 
     @Override
@@ -38,7 +43,8 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
     }
 
     @Override
-    public List<T> findByProperties(Pageable pageable, List<Criterion> criterionList) {
+    public List<T> findAllByProperties(Pageable pageable, List<Criterion> criterionList) {
+        List<T> entityList;
         Session session = this.getSession();
         Criteria criteria = session.createCriteria(this.entityClass);
 
@@ -66,8 +72,10 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
             criterionList.forEach(criterion -> criteria.add(criterion));
         }
 
+        entityList = criteria.list();
         session.close();
-        return criteria.list();
+
+        return entityList;
     }
 
     @Override
@@ -76,6 +84,82 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
         T entity = session.get(this.entityClass, id);
         session.close();
         return entity;
+    }
+
+    @Override
+    public T findOneByProperties(List<Criterion> criterionList) {
+        T entity;
+        Session session = this.getSession();
+        Criteria cr = session.createCriteria(this.entityClass);
+        if (criterionList != null) {
+            criterionList.forEach(criterion -> cr.add(criterion));
+        }
+        entity = (T) cr.uniqueResult();
+        session.close();
+        return entity;
+    }
+
+    @Override
+    public void save(T entity) throws SQLException {
+        Session session = this.getSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            session.save(entity);
+            transaction.commit();
+        } catch (SQLException e) {
+            transaction.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public void update(T entity) throws SQLException {
+        Session session = this.getSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            session.update(entity);
+            transaction.commit();
+        } catch (SQLException e) {
+            transaction.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public void delete(T entity) throws SQLException {
+        Session session = this.getSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            session.delete(entity);
+            transaction.commit();
+        } catch (SQLException e) {
+            transaction.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public void deleteById(ID id) throws SQLException {
+        try {
+            T entity = entityClass.newInstance();
+            String idFieldName = EntityUtil.getIdFieldName(entityClass);
+            Field idField = ObjectAccessUtil.getFieldByName(entityClass, idFieldName);
+            ObjectAccessUtil.setFieldData(entity, id, idField);
+
+            this.delete(entity);
+        } catch (InstantiationException | NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ReflectiveOperationException e) {
+            e.printStackTrace();
+        }
     }
 
 }

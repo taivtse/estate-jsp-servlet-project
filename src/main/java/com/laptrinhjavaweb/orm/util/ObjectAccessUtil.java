@@ -28,4 +28,8 @@ public class ObjectAccessUtil {
         Method setterMethod = object.getClass().getMethod(setterMethodName, field.getType());
         setterMethod.invoke(object, fieldValue);
     }
+
+    public static Field getFieldByName(Class clazz, String fieldName) throws NoSuchFieldException {
+        return clazz.getDeclaredField(fieldName);
+    }
 }
