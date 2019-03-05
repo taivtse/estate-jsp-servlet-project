@@ -15,7 +15,7 @@ public class TestSession {
         Session session = SessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         try {
-            session.delete(entity);
+            session.save(entity);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();

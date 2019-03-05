@@ -5,6 +5,8 @@ import com.laptrinhjavaweb.dao.impl.RoleDaoImpl;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import java.sql.SQLException;
+
 public class TestRoleDao {
     RoleDao roleDao;
 
@@ -21,5 +23,9 @@ public class TestRoleDao {
     @Test
     public void findOneById() {
         roleDao.findOneById("USER");
+    }
+
+    @Test void deleteById() throws SQLException {
+        roleDao.deleteById("AA");
     }
 }

@@ -6,6 +6,7 @@ import com.laptrinhjavaweb.entity.UserEntity;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Logical;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.MatchMode;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.NamedParam;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -34,6 +35,7 @@ public class TestUserDao {
     public void findByProperties() {
         List<Criterion> criterionList = new ArrayList<>();
         criterionList.add(Logical.and("username").like("duy", MatchMode.START));
+        criterionList.add(Logical.and("id").between(2, 3));
         List<UserEntity> list = userDao.findAllByProperties(null, criterionList);
     }
 
@@ -42,5 +44,15 @@ public class TestUserDao {
         List<Criterion> criterionList = new ArrayList<>();
         criterionList.add(Logical.and("username").like("duy", MatchMode.START));
         Long count = userDao.countByProperties(criterionList);
+    }
+
+    @Test
+    public void test(){
+        NamedParam namedParam = new NamedParam("aaaa", "bbbb");
+        namedParam = this.test1(namedParam);
+    }
+    public NamedParam test1(NamedParam namedParam){
+        namedParam = new NamedParam("ahihi", "uhuhu");
+        return namedParam;
     }
 }
