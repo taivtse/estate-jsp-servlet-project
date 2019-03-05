@@ -17,10 +17,6 @@ public class AbstractCommand<T> {
     private String[] checkList;
     private PNotifyDto pNotifyDto;
 
-    protected AbstractCommand(T pojo) {
-        this.pojo = pojo;
-    }
-
     public T getPojo() {
         return pojo;
     }
