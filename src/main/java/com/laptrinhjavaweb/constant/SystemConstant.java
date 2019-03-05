@@ -3,8 +3,8 @@ package com.laptrinhjavaweb.constant;
 import java.io.File;
 
 public class SystemConstant {
-    public static final String BASE_UPLOAD_PATH = "/Users/vothanhtai/Documents/WorkSpace/Java/FPT-Polytechnic/Java5-SpringMVC-Assignment/resource".replace("/", File.separator);
-    public static final String STAFF_UPLOAD_PATH = "staff";
+    public static final String BASE_UPLOAD_PATH = "/Users/vothanhtai/Documents/WorkSpace/Java/LRHTeam/estate-project/resources".replace("/", File.separator);
+    public static final String BUILDING_UPLOAD_PATH = "building";
 
     public static final String REDIRECT_URL = "redirect:/";
     public static final String COMMAND = "command";
@@ -17,6 +17,6 @@ public class SystemConstant {
     public static final Integer PASSWORD_GENERATE_LENGTH = 10;
 
     public static final String SESSION_USER = "session_user";
-    public static final String ROLE_ADMIN = "ADMIN";
+    public static final String ROLE_MANAGER = "MANAGER";
     public static final String ROLE_USER = "USER";
 }
