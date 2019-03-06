@@ -2,8 +2,8 @@ package com.laptrinhjavaweb.orm.query.criteria.criterion.expression;
 
 import com.laptrinhjavaweb.orm.query.criteria.Criteria;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
-import com.laptrinhjavaweb.orm.query.criteria.util.NamedParamHandlerUtil;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.NamedParam;
+import com.laptrinhjavaweb.orm.query.criteria.util.NamedParamHandlerUtil;
 
 public class NoneExpression extends AbstractExpression implements Criterion {
     private final String propertyName;

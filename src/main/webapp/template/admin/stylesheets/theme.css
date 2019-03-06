@@ -221,11 +221,11 @@ a:active {
 
 	/* Layout Fixed - Sidebar Left Collapsed */
 	html.fixed.sidebar-left-collapsed .page-header {
-		left: 73px;
+		left: 0px;
 	}
 
 	html.fixed.sidebar-left-collapsed .content-body {
-		margin-left: 73px;
+		margin-left: 0px;
 	}
 
 	/* Layout Fixed - Sidebar Right Opened */
@@ -1783,11 +1783,11 @@ html.header-dark .header .input-search .input-group-btn .btn-default {
 
 	/* Layout Fixed - Sidebar Left Collapsed */
 	html.fixed.sidebar-left-collapsed .page-header {
-		left: 73px;
+		left: 0px;
 	}
 
 	html.fixed.sidebar-left-collapsed .content-body {
-		margin-left: 73px;
+		margin-left: 0px;
 	}
 
 	/* Layout Fixed - Sidebar Left Collapsed & Sidebar Right Opened */
@@ -1949,11 +1949,11 @@ html.header-dark .header .input-search .input-group-btn .btn-default {
 
 	/* Layout Fixed - Sidebar Left Collapsed */
 	html.fixed.sidebar-left-collapsed .page-header {
-		left: 73px;
+		left: 0px;
 	}
 
 	html.fixed.sidebar-left-collapsed .content-body {
-		margin-left: 73px;
+		margin-left: 0px;
 	}
 
 	/* Layout Fixed - Sidebar Left Collapsed & Sidebar Right Opened */

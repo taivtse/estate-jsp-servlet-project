@@ -20,6 +20,6 @@ public class NullExpression extends AbstractExpression implements Criterion {
 //        tạo fragment
         super.fragment.append(super.prefixLogical);
         super.fragment.append(columnName);
-        super.fragment.append("IS NULL");
+        super.fragment.append(" IS NULL");
     }
 }

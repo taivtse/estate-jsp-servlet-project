@@ -1,7 +1,7 @@
 <%--
   Created by IntelliJ IDEA.
   User: vothanhtai
-  Date: 1/24/19
+  Date: 3/5/19
   Time: 22:35
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
@@ -13,81 +13,73 @@
     <title>Quản lý toà nhà</title>
 </head>
 <body>
-<section role="main" class="content-body">
-    <header class="page-header">
-        <h2>Quản lý toà nhà</h2>
+<section class="panel panel-featured">
+    <header class="panel-heading">
+        <h2 class="panel-title">Danh sách toà nhà</h2>
     </header>
-
-    <!-- start: page -->
-    <section class="panel panel-featured">
-        <header class="panel-heading">
-            <h2 class="panel-title">Danh sách toà nhà</h2>
-        </header>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="mb-md">
-                        <a href="${editUrl}" id="addToTable" class="btn btn-primary">
-                            Thêm
-                            <i class="fa fa-plus"></i></a>
-                    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="mb-md">
+                    <a href="${editUrl}" id="addToTable" class="btn btn-primary">
+                        Thêm
+                        <i class="fa fa-plus"></i></a>
                 </div>
             </div>
-            <form action="">
-                <table class="table table-bordered table-striped mb-none" id="datatable-default">
-                    <thead>
-                    <tr>
-                        <th>
-                            <div class="checkbox-custom checkbox-default">
-                                <input type="checkbox" checked="" id="chkDeleteAll">
-                                <label for="chkDeleteAll"></label>
-                            </div>
-                        </th>
-                        <th>Ngày</th>
-                        <th>Tên toà nhà</th>
-                        <th>Địa chỉ</th>
-                        <th>Người quản lý</th>
-                        <th>Số điện thoại</th>
-                        <th>DT sàn</th>
-                        <th>DT trống</th>
-                        <th>Giá thuê</th>
-                        <th>Phí dịch vụ</th>
-                        <th>Phí môi giới</th>
-                        <th>Thao tác</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach var="dto" items="${command.listResult}">
-                        <tr>
-                            <td>
-                                <div class="checkbox-custom checkbox-default">
-                                    <input type="checkbox" checked="">
-                                    <label></label>
-                                </div>
-                            </td>
-                            <td>${dto.createdDate}</td>
-                            <td>${dto.name}</td>
-                            <td>${dto.address}</td>
-                            <td>${dto.managerName}</td>
-                            <td>${dto.managerPhone}</td>
-                            <td>${dto.buildingArea}</td>
-                            <td>${dto.rentalArea}</td>
-                            <td>${dto.rentalCost}</td>
-                            <td>${dto.serviceCost}</td>
-                            <td>${dto.commissionCost}</td>
-                            <td class="actions">
-                                <a href="<c:url value='${editUrl}/${dto.id}'/>" class="on-default edit-row"><i
-                                        class="fa fa-pencil"></i></a>
-                                <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </form>
         </div>
-    </section>
-    <!-- end: page -->
+        <form action="">
+            <table class="table table-bordered table-striped mb-none" id="datatable-default">
+                <thead>
+                <tr>
+                    <th>
+                        <div class="checkbox-custom checkbox-default">
+                            <input type="checkbox" checked="" id="chkDeleteAll">
+                            <label for="chkDeleteAll"></label>
+                        </div>
+                    </th>
+                    <th>Ngày</th>
+                    <th>Tên toà nhà</th>
+                    <th>Địa chỉ</th>
+                    <th>Người quản lý</th>
+                    <th>Số điện thoại</th>
+                    <th>DT sàn</th>
+                    <th>DT trống</th>
+                    <th>Giá thuê</th>
+                    <th>Phí dịch vụ</th>
+                    <th>Phí môi giới</th>
+                    <th>Thao tác</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="dto" items="${command.listResult}">
+                    <tr>
+                        <td>
+                            <div class="checkbox-custom checkbox-default">
+                                <input type="checkbox" checked="">
+                                <label></label>
+                            </div>
+                        </td>
+                        <td>${dto.createdDate}</td>
+                        <td>${dto.name}</td>
+                        <td>${dto.address}</td>
+                        <td>${dto.managerName}</td>
+                        <td>${dto.managerPhone}</td>
+                        <td>${dto.buildingArea}</td>
+                        <td>${dto.rentalArea}</td>
+                        <td>${dto.rentalCost}</td>
+                        <td>${dto.serviceCost}</td>
+                        <td>${dto.commissionCost}</td>
+                        <td class="actions">
+                            <a href="<c:url value='${editUrl}/${dto.id}'/>" class="on-default edit-row"><i
+                                    class="fa fa-pencil"></i></a>
+                            <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </form>
+    </div>
 </section>
 
 <content tag="specific_html">

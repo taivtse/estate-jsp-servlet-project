@@ -54,14 +54,17 @@
     <%@include file="/common/admin/header.jsp" %>
 
     <div class="inner-wrapper">
+        <!-- start: page -->
+        <section role="main" class="content-body">
+            <%@include file="/common/admin/nav-bar.jsp" %>
 
-        <%@include file="/common/admin/sidebar-left.jsp" %>
+            <decorator:body></decorator:body>
+            <!-- end: page -->
+        </section>
 
-        <decorator:body></decorator:body>
+        <decorator:getProperty property="page.specific_html"></decorator:getProperty>
 
     </div>
-
-    <decorator:getProperty property="page.specific_html"></decorator:getProperty>
 
     <!-- Vendor -->
     <script src="<c:url value='/template/admin/vendor/jquery/jquery.min.js'/>"></script>

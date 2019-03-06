@@ -1,1 +1,22 @@
 /* Add here all your CSS customizations */
+.page-header{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding-left: 20px;
+}
+.nav-item{
+    display: inline-block;
+    margin: 0 10px;
+    color: #e8e8e8;
+    font-size: 1.8rem;
+    letter-spacing: 0.1px;
+}
+.nav-item:hover{
+    text-decoration: none;
+    color: #e8e8e8;
+}
+.content-body{
+    padding: 10px!important;
+    margin-top: 10px!important;
+}

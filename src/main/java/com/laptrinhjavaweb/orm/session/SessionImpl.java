@@ -6,8 +6,8 @@ import com.laptrinhjavaweb.orm.query.criteria.CriteriaImpl;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Logical;
 import com.laptrinhjavaweb.orm.query.sqlquery.SqlQuery;
 import com.laptrinhjavaweb.orm.query.sqlquery.SqlQueryImpl;
-import com.laptrinhjavaweb.orm.session.util.CloseExecutorUtil;
 import com.laptrinhjavaweb.orm.query.statement.NamedParamStatement;
+import com.laptrinhjavaweb.orm.session.util.CloseExecutorUtil;
 import com.laptrinhjavaweb.orm.transaction.Transaction;
 import com.laptrinhjavaweb.orm.transaction.TransactionImpl;
 import com.laptrinhjavaweb.orm.util.EntityUtil;
@@ -29,7 +29,7 @@ public class SessionImpl implements Session {
     public <T, ID> T get(Class<T> entityClass, ID id) {
         String idFieldName = EntityUtil.getIdFieldName(entityClass);
         Criteria criteria = this.createCriteria(entityClass);
-        criteria.add(Logical.and(idFieldName).eq(id));
+        criteria.addWhere(Logical.and(idFieldName).eq(id));
         return (T) criteria.uniqueResult();
     }
 

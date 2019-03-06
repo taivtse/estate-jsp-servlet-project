@@ -23,14 +23,14 @@ public class TestCriteria {
                 .add(Logical.and("fullName").like("ahihi", MatchMode.START))
                 .add(Logical.and("fullName").between("-1", "10"));
 
-        criteria.add(groupExpression);
+        criteria.addWhere(groupExpression);
     }
 
     @Test
     public void testProjection(){
         Criteria criteria = new CriteriaImpl(null, UserEntity.class);
 //        criteria.setProjection(Projections.avg("id"));
-        criteria.setProjection(Projections.countDistinct("id"));
+        criteria.addSelection(Projections.countDistinct("id"));
 //        criteria.setProjection(Projections.alias(Projections.rowCount(), "ahihi"));
     }
 }

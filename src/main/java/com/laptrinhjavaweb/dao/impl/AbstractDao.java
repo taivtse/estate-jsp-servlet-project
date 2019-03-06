@@ -69,14 +69,14 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
             if (pageable.getSorter() != null
                     && !pageable.getSorter().getPropertyName().isEmpty()
                     && !pageable.getSorter().getDirection().isEmpty()) {
-                criteria.addOrder(pageable.getSorter().getOrder());
+                criteria.addOrderBy(pageable.getSorter().getOrder());
             }
         }
 
         try {
 //        set properties search
             if (criterionList != null) {
-                criterionList.forEach(criterion -> criteria.add(criterion));
+                criterionList.forEach(criterion -> criteria.addWhere(criterion));
             }
             entityList = criteria.list();
         } catch (Exception e) {
@@ -97,10 +97,10 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
         try {
 //        set properties search
             if (criterionList != null) {
-                criterionList.forEach(criterion -> cr.add(criterion));
+                criterionList.forEach(criterion -> cr.addWhere(criterion));
             }
 
-            cr.setProjection(Projections.rowCount());
+            cr.addSelection(Projections.rowCount());
             rowCount = (Long) cr.uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();
@@ -129,14 +129,20 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
 
     @Override
     public T findOneByProperties(List<Criterion> criterionList) {
-        T entity;
+        T entity = null;
         Session session = this.getSession();
         Criteria cr = session.createCriteria(this.entityClass);
-        if (criterionList != null) {
-            criterionList.forEach(criterion -> cr.add(criterion));
+
+        try {
+            if (criterionList != null) {
+                criterionList.forEach(criterion -> cr.addWhere(criterion));
+            }
+            entity = (T) cr.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
         }
-        entity = (T) cr.uniqueResult();
-        session.close();
 
         return entity;
     }

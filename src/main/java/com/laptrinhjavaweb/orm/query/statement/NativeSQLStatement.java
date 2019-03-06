@@ -11,15 +11,18 @@ public class NativeSQLStatement {
     }
 
     public ResultSet executeQuery() throws SQLException {
+        System.out.println(preparedStatement);
         ResultSet resultSet = this.preparedStatement.executeQuery();
         return resultSet;
     }
 
     public Integer executeUpdate() throws SQLException {
+        System.out.println(preparedStatement);
         return this.preparedStatement.executeUpdate();
     }
 
     public Long executeInsert() throws SQLException {
+        System.out.println(preparedStatement);
         this.preparedStatement.executeUpdate();
         ResultSet resultSet = this.preparedStatement.getGeneratedKeys();
 
