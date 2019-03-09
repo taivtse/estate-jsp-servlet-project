@@ -10,20 +10,27 @@
 <c:url var="editUrl" value="/admin/building/edit"></c:url>
 <html>
 <head>
-    <title>Quản lý toà nhà</title>
+    <title>
+        <fmt:message bundle="${lang}" key="building.management"/>
+    </title>
 </head>
 <body>
 <section class="panel panel-featured">
     <header class="panel-heading">
-        <h2 class="panel-title">Danh sách toà nhà</h2>
+        <h2 class="panel-title">
+            <fmt:message bundle="${lang}" key="building.list"/>
+        </h2>
     </header>
     <div class="panel-body">
         <div class="row">
             <div class="col-sm-6">
                 <div class="mb-md">
-                    <a href="${editUrl}" id="addToTable" class="btn btn-primary">
-                        Thêm
+                    <a href="${editUrl}" class="btn btn-primary">
+                        <fmt:message bundle="${lang}" key="insert"/>
                         <i class="fa fa-plus"></i></a>
+                    <button class="btn btn-danger" id="btnDeleteAll">
+                        <fmt:message bundle="${lang}" key="delete"/>
+                        <i class="fa fa-trash-o"></i></button>
                 </div>
             </div>
         </div>
@@ -31,50 +38,72 @@
             <table class="table table-bordered table-striped mb-none" id="datatable-default">
                 <thead>
                 <tr>
-                    <th>
+                    <th class="nosort">
                         <div class="checkbox-custom checkbox-default">
-                            <input type="checkbox" checked="" id="chkDeleteAll">
-                            <label for="chkDeleteAll"></label>
+                            <input type="checkbox" id="chkCheckAll">
+                            <label for="chkCheckAll"></label>
                         </div>
                     </th>
-                    <th>Ngày</th>
-                    <th>Tên</th>
-                    <th>Địa chỉ</th>
-                    <th>Quản lý</th>
-                    <th>SĐT</th>
-                    <th>DT sàn</th>
-                    <th>DT trống</th>
-                    <th>Giá thuê</th>
-                    <th>Phí dịch vụ</th>
-                    <th>Phí môi giới</th>
-                    <th>Thao tác</th>
+                    <th>
+                        <fmt:message bundle="${lang}" key="building.date"/>
+                    </th>
+                    <th>
+                        <fmt:message bundle="${lang}" key="building.name.table"/>
+                    </th>
+                    <th>
+                        <fmt:message bundle="${lang}" key="building.address"/>
+                    </th>
+                    <th>
+                        <fmt:message bundle="${lang}" key="building.managerName.table"/>
+                    </th>
+                    <th>
+                        <fmt:message bundle="${lang}" key="building.managerPhone.table"/>
+                    </th>
+                    <th>
+                        <fmt:message bundle="${lang}" key="building.buildingArea.table"/>
+                    </th>
+                    <th>
+                        <fmt:message bundle="${lang}" key="building.rentalArea.table"/>
+                    </th>
+                    <th>
+                        <fmt:message bundle="${lang}" key="building.rentalCost"/>
+                    </th>
+                    <th>
+                        <fmt:message bundle="${lang}" key="building.serviceCost"/>
+                    </th>
+                    <th>
+                        <fmt:message bundle="${lang}" key="building.commissionCost"/>
+                    </th>
+                    <th>
+                        <fmt:message bundle="${lang}" key="action"/>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="dto" items="${command.listResult}">
+                <c:forEach var="districtDto" items="${command.listResult}">
                     <tr>
-                        <td>
+                        <td class="align-center">
                             <div class="checkbox-custom checkbox-default">
-                                <input type="checkbox" checked="">
+                                <input type="checkbox" name="checkList" value="${districtDto.id}">
                                 <label></label>
                             </div>
                         </td>
                         <td>
-                            <fmt:formatDate value="${dto.createdDate}" pattern="dd-MM-yyyy"/>
+                            <fmt:formatDate value="${districtDto.createdDate}" pattern="dd-MM-yyyy"/>
                         </td>
-                        <td>${dto.name}</td>
-                        <td>${dto.fullAddress}</td>
-                        <td>${dto.managerName}</td>
-                        <td>${dto.managerPhone}</td>
-                        <td>${dto.buildingArea}</td>
-                        <td>${dto.rentalArea}</td>
+                        <td>${districtDto.name}</td>
+                        <td>${districtDto.fullAddress}</td>
+                        <td>${districtDto.managerName}</td>
+                        <td>${districtDto.managerPhone}</td>
+                        <td>${districtDto.buildingArea}</td>
+                        <td>${districtDto.rentalArea}</td>
                         <td>
-                            <fmt:formatNumber type="number" maxFractionDigits="3" value="${dto.rentalCost}"/>
+                            <fmt:formatNumber type="number" maxFractionDigits="3" value="${districtDto.rentalCost}"/>
                         </td>
-                        <td>${dto.serviceCost}</td>
-                        <td>${dto.commissionCost}</td>
+                        <td>${districtDto.serviceCost}</td>
+                        <td>${districtDto.commissionCost}</td>
                         <td class="actions">
-                            <a href="<c:url value='${editUrl}/${dto.id}'/>" class="on-default edit-row"><i
+                            <a href="<c:url value='${editUrl}/${districtDto.id}'/>" class="on-default edit-row"><i
                                     class="fa fa-pencil"></i></a>
                             <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
                         </td>
@@ -91,14 +120,14 @@
         <section class="panel panel-featured">
             <header class="panel-heading">
                 <h2 class="panel-title">
-                    Xác nhận xoá
+                    <fmt:message bundle="${lang}" key="delete.ask.title"/>
                 </h2>
             </header>
             <div class="panel-body">
                 <div class="modal-wrapper">
                     <div class="modal-text">
                         <p>
-                            Bạn có chắc chắn muốn toà nhà đã chọn?
+                            <fmt:message bundle="${lang}" key="delete.ask.text"/>
                         </p>
                     </div>
                 </div>
@@ -107,10 +136,10 @@
                 <div class="row">
                     <div class="col-md-12 text-right">
                         <button id="dialogConfirm" class="btn btn-primary">
-                            Xác nhận
+                            <fmt:message bundle="${lang}" key="confirm"/>
                         </button>
                         <button id="dialogCancel" class="btn btn-default">
-                            Huỷ
+                            <fmt:message bundle="${lang}" key="cancel"/>
                         </button>
                     </div>
                 </div>
@@ -126,7 +155,17 @@
                 // tai edited here
                 paging: false,
                 info: false,
-                bAutoWidth: false
+                bAutoWidth: false,
+                order: [], //Initial no order.
+                aaSorting: [],
+                aoColumnDefs: [{
+                    bSortable: false,
+                    aTargets: [0, -1]
+                },
+                    {
+                        aTargets: [0, -1],
+                        className: "align-center"
+                 }]
             });
 
             addEventDeleteButton();
