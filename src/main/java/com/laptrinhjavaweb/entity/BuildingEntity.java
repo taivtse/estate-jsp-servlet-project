@@ -33,7 +33,7 @@ public class BuildingEntity {
     private Integer numberOfBasement;
 
     @Column(name = "building_area")
-    private Integer buildingArea;
+    private Float buildingArea;
 
     @Column(name = "direction")
     private String direction;
@@ -54,25 +54,25 @@ public class BuildingEntity {
     private String costDescription;
 
     @Column(name = "service_cost")
-    private Integer serviceCost;
+    private String serviceCost;
 
     @Column(name = "car_cost")
-    private Integer carCost;
+    private String carCost;
 
     @Column(name = "motorbike_cost")
-    private Integer motorbikeCost;
+    private String motorbikeCost;
 
     @Column(name = "overtime_cost")
-    private Integer overtimeCost;
+    private String overtimeCost;
 
     @Column(name = "electricity_cost")
-    private Integer electricityCost;
+    private String electricityCost;
 
     @Column(name = "deposit_cost")
-    private Integer depositCost;
+    private String depositCost;
 
     @Column(name = "payment_cost")
-    private Integer paymentCost;
+    private String paymentCost;
 
     @Column(name = "time_contract")
     private String timeContract;
@@ -87,7 +87,7 @@ public class BuildingEntity {
     private String managerPhone;
 
     @Column(name = "commission_cost")
-    private Integer commissionCost;
+    private String commissionCost;
 
     @Column(name = "note")
     private String note;
@@ -98,8 +98,8 @@ public class BuildingEntity {
     @Column(name = "location")
     private String location;
 
-    @Column(name = "type_arrays")
-    private String typeArrays;
+    @Column(name = "type")
+    private String type;
 
     @Column(name = "image")
     private String image;
@@ -172,11 +172,11 @@ public class BuildingEntity {
         this.numberOfBasement = numberOfBasement;
     }
 
-    public Integer getBuildingArea() {
+    public Float getBuildingArea() {
         return buildingArea;
     }
 
-    public void setBuildingArea(Integer buildingArea) {
+    public void setBuildingArea(Float buildingArea) {
         this.buildingArea = buildingArea;
     }
 
@@ -228,59 +228,59 @@ public class BuildingEntity {
         this.costDescription = costDescription;
     }
 
-    public Integer getServiceCost() {
+    public String getServiceCost() {
         return serviceCost;
     }
 
-    public void setServiceCost(Integer serviceCost) {
+    public void setServiceCost(String serviceCost) {
         this.serviceCost = serviceCost;
     }
 
-    public Integer getCarCost() {
+    public String getCarCost() {
         return carCost;
     }
 
-    public void setCarCost(Integer carCost) {
+    public void setCarCost(String carCost) {
         this.carCost = carCost;
     }
 
-    public Integer getMotorbikeCost() {
+    public String getMotorbikeCost() {
         return motorbikeCost;
     }
 
-    public void setMotorbikeCost(Integer motorbikeCost) {
+    public void setMotorbikeCost(String motorbikeCost) {
         this.motorbikeCost = motorbikeCost;
     }
 
-    public Integer getOvertimeCost() {
+    public String getOvertimeCost() {
         return overtimeCost;
     }
 
-    public void setOvertimeCost(Integer overtimeCost) {
+    public void setOvertimeCost(String overtimeCost) {
         this.overtimeCost = overtimeCost;
     }
 
-    public Integer getElectricityCost() {
+    public String getElectricityCost() {
         return electricityCost;
     }
 
-    public void setElectricityCost(Integer electricityCost) {
+    public void setElectricityCost(String electricityCost) {
         this.electricityCost = electricityCost;
     }
 
-    public Integer getDepositCost() {
+    public String getDepositCost() {
         return depositCost;
     }
 
-    public void setDepositCost(Integer depositCost) {
+    public void setDepositCost(String depositCost) {
         this.depositCost = depositCost;
     }
 
-    public Integer getPaymentCost() {
+    public String getPaymentCost() {
         return paymentCost;
     }
 
-    public void setPaymentCost(Integer paymentCost) {
+    public void setPaymentCost(String paymentCost) {
         this.paymentCost = paymentCost;
     }
 
@@ -316,11 +316,11 @@ public class BuildingEntity {
         this.managerPhone = managerPhone;
     }
 
-    public Integer getCommissionCost() {
+    public String getCommissionCost() {
         return commissionCost;
     }
 
-    public void setCommissionCost(Integer commissionCost) {
+    public void setCommissionCost(String commissionCost) {
         this.commissionCost = commissionCost;
     }
 
@@ -348,12 +348,12 @@ public class BuildingEntity {
         this.location = location;
     }
 
-    public String getTypeArrays() {
-        return typeArrays;
+    public String getType() {
+        return type;
     }
 
-    public void setTypeArrays(String typeArrays) {
-        this.typeArrays = typeArrays;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getImage() {

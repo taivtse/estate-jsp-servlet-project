@@ -8,32 +8,32 @@ public class BuildingDto {
     private String district;
     private String ward;
     private String street;
-    private String address;
+    private String fullAddress;
     private String structure;
     private Integer numberOfBasement;
-    private Integer buildingArea;
+    private Float buildingArea;
     private String direction;
     private String level;
     private String rentalArea;
     private String areaDescription;
     private Integer rentalCost;
     private String costDescription;
-    private Integer serviceCost;
-    private Integer carCost;
-    private Integer motorbikeCost;
-    private Integer overtimeCost;
-    private Integer electricityCost;
-    private Integer depositCost;
-    private Integer paymentCost;
+    private String serviceCost;
+    private String carCost;
+    private String motorbikeCost;
+    private String overtimeCost;
+    private String electricityCost;
+    private String depositCost;
+    private String paymentCost;
     private String timeContract;
     private String timeDecorator;
     private String managerName;
     private String managerPhone;
-    private Integer commissionCost;
+    private String commissionCost;
     private String note;
     private String link;
     private String location;
-    private String typeArrays;
+    private String type;
     private String image;
     private Date createdDate;
     private String createdBy;
@@ -80,12 +80,12 @@ public class BuildingDto {
         this.street = street;
     }
 
-    public String getAddress() {
-        return address;
+    public String getFullAddress() {
+        return fullAddress;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setFullAddress(String fullAddress) {
+        this.fullAddress = fullAddress;
     }
 
     public String getStructure() {
@@ -104,11 +104,11 @@ public class BuildingDto {
         this.numberOfBasement = numberOfBasement;
     }
 
-    public Integer getBuildingArea() {
+    public Float getBuildingArea() {
         return buildingArea;
     }
 
-    public void setBuildingArea(Integer buildingArea) {
+    public void setBuildingArea(Float buildingArea) {
         this.buildingArea = buildingArea;
     }
 
@@ -160,59 +160,59 @@ public class BuildingDto {
         this.costDescription = costDescription;
     }
 
-    public Integer getServiceCost() {
+    public String getServiceCost() {
         return serviceCost;
     }
 
-    public void setServiceCost(Integer serviceCost) {
+    public void setServiceCost(String serviceCost) {
         this.serviceCost = serviceCost;
     }
 
-    public Integer getCarCost() {
+    public String getCarCost() {
         return carCost;
     }
 
-    public void setCarCost(Integer carCost) {
+    public void setCarCost(String carCost) {
         this.carCost = carCost;
     }
 
-    public Integer getMotorbikeCost() {
+    public String getMotorbikeCost() {
         return motorbikeCost;
     }
 
-    public void setMotorbikeCost(Integer motorbikeCost) {
+    public void setMotorbikeCost(String motorbikeCost) {
         this.motorbikeCost = motorbikeCost;
     }
 
-    public Integer getOvertimeCost() {
+    public String getOvertimeCost() {
         return overtimeCost;
     }
 
-    public void setOvertimeCost(Integer overtimeCost) {
+    public void setOvertimeCost(String overtimeCost) {
         this.overtimeCost = overtimeCost;
     }
 
-    public Integer getElectricityCost() {
+    public String getElectricityCost() {
         return electricityCost;
     }
 
-    public void setElectricityCost(Integer electricityCost) {
+    public void setElectricityCost(String electricityCost) {
         this.electricityCost = electricityCost;
     }
 
-    public Integer getDepositCost() {
+    public String getDepositCost() {
         return depositCost;
     }
 
-    public void setDepositCost(Integer depositCost) {
+    public void setDepositCost(String depositCost) {
         this.depositCost = depositCost;
     }
 
-    public Integer getPaymentCost() {
+    public String getPaymentCost() {
         return paymentCost;
     }
 
-    public void setPaymentCost(Integer paymentCost) {
+    public void setPaymentCost(String paymentCost) {
         this.paymentCost = paymentCost;
     }
 
@@ -248,11 +248,11 @@ public class BuildingDto {
         this.managerPhone = managerPhone;
     }
 
-    public Integer getCommissionCost() {
+    public String getCommissionCost() {
         return commissionCost;
     }
 
-    public void setCommissionCost(Integer commissionCost) {
+    public void setCommissionCost(String commissionCost) {
         this.commissionCost = commissionCost;
     }
 
@@ -280,12 +280,12 @@ public class BuildingDto {
         this.location = location;
     }
 
-    public String getTypeArrays() {
-        return typeArrays;
+    public String getType() {
+        return type;
     }
 
-    public void setTypeArrays(String typeArrays) {
-        this.typeArrays = typeArrays;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getImage() {

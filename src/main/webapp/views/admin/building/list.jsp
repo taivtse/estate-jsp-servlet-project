@@ -63,7 +63,7 @@
                             <fmt:formatDate value="${dto.createdDate}" pattern="dd-MM-yyyy"/>
                         </td>
                         <td>${dto.name}</td>
-                        <td>${dto.address}</td>
+                        <td>${dto.fullAddress}</td>
                         <td>${dto.managerName}</td>
                         <td>${dto.managerPhone}</td>
                         <td>${dto.buildingArea}</td>
@@ -71,12 +71,8 @@
                         <td>
                             <fmt:formatNumber type="number" maxFractionDigits="3" value="${dto.rentalCost}"/>
                         </td>
-                        <td>
-                            <fmt:formatNumber type="number" maxFractionDigits="3" value="${dto.serviceCost}"/>
-                        </td>
-                        <td>
-                            <fmt:formatNumber type="number" maxFractionDigits="3" value="${dto.commissionCost}"/>
-                        </td>
+                        <td>${dto.serviceCost}</td>
+                        <td>${dto.commissionCost}</td>
                         <td class="actions">
                             <a href="<c:url value='${editUrl}/${dto.id}'/>" class="on-default edit-row"><i
                                     class="fa fa-pencil"></i></a>

@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 01/03/2019 21:57:09
+ Date: 09/03/2019 16:28:47
 */
 
 SET NAMES utf8mb4;
@@ -25,7 +25,7 @@ CREATE TABLE `assignment` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `building_id` int(10) unsigned DEFAULT NULL,
   `user_id` int(10) unsigned DEFAULT NULL,
-  `created_date` timestamp NULL DEFAULT NULL,
+  `created_date` date DEFAULT NULL,
   `created_by` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_ASSIGNMENT_BUILDING` (`building_id`),
@@ -46,36 +46,43 @@ CREATE TABLE `building` (
   `street` varchar(255) NOT NULL,
   `structure` varchar(255) NOT NULL,
   `number_of_basement` int(10) unsigned DEFAULT NULL,
-  `building_area` int(10) unsigned NOT NULL,
+  `building_area` float unsigned NOT NULL,
   `direction` varchar(255) DEFAULT NULL,
   `level` varchar(255) DEFAULT NULL,
   `rental_area` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `area_description` text,
   `rental_cost` int(10) unsigned NOT NULL,
   `cost_description` varchar(255) DEFAULT NULL,
-  `service_cost` int(10) unsigned NOT NULL,
-  `car_cost` int(10) unsigned DEFAULT NULL,
-  `motorbike_cost` int(10) unsigned DEFAULT NULL,
-  `overtime_cost` int(10) unsigned DEFAULT NULL,
-  `electricity_cost` int(10) unsigned DEFAULT NULL,
-  `deposit_cost` int(10) unsigned NOT NULL,
-  `payment_cost` int(10) unsigned NOT NULL,
-  `time_contract` varchar(50) DEFAULT NULL,
-  `time_decorator` varchar(50) DEFAULT NULL,
+  `service_cost` varchar(255) NOT NULL,
+  `car_cost` varchar(255) DEFAULT NULL,
+  `motorbike_cost` varchar(255) DEFAULT NULL,
+  `overtime_cost` varchar(255) DEFAULT NULL,
+  `electricity_cost` varchar(255) DEFAULT NULL,
+  `deposit_cost` varchar(255) NOT NULL,
+  `payment_cost` varchar(255) NOT NULL,
+  `time_contract` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `time_decorator` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `manager_name` varchar(255) DEFAULT NULL,
   `manager_phone` varchar(20) DEFAULT NULL,
-  `commission_cost` int(10) unsigned DEFAULT NULL,
+  `commission_cost` varchar(255) DEFAULT NULL,
   `note` text,
   `link` varchar(255) DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
-  `type_arrays` varchar(255) DEFAULT NULL,
+  `type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `created_date` date DEFAULT NULL,
   `created_by` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `modified_date` date DEFAULT NULL,
   `modified_by` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of building
+-- ----------------------------
+BEGIN;
+INSERT INTO `building` VALUES (1, 'New Sky', 'Quận Tân Phú', 'Tân Sơn Nhì', '52 Trường Chinh', 'AAAA', NULL, 900, NULL, NULL, '300', NULL, 50000000, NULL, '10 triệu', NULL, NULL, NULL, NULL, '25000000', '25000000', NULL, NULL, 'Võ Thành Tài', '0961523716', NULL, NULL, NULL, NULL, NULL, NULL, '2019-02-21', NULL, NULL, NULL);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for district
@@ -117,6 +124,8 @@ CREATE TABLE `user` (
   `role_id` varchar(20) NOT NULL,
   `created_date` date DEFAULT NULL,
   `created_by` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `modified_date` date DEFAULT NULL,
+  `modified_by` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_USER_ROLE` (`role_id`),
   CONSTRAINT `FK_USER_ROLE` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
@@ -126,10 +135,10 @@ CREATE TABLE `user` (
 -- Records of user
 -- ----------------------------
 BEGIN;
-INSERT INTO `user` VALUES (1, 'thanhtai', '12345', 'Võ Thành Tài', 'MANAGER', NULL, NULL);
-INSERT INTO `user` VALUES (2, 'haimy', '12345', 'Trần Hải My', 'USER', NULL, NULL);
-INSERT INTO `user` VALUES (3, 'duyquang', '12345', 'Trần Duy Quang', 'MANAGER', NULL, NULL);
-INSERT INTO `user` VALUES (4, 'duyquang', '12345', 'Trần Duy Quang', 'MANAGER', NULL, NULL);
+INSERT INTO `user` VALUES (1, 'thanhtai', '12345', 'Võ Thành Tài', 'MANAGER', '2019-01-15', NULL, NULL, NULL);
+INSERT INTO `user` VALUES (2, 'haimy', '12345', 'Trần Hải My', 'USER', '2019-01-25', NULL, NULL, NULL);
+INSERT INTO `user` VALUES (3, 'duyquang', '12345', 'Trần Duy Quang', 'MANAGER', NULL, NULL, NULL, NULL);
+INSERT INTO `user` VALUES (4, 'duytan', '12345', 'Trần Duy Tân', 'USER', NULL, NULL, NULL, NULL);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

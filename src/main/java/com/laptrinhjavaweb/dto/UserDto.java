@@ -10,6 +10,8 @@ public class UserDto {
     private String roleId;
     private Date createdDate;
     private String createdBy;
+    private Date modifiedDate;
+    private String modifiedBy;
 
     public Integer getId() {
         return id;
@@ -65,5 +67,21 @@ public class UserDto {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 }

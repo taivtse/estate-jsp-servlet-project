@@ -32,6 +32,12 @@ public class UserEntity {
     @Column(name = "created_by")
     private String createdBy;
 
+    @Column(name = "modified_date")
+    private Date modifiedDate;
+
+    @Column(name = "modified_by")
+    private String modifiedBy;
+
     public Integer getId() {
         return id;
     }
@@ -86,5 +92,21 @@ public class UserEntity {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 }

@@ -23,7 +23,7 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
 //        convert entity to dto and add it to dto list
         for (BuildingEntity entity : entityList) {
             BuildingDto dto = converter.entityToDto(entity);
-            dto.setAddress(this.buildAddress(dto.getDistrict(), dto.getWard(), dto.getStreet()));
+            dto.setFullAddress(this.buildAddress(dto.getDistrict(), dto.getWard(), dto.getStreet()));
             dtoList.add(dto);
         }
 
