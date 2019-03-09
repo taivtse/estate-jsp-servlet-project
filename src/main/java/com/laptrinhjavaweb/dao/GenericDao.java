@@ -23,5 +23,5 @@ public interface GenericDao<T, ID> {
 
     void delete(T entity) throws SQLException;
 
-    void deleteById(ID id) throws SQLException;
+    void deleteById(ID... id) throws SQLException;
 }

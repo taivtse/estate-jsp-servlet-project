@@ -197,14 +197,17 @@ public class AbstractDao<T, ID extends Serializable> implements GenericDao<T, ID
     }
 
     @Override
-    public void deleteById(ID id) throws SQLException {
+    public void deleteById(ID... ids) throws SQLException {
         try {
             T entity = entityClass.newInstance();
             String idFieldName = EntityUtil.getIdFieldName(entityClass);
             Field idField = ObjectAccessUtil.getFieldByName(entityClass, idFieldName);
-            ObjectAccessUtil.setFieldData(entity, id, idField);
+            
+            for (ID id : ids) {
+                ObjectAccessUtil.setFieldData(entity, id, idField);
 
-            this.delete(entity);
+                this.delete(entity);
+            }
         } catch (SQLException e) {
             throw e;
         } catch (Exception e) {
