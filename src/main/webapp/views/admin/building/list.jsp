@@ -38,10 +38,10 @@
                         </div>
                     </th>
                     <th>Ngày</th>
-                    <th>Tên toà nhà</th>
+                    <th>Tên</th>
                     <th>Địa chỉ</th>
-                    <th>Người quản lý</th>
-                    <th>Số điện thoại</th>
+                    <th>Quản lý</th>
+                    <th>SĐT</th>
                     <th>DT sàn</th>
                     <th>DT trống</th>
                     <th>Giá thuê</th>
@@ -59,16 +59,24 @@
                                 <label></label>
                             </div>
                         </td>
-                        <td>${dto.createdDate}</td>
+                        <td>
+                            <fmt:formatDate value="${dto.createdDate}" pattern="dd-MM-yyyy"/>
+                        </td>
                         <td>${dto.name}</td>
                         <td>${dto.address}</td>
                         <td>${dto.managerName}</td>
                         <td>${dto.managerPhone}</td>
                         <td>${dto.buildingArea}</td>
                         <td>${dto.rentalArea}</td>
-                        <td>${dto.rentalCost}</td>
-                        <td>${dto.serviceCost}</td>
-                        <td>${dto.commissionCost}</td>
+                        <td>
+                            <fmt:formatNumber type="number" maxFractionDigits="3" value="${dto.rentalCost}"/>
+                        </td>
+                        <td>
+                            <fmt:formatNumber type="number" maxFractionDigits="3" value="${dto.serviceCost}"/>
+                        </td>
+                        <td>
+                            <fmt:formatNumber type="number" maxFractionDigits="3" value="${dto.commissionCost}"/>
+                        </td>
                         <td class="actions">
                             <a href="<c:url value='${editUrl}/${dto.id}'/>" class="on-default edit-row"><i
                                     class="fa fa-pencil"></i></a>
@@ -121,7 +129,8 @@
             $('#datatable-default').DataTable({
                 // tai edited here
                 paging: false,
-                info: false
+                info: false,
+                bAutoWidth: false
             });
 
             addEventDeleteButton();

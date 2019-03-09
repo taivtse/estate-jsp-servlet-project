@@ -54,10 +54,10 @@
     <%@include file="/common/admin/header.jsp" %>
 
     <div class="inner-wrapper">
-        <!-- start: page -->
         <section role="main" class="content-body">
             <%@include file="/common/admin/nav-bar.jsp" %>
 
+            <!-- start: page -->
             <decorator:body></decorator:body>
             <!-- end: page -->
         </section>
