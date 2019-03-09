@@ -70,24 +70,24 @@
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 control-label">
-                            <fmt:message bundle="${lang}" key="building.district"/>
+                            <fmt:message bundle="${lang}" key="building.districtId"/>
                         </label>
                         <div class="col-md-6">
-                            <select data-plugin-selectTwo name="district" class="form-control populate">
+                            <select data-plugin-selectTwo name="districtId" class="form-control populate">
                                 <c:forEach var="districtDto" items="${command.districtList}">
-                                    <option value="${districtDto.id}" ${districtDto.id eq command.pojo.district ? 'selected' : ''}>${districtDto.name}</option>
+                                    <option value="${districtDto.id}" ${districtDto.id eq command.pojo.districtId ? 'selected' : ''}>${districtDto.name}</option>
                                 </c:forEach>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 control-label">
-                            <fmt:message bundle="${lang}" key="building.ward"/>
+                            <fmt:message bundle="${lang}" key="building.wardId"/>
                         </label>
                         <div class="col-md-6">
-                            <select data-plugin-selectTwo name="district" class="form-control populate">
+                            <select data-plugin-selectTwo name="districtId" class="form-control populate">
                                 <c:forEach var="districtDto" items="${command.districtList}">
-                                    <option value="${districtDto.id}" ${districtDto.id eq command.pojo.district ? 'selected' : ''}>${districtDto.name}</option>
+                                    <option value="${districtDto.id}" ${districtDto.id eq command.pojo.districtId ? 'selected' : ''}>${districtDto.name}</option>
                                 </c:forEach>
                             </select>
                         </div>

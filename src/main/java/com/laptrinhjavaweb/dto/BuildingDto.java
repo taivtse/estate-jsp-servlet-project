@@ -5,8 +5,7 @@ import java.util.Date;
 public class BuildingDto {
     private Integer id;
     private String name;
-    private String district;
-    private String ward;
+    private Integer wardId;
     private String street;
     private String fullAddress;
     private String structure;
@@ -14,7 +13,7 @@ public class BuildingDto {
     private Float buildingArea;
     private String direction;
     private String level;
-    private String rentalArea;
+    private String[] rentalArea;
     private String areaDescription;
     private Integer rentalCost;
     private String costDescription;
@@ -56,20 +55,12 @@ public class BuildingDto {
         this.name = name;
     }
 
-    public String getDistrict() {
-        return district;
+    public Integer getWardId() {
+        return wardId;
     }
 
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
-    public String getWard() {
-        return ward;
-    }
-
-    public void setWard(String ward) {
-        this.ward = ward;
+    public void setWardId(Integer wardId) {
+        this.wardId = wardId;
     }
 
     public String getStreet() {
@@ -128,11 +119,11 @@ public class BuildingDto {
         this.level = level;
     }
 
-    public String getRentalArea() {
+    public String[] getRentalArea() {
         return rentalArea;
     }
 
-    public void setRentalArea(String rentalArea) {
+    public void setRentalArea(String[] rentalArea) {
         this.rentalArea = rentalArea;
     }
 

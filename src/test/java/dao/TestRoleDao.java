@@ -22,10 +22,10 @@ public class TestRoleDao {
 
     @Test
     public void findOneById() {
-        roleDao.findOneById("USER");
+        roleDao.findOneById(3);
     }
 
     @Test void deleteById() throws SQLException {
-        roleDao.deleteById("AA");
+        roleDao.deleteById(3);
     }
 }

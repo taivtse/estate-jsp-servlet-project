@@ -10,7 +10,7 @@ public class TestSession {
     @Test
     public void test() {
         RoleEntity entity = new RoleEntity();
-        entity.setId("AA");
+        entity.setCode("AA");
         entity.setName("HIXHIX");
         Session session = SessionFactory.openSession();
         Transaction transaction = session.beginTransaction();

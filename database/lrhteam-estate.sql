@@ -41,8 +41,8 @@ DROP TABLE IF EXISTS `building`;
 CREATE TABLE `building` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  `district` varchar(255) NOT NULL,
-  `ward` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `districtId` varchar(255) NOT NULL,
+  `wardId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `street` varchar(255) NOT NULL,
   `structure` varchar(255) NOT NULL,
   `number_of_basement` int(10) unsigned DEFAULT NULL,
@@ -85,10 +85,10 @@ INSERT INTO `building` VALUES (1, 'New Sky', 'Quận Tân Phú', 'Tân Sơn Nhì
 COMMIT;
 
 -- ----------------------------
--- Table structure for district
+-- Table structure for districtId
 -- ----------------------------
-DROP TABLE IF EXISTS `district`;
-CREATE TABLE `district` (
+DROP TABLE IF EXISTS `districtId`;
+CREATE TABLE `districtId` (
   `id` varchar(10) NOT NULL,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)

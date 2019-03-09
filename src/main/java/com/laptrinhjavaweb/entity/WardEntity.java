@@ -5,15 +5,18 @@ import com.laptrinhjavaweb.orm.annotation.Entity;
 import com.laptrinhjavaweb.orm.annotation.Id;
 import com.laptrinhjavaweb.orm.annotation.IdField;
 
-@Entity(tableName = "district")
+@Entity(tableName = "ward")
 @IdField(name = "id")
-public class DistrictEntity {
+public class WardEntity {
     @Id(autoIncrement = true)
     @Column(name = "id")
     private Integer id;
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "district_id")
+    private Integer districtId;
 
     public Integer getId() {
         return id;
@@ -29,5 +32,13 @@ public class DistrictEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(Integer districtId) {
+        this.districtId = districtId;
     }
 }

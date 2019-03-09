@@ -19,14 +19,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AbstractDao<T, ID extends Serializable> implements GenericDao<T, ID> {
+public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T> {
     private Class<T> entityClass;
 
     public AbstractDao() {
         // set persistenceClass = T
         Type type = getClass().getGenericSuperclass();
         ParameterizedType parameterizedType = (ParameterizedType) type;
-        entityClass = (Class) parameterizedType.getActualTypeArguments()[0];
+        entityClass = (Class) parameterizedType.getActualTypeArguments()[1];
     }
 
     protected Session getSession() {
@@ -118,7 +118,7 @@ public class AbstractDao<T, ID extends Serializable> implements GenericDao<T, ID
         T entity = null;
 
         try {
-            session.get(this.entityClass, id);
+            entity = session.get(this.entityClass, id);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -202,7 +202,7 @@ public class AbstractDao<T, ID extends Serializable> implements GenericDao<T, ID
             T entity = entityClass.newInstance();
             String idFieldName = EntityUtil.getIdFieldName(entityClass);
             Field idField = ObjectAccessUtil.getFieldByName(entityClass, idFieldName);
-            
+
             for (ID id : ids) {
                 ObjectAccessUtil.setFieldData(entity, id, idField);
 

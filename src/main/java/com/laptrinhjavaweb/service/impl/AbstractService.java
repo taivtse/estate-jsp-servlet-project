@@ -6,12 +6,13 @@ import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
 import com.laptrinhjavaweb.paging.Pageable;
 import com.laptrinhjavaweb.service.GenericService;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AbstractService<ID, D, E> implements GenericService<ID, D> {
+public class AbstractService<ID extends Serializable, D, E> implements GenericService<ID, D> {
     protected GenericConverter<D, E> converter;
-    protected GenericDao<E, ID> genericDao;
+    protected GenericDao<ID, E> genericDao;
 
     @Override
     public List<D> findAll() {

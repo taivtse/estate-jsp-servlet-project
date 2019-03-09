@@ -17,11 +17,8 @@ public class BuildingEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "district")
-    private String district;
-
-    @Column(name = "ward")
-    private String ward;
+    @Column(name = "ward_id")
+    private Integer wardId;
 
     @Column(name = "street")
     private String street;
@@ -40,9 +37,6 @@ public class BuildingEntity {
 
     @Column(name = "level")
     private String level;
-
-    @Column(name = "rental_area")
-    private String rentalArea;
 
     @Column(name = "area_description")
     private String areaDescription;
@@ -132,20 +126,12 @@ public class BuildingEntity {
         this.name = name;
     }
 
-    public String getDistrict() {
-        return district;
+    public Integer getWardId() {
+        return wardId;
     }
 
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
-    public String getWard() {
-        return ward;
-    }
-
-    public void setWard(String ward) {
-        this.ward = ward;
+    public void setWardId(Integer wardId) {
+        this.wardId = wardId;
     }
 
     public String getStreet() {
@@ -194,14 +180,6 @@ public class BuildingEntity {
 
     public void setLevel(String level) {
         this.level = level;
-    }
-
-    public String getRentalArea() {
-        return rentalArea;
-    }
-
-    public void setRentalArea(String rentalArea) {
-        this.rentalArea = rentalArea;
     }
 
     public String getAreaDescription() {
