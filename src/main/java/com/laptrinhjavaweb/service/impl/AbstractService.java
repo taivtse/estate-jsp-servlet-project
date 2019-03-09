@@ -48,14 +48,14 @@ public class AbstractService<ID, D, E> implements GenericService<ID, D> {
     @Override
     public D save(D dto) throws Exception {
         E entity = converter.dtoToEntity(dto);
-        entity = genericDao.save(entity);
+        genericDao.save(entity);
         return converter.entityToDto(entity);
     }
 
     @Override
     public D update(D dto) throws Exception {
         E entity = converter.dtoToEntity(dto);
-        entity = genericDao.update(entity);
+        genericDao.update(entity);
         return converter.entityToDto(entity);
     }
 

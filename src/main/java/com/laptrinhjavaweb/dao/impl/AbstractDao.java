@@ -11,6 +11,7 @@ import com.laptrinhjavaweb.orm.util.EntityUtil;
 import com.laptrinhjavaweb.orm.util.ObjectAccessUtil;
 import com.laptrinhjavaweb.paging.Pageable;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -18,7 +19,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AbstractDao<T, ID> implements GenericDao<T, ID> {
+public class AbstractDao<T, ID extends Serializable> implements GenericDao<T, ID> {
     private Class<T> entityClass;
 
     public AbstractDao() {
@@ -69,14 +70,14 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
             if (pageable.getSorter() != null
                     && !pageable.getSorter().getPropertyName().isEmpty()
                     && !pageable.getSorter().getDirection().isEmpty()) {
-                criteria.addOrderBy(pageable.getSorter().getOrder());
+                criteria.addOrder(pageable.getSorter().getOrder());
             }
         }
 
         try {
 //        set properties search
             if (criterionList != null) {
-                criterionList.forEach(criterion -> criteria.addWhere(criterion));
+                criterionList.forEach(criterion -> criteria.addCriterion(criterion));
             }
             entityList = criteria.list();
         } catch (Exception e) {
@@ -97,7 +98,7 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
         try {
 //        set properties search
             if (criterionList != null) {
-                criterionList.forEach(criterion -> cr.addWhere(criterion));
+                criterionList.forEach(criterion -> cr.addCriterion(criterion));
             }
 
             cr.addSelection(Projections.rowCount());
@@ -117,7 +118,7 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
         T entity = null;
 
         try {
-            entity = session.get(this.entityClass, id);
+            session.get(this.entityClass, id);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -135,7 +136,7 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
 
         try {
             if (criterionList != null) {
-                criterionList.forEach(criterion -> cr.addWhere(criterion));
+                criterionList.forEach(criterion -> cr.addCriterion(criterion));
             }
             entity = (T) cr.uniqueResult();
         } catch (Exception e) {
@@ -148,12 +149,12 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
     }
 
     @Override
-    public T save(T entity) throws SQLException {
+    public void save(T entity) throws SQLException {
         Session session = this.getSession();
         Transaction transaction = session.beginTransaction();
 
         try {
-            entity = session.save(entity);
+            session.save(entity);
             transaction.commit();
         } catch (SQLException e) {
             transaction.rollback();
@@ -161,17 +162,15 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
         } finally {
             session.close();
         }
-
-        return entity;
     }
 
     @Override
-    public T update(T entity) throws SQLException {
+    public void update(T entity) throws SQLException {
         Session session = this.getSession();
         Transaction transaction = session.beginTransaction();
 
         try {
-            entity = session.update(entity);
+            session.update(entity);
             transaction.commit();
         } catch (SQLException e) {
             transaction.rollback();
@@ -179,8 +178,6 @@ public class AbstractDao<T, ID> implements GenericDao<T, ID> {
         } finally {
             session.close();
         }
-
-        return entity;
     }
 
     @Override

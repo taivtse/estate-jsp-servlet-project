@@ -1,5 +1,6 @@
 package com.laptrinhjavaweb.orm.query.criteria;
 
+import com.laptrinhjavaweb.orm.mapper.ArrayMapper;
 import com.laptrinhjavaweb.orm.mapper.EntityMapper;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.NamedParam;
@@ -61,7 +62,7 @@ public class CriteriaImpl implements Criteria {
                 if (isMappedToEntity) {
                     resultList.add(EntityMapper.of(entityClass).toEntity(resultSet));
                 } else {
-                    resultList.add(resultSet.getObject(1));
+                    resultList.add(ArrayMapper.toArray(resultSet));
                 }
             }
 
@@ -88,7 +89,7 @@ public class CriteriaImpl implements Criteria {
                 if (isMappedToEntity) {
                     object = EntityMapper.of(entityClass).toEntity(resultSet);
                 } else {
-                    object = resultSet.getObject(1);
+                    object = ArrayMapper.toArray(resultSet);
                 }
             }
         } catch (Exception e) {
@@ -124,7 +125,7 @@ public class CriteriaImpl implements Criteria {
     }
 
     @Override
-    public Criteria addWhere(Criterion criterion) {
+    public Criteria addCriterion(Criterion criterion) {
         if (where.length() == 0) {
             where.append(" WHERE");
             criterion.setPrefixLogical(" ");
@@ -149,7 +150,7 @@ public class CriteriaImpl implements Criteria {
     }
 
     @Override
-    public Criteria addOrderBy(Order order) {
+    public Criteria addOrder(Order order) {
         if (orderBy.length() == 0) {
             orderBy.append(" ORDER BY");
         } else {

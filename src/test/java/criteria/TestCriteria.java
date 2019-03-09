@@ -10,7 +10,7 @@ import com.laptrinhjavaweb.orm.query.criteria.criterion.projection.Projections;
 import org.testng.annotations.Test;
 
 public class TestCriteria {
-//    @Test
+    //    @Test
     public void testBuildWhere() {
         Criteria criteria = new CriteriaImpl(null, UserEntity.class);
 //        criteria.add(Logical.and("username").eq("thanhtai"));
@@ -18,16 +18,16 @@ public class TestCriteria {
 //        criteria.add(Logical.or("fullName").eq("3"));
 //        criteria.add(Logical.or("fullName").between("-1", "10"));
 
-        GroupExpression groupExpression = Logical.noPrefixGroup();
-        groupExpression.add(Logical.noPrefix("username").eq("1"))
+        GroupExpression groupExpression = Logical.andGroup();
+        groupExpression.add(Logical.and("username").eq("1"))
                 .add(Logical.and("fullName").like("ahihi", MatchMode.START))
                 .add(Logical.and("fullName").between("-1", "10"));
 
-        criteria.addWhere(groupExpression);
+        criteria.addCriterion(groupExpression);
     }
 
     @Test
-    public void testProjection(){
+    public void testProjection() {
         Criteria criteria = new CriteriaImpl(null, UserEntity.class);
 //        criteria.setProjection(Projections.avg("id"));
         criteria.addSelection(Projections.countDistinct("id"));
