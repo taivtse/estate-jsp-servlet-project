@@ -20,11 +20,17 @@ public class AbstractConverter<D, E> implements GenericConverter<D, E> {
 
     @Override
     public D entityToDto(E entity) {
+        if (entity == null) {
+            return null;
+        }
         return modelMapper.map(entity, dtoClass);
     }
 
     @Override
     public E dtoToEntity(D dto) {
+        if (dto == null) {
+            return null;
+        }
         return modelMapper.map(dto, entityClass);
     }
 }
