@@ -55,7 +55,7 @@
                     <div class="form-group">
                         <div class="row mb-lg">
                             <div class="col-xs-12" style="display: flex; justify-content: center">
-                                <input typeArr="file" id="buildingImage" name="pojo.image">
+                                <input type="file" id="buildingImage" name="pojo.image">
                                 <div class="imagePreviewWrapper">
                                     <c:if test="${not empty command.pojo.image}">
                                         <c:url value="/resource/${command.pojo.image}"
@@ -74,7 +74,7 @@
                                     <fmt:message bundle="${lang}" key="building.name"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="text" name="pojo.name" value="${command.pojo.name}"
+                                    <input type="text" name="pojo.name" value="${command.pojo.name}"
                                            class="form-control">
                                 </div>
                             </div>
@@ -85,7 +85,7 @@
                                     <fmt:message bundle="${lang}" key="building.structure"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="text" name="pojo.structure" value="${command.pojo.structure}"
+                                    <input type="text" name="pojo.structure" value="${command.pojo.structure}"
                                            class="form-control">
                                 </div>
                             </div>
@@ -96,7 +96,7 @@
                                     <fmt:message bundle="${lang}" key="building.numberOfBasement"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="number" name="pojo.numberOfBasement"
+                                    <input type="number" name="pojo.numberOfBasement"
                                            value="${command.pojo.numberOfBasement}"
                                            class="form-control">
                                 </div>
@@ -139,7 +139,7 @@
                                     <fmt:message bundle="${lang}" key="building.street"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="text" name="pojo.street" value="${command.pojo.street}"
+                                    <input type="text" name="pojo.street" value="${command.pojo.street}"
                                            class="form-control">
                                 </div>
                             </div>
@@ -153,7 +153,7 @@
                                     <fmt:message bundle="${lang}" key="building.buildingArea"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="number" name="pojo.buildingArea"
+                                    <input type="number" name="pojo.buildingArea"
                                            value="${command.pojo.buildingArea}"
                                            class="form-control">
                                 </div>
@@ -165,7 +165,7 @@
                                     <fmt:message bundle="${lang}" key="building.direction"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="text" name="pojo.direction"
+                                    <input type="text" name="pojo.direction"
                                            value="${command.pojo.direction}"
                                            class="form-control">
                                 </div>
@@ -177,7 +177,7 @@
                                     <fmt:message bundle="${lang}" key="building.level"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="text" name="pojo.level"
+                                    <input type="text" name="pojo.level"
                                            value="${command.pojo.level}"
                                            class="form-control">
                                 </div>
@@ -221,7 +221,7 @@
                                     <fmt:message bundle="${lang}" key="building.rentalCost"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="number" name="pojo.rentalCost"
+                                    <input type="number" name="pojo.rentalCost"
                                            value="${command.pojo.rentalCost}"
                                            class="form-control">
                                 </div>
@@ -247,7 +247,7 @@
                                     <fmt:message bundle="${lang}" key="building.serviceCost"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="text" name="pojo.serviceCost"
+                                    <input type="text" name="pojo.serviceCost"
                                            value="${command.pojo.serviceCost}"
                                            class="form-control">
                                 </div>
@@ -259,7 +259,7 @@
                                     <fmt:message bundle="${lang}" key="building.carCost"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="text" name="pojo.carCost"
+                                    <input type="text" name="pojo.carCost"
                                            value="${command.pojo.carCost}"
                                            class="form-control">
                                 </div>
@@ -271,7 +271,7 @@
                                     <fmt:message bundle="${lang}" key="building.motorbikeCost"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="text" name="pojo.motorbikeCost"
+                                    <input type="text" name="pojo.motorbikeCost"
                                            value="${command.pojo.motorbikeCost}"
                                            class="form-control">
                                 </div>
@@ -286,7 +286,7 @@
                                     <fmt:message bundle="${lang}" key="building.deposit"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="text" name="pojo.deposit"
+                                    <input type="text" name="pojo.deposit"
                                            value="${command.pojo.deposit}"
                                            class="form-control">
                                 </div>
@@ -298,7 +298,7 @@
                                     <fmt:message bundle="${lang}" key="building.payment"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="text" name="pojo.payment"
+                                    <input type="text" name="pojo.payment"
                                            value="${command.pojo.payment}"
                                            class="form-control">
                                 </div>
@@ -310,7 +310,7 @@
                                     <fmt:message bundle="${lang}" key="building.timeContract"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="text" name="pojo.timeContract"
+                                    <input type="text" name="pojo.timeContract"
                                            value="${command.pojo.timeContract}"
                                            class="form-control">
                                 </div>
@@ -325,7 +325,7 @@
                                     <fmt:message bundle="${lang}" key="building.timeDecorator"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="text" name="pojo.timeDecorator"
+                                    <input type="text" name="pojo.timeDecorator"
                                            value="${command.pojo.timeDecorator}"
                                            class="form-control">
                                 </div>
@@ -337,7 +337,7 @@
                                     <fmt:message bundle="${lang}" key="building.managerName"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="text" name="pojo.managerName"
+                                    <input type="text" name="pojo.managerName"
                                            value="${command.pojo.managerName}"
                                            class="form-control">
                                 </div>
@@ -349,7 +349,7 @@
                                     <fmt:message bundle="${lang}" key="building.managerPhone"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="text" name="pojo.managerPhone"
+                                    <input type="text" name="pojo.managerPhone"
                                            value="${command.pojo.managerPhone}"
                                            class="form-control">
                                 </div>
@@ -364,7 +364,7 @@
                                     <fmt:message bundle="${lang}" key="building.commissionCost"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="text" name="pojo.commissionCost"
+                                    <input type="text" name="pojo.commissionCost"
                                            value="${command.pojo.commissionCost}"
                                            class="form-control">
                                 </div>
@@ -376,7 +376,7 @@
                                     <fmt:message bundle="${lang}" key="building.location"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="text" name="pojo.location"
+                                    <input type="text" name="pojo.location"
                                            value="${command.pojo.location}"
                                            class="form-control">
                                 </div>
@@ -413,7 +413,7 @@
                                     <fmt:message bundle="${lang}" key="building.link"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typeArr="text" name="pojo.link"
+                                    <input typer="text" name="pojo.link"
                                            value="${command.pojo.link}"
                                            class="form-control">
                                 </div>
@@ -433,10 +433,10 @@
                     </div>
                     <hr>
                     <div class="form-group text-center">
-                        <button typeArr="submit" class="mb-xs mt-xs mr-xs btn btn-primary">
-                            <fmt:message bundle="${lang}" key="${empty command.pojo ? 'insert' : 'update'}"/>
+                        <button typer="submit" class="mb-xs mt-xs mr-xs btn btn-primary">
+                            <fmt:message bundle="${lang}" key="${empty command.pojo.id ? 'insert' : 'update'}"/>
                         </button>
-                        <button typeArr="reset" class="mb-xs mt-xs mr-xs btn btn-default">
+                        <button typer="reset" class="mb-xs mt-xs mr-xs btn btn-default">
                             <fmt:message bundle="${lang}" key="reset"/>
                         </button>
                     </div>
@@ -451,7 +451,7 @@
 </content>
 
 <content tag="local_script">
-    <script typeArr="application/javascript">
+    <script typer="application/javascript">
         $(document).ready(function () {
             getImagePreview();
         })

@@ -28,7 +28,7 @@
                     <a href="${editUrl}" class="btn btn-primary">
                         <fmt:message bundle="${lang}" key="insert"/>
                         <i class="fa fa-plus"></i></a>
-                    <button class="btn btn-danger" id="btnDeleteAll">
+                    <button class="btn btn-danger" id="btnDeleteAll" disabled>
                         <fmt:message bundle="${lang}" key="delete"/>
                         <i class="fa fa-trash-o"></i></button>
                 </div>
@@ -149,7 +149,7 @@
 </content>
 
 <content tag="local_script">
-    <script typeArr="application/javascript">
+    <script type="application/javascript">
         $(document).ready(function () {
             $('#datatable-default').DataTable({
                 // tai edited here
@@ -177,7 +177,7 @@
                 $.magnificPopup.open({
                     items: {
                         src: '#dialog',
-                        typeArr: 'inline'
+                        type: 'inline'
                     },
                     preloader: false,
                     modal: true,
@@ -206,7 +206,7 @@
 
         function deleteBuilding() {
             $.ajax({
-                typeArr: "DELETE",
+                type: "DELETE",
                 url: "/admin/building/",
                 success: function (msg) {
 
