@@ -52,14 +52,16 @@
             <div class="panel-body">
                 <form class="form-horizontal buildingForm" action="${submitFormUrl}" method="post"
                       enctype="multipart/form-data">
+                    <c:if test="${not empty command.pojo.id}">
+                        <input type="hidden" name="pojo.id" value="${command.pojo.id}">
+                    </c:if>
                     <div class="form-group">
                         <div class="row mb-lg">
                             <div class="col-xs-12" style="display: flex; justify-content: center">
                                 <input type="file" id="buildingImage" name="pojo.image">
                                 <div class="imagePreviewWrapper">
                                     <c:if test="${not empty command.pojo.image}">
-                                        <c:url value="/resource/${command.pojo.image}"
-                                               var="imageUrl"></c:url>
+                                        <c:url value="/resource/${command.pojo.image}" var="imageUrl"></c:url>
                                     </c:if>
                                     <img src="${imageUrl}" alt="" id="imagePreview">
                                 </div>
@@ -111,7 +113,7 @@
                                     <fmt:message bundle="${lang}" key="building.districtId"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <select data-plugin-selectTwo name="districtId" class="form-control populate">
+                                    <select data-plugin-selectTwo class="form-control populate">
                                         <c:forEach var="districtDto" items="${command.districtDtoList}">
                                             <option value="${districtDto.id}" ${districtDto.id eq command.pojo.districtId ? 'selected' : ''}>${districtDto.name}</option>
                                         </c:forEach>
@@ -125,7 +127,7 @@
                                     <fmt:message bundle="${lang}" key="building.wardId"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <select data-plugin-selectTwo name="districtId" class="form-control populate">
+                                    <select data-plugin-selectTwo name="pojo.wardId" class="form-control populate">
                                         <c:forEach var="wardDto" items="${command.wardDtoList}">
                                             <option value="${wardDto.id}" ${wardDto.id eq command.pojo.wardId ? 'selected' : ''}>${wardDto.name}</option>
                                         </c:forEach>
@@ -283,6 +285,45 @@
                         <div class="col-xs-4">
                             <div class="form-group">
                                 <label class="col-md-3 control-label">
+                                    <fmt:message bundle="${lang}" key="building.commissionCost"/>
+                                </label>
+                                <div class="col-md-9">
+                                    <input type="text" name="pojo.commissionCost"
+                                           value="${command.pojo.commissionCost}"
+                                           class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    <fmt:message bundle="${lang}" key="building.overtimeCost"/>
+                                </label>
+                                <div class="col-md-9">
+                                    <input type="text" name="pojo.overtimeCost"
+                                           value="${command.pojo.overtimeCost}"
+                                           class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
+                                    <fmt:message bundle="${lang}" key="building.electricityCost"/>
+                                </label>
+                                <div class="col-md-9">
+                                    <input type="text" name="pojo.electricityCost"
+                                           value="${command.pojo.electricityCost}"
+                                           class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">
                                     <fmt:message bundle="${lang}" key="building.deposit"/>
                                 </label>
                                 <div class="col-md-9">
@@ -361,11 +402,11 @@
                         <div class="col-xs-4">
                             <div class="form-group">
                                 <label class="col-md-3 control-label">
-                                    <fmt:message bundle="${lang}" key="building.commissionCost"/>
+                                    <fmt:message bundle="${lang}" key="building.link"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input type="text" name="pojo.commissionCost"
-                                           value="${command.pojo.commissionCost}"
+                                    <input typer="text" name="pojo.link"
+                                           value="${command.pojo.link}"
                                            class="form-control">
                                 </div>
                             </div>
@@ -407,25 +448,13 @@
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col-xs-12">
                             <div class="form-group">
-                                <label class="col-md-3 control-label">
-                                    <fmt:message bundle="${lang}" key="building.link"/>
-                                </label>
-                                <div class="col-md-9">
-                                    <input typer="text" name="pojo.link"
-                                           value="${command.pojo.link}"
-                                           class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">
+                                <label class="col-md-1 control-label">
                                     <fmt:message bundle="${lang}" key="building.note"/>
                                 </label>
-                                <div class="col-md-9">
-                                        <textarea name="pojo.note" class="form-control" rows="2"
+                                <div class="col-md-11">
+                                        <textarea name="pojo.note" class="form-control" rows="3"
                                                   data-plugin-textarea-autosize>${command.pojo.note}</textarea>
                                 </div>
                             </div>

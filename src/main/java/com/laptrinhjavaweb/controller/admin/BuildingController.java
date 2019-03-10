@@ -79,6 +79,7 @@ public class BuildingController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        BuildingCommand command = FormUtil.populate(BuildingCommand.class, req);
 
     }
 
