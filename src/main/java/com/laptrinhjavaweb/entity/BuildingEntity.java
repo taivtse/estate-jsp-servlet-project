@@ -30,7 +30,7 @@ public class BuildingEntity {
     private Integer numberOfBasement;
 
     @Column(name = "building_area")
-    private Float buildingArea;
+    private Integer buildingArea;
 
     @Column(name = "direction")
     private String direction;
@@ -62,11 +62,11 @@ public class BuildingEntity {
     @Column(name = "electricity_cost")
     private String electricityCost;
 
-    @Column(name = "deposit_cost")
-    private String depositCost;
+    @Column(name = "deposit")
+    private String deposit;
 
-    @Column(name = "payment_cost")
-    private String paymentCost;
+    @Column(name = "payment")
+    private String payment;
 
     @Column(name = "time_contract")
     private String timeContract;
@@ -158,11 +158,11 @@ public class BuildingEntity {
         this.numberOfBasement = numberOfBasement;
     }
 
-    public Float getBuildingArea() {
+    public Integer getBuildingArea() {
         return buildingArea;
     }
 
-    public void setBuildingArea(Float buildingArea) {
+    public void setBuildingArea(Integer buildingArea) {
         this.buildingArea = buildingArea;
     }
 
@@ -246,20 +246,20 @@ public class BuildingEntity {
         this.electricityCost = electricityCost;
     }
 
-    public String getDepositCost() {
-        return depositCost;
+    public String getDeposit() {
+        return deposit;
     }
 
-    public void setDepositCost(String depositCost) {
-        this.depositCost = depositCost;
+    public void setDeposit(String deposit) {
+        this.deposit = deposit;
     }
 
-    public String getPaymentCost() {
-        return paymentCost;
+    public String getPayment() {
+        return payment;
     }
 
-    public void setPaymentCost(String paymentCost) {
-        this.paymentCost = paymentCost;
+    public void setPayment(String payment) {
+        this.payment = payment;
     }
 
     public String getTimeContract() {

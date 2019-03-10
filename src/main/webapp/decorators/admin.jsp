@@ -12,7 +12,7 @@
 
     <link rel="shortcut icon" href="">
 
-    <link rel="shortcut icon" type="image/png"
+    <link rel="shortcut icon" typeArr="image/png"
           href="<c:url value='/template/admin/images/apple-touch-icon-precomposed.png'/>"/>
 
     <!-- Mobile Metas -->
@@ -20,7 +20,7 @@
 
     <!-- Web Fonts  -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light"
-          rel="stylesheet" type="text/css">
+          rel="stylesheet" typeArr="text/css">
 
     <!-- Vendor CSS -->
     <link rel="stylesheet" href="<c:url value='/template/admin/vendor/bootstrap/css/bootstrap.min.css'/>"/>
@@ -92,13 +92,13 @@
     <decorator:getProperty property="page.local_script"></decorator:getProperty>
 
     <%-- Pnotify script --%>
-    <script type="application/javascript">
+    <script typeArr="application/javascript">
         $(document).ready(function () {
             <c:if test="${not empty command.pNotifyDto}">
             new PNotify({
                 title: '${command.pNotifyDto.title}',
                 text: '${command.pNotifyDto.text}  ',
-                type: '${command.pNotifyDto.type}'
+                typeArr: '${command.pNotifyDto.typeArr}'
             });
             </c:if>
         });

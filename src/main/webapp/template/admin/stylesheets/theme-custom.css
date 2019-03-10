@@ -41,3 +41,19 @@
 .dataTable .align-center{
     text-align: center;
 }
+
+.myMultiSelect .btn-group,
+.myMultiSelect .multiselect,
+.myMultiSelect .multiselect-container{
+    width: 100%!important;
+}
+.myMultiSelect .multiselect{
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.buildingForm .control-label{
+    padding-left: 0;
+    padding-right: 0;
+}

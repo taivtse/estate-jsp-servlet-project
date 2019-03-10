@@ -66,7 +66,7 @@ CREATE TABLE `building` (
   `note` text,
   `link` varchar(255) DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
-  `type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `typeArr` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `created_date` date DEFAULT NULL,
   `created_by` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,

@@ -74,7 +74,7 @@ a:active {
 	border-bottom: none;
 	border-left: 1px solid #3a3a3a;
 	box-shadow: 1px 3px 0 1px #cccccc;
-	height: 50px;
+	height: 45px;
 	margin: -40px -40px 40px -40px;
 	padding: 0;
 }
@@ -13212,7 +13212,7 @@ html.dark .datepicker.datepicker-primary {
 .select2-chosen,
 .select2-choice > span:first-child,
 .select2-container .select2-choices .select2-search-field input {
-	padding: 6px 12px;
+	padding: 8px 12px;
 }
 
 .input-sm .select2-chosen,

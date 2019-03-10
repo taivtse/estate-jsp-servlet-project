@@ -96,7 +96,7 @@
                         <td>${districtDto.managerName}</td>
                         <td>${districtDto.managerPhone}</td>
                         <td>${districtDto.buildingArea}</td>
-                        <td>${districtDto.rentalArea}</td>
+                        <td>${fn:join(districtDto.rentalAreaArr, ', ')}</td>
                         <td>
                             <fmt:formatNumber type="number" maxFractionDigits="3" value="${districtDto.rentalCost}"/>
                         </td>
@@ -149,7 +149,7 @@
 </content>
 
 <content tag="local_script">
-    <script type="application/javascript">
+    <script typeArr="application/javascript">
         $(document).ready(function () {
             $('#datatable-default').DataTable({
                 // tai edited here
@@ -165,7 +165,7 @@
                     {
                         aTargets: [0, -1],
                         className: "align-center"
-                 }]
+                    }]
             });
 
             addEventDeleteButton();
@@ -177,7 +177,7 @@
                 $.magnificPopup.open({
                     items: {
                         src: '#dialog',
-                        type: 'inline'
+                        typeArr: 'inline'
                     },
                     preloader: false,
                     modal: true,
@@ -206,7 +206,7 @@
 
         function deleteBuilding() {
             $.ajax({
-                type: "DELETE",
+                typeArr: "DELETE",
                 url: "/admin/building/",
                 success: function (msg) {
 

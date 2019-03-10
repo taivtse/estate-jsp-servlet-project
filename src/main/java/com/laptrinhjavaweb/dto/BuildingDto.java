@@ -5,15 +5,16 @@ import java.util.Date;
 public class BuildingDto {
     private Integer id;
     private String name;
+    private Integer districtId;
     private Integer wardId;
     private String street;
     private String fullAddress;
     private String structure;
     private Integer numberOfBasement;
-    private Float buildingArea;
+    private Integer buildingArea;
     private String direction;
     private String level;
-    private String[] rentalArea;
+    private Integer[] rentalAreaArr;
     private String areaDescription;
     private Integer rentalCost;
     private String costDescription;
@@ -22,8 +23,8 @@ public class BuildingDto {
     private String motorbikeCost;
     private String overtimeCost;
     private String electricityCost;
-    private String depositCost;
-    private String paymentCost;
+    private String deposit;
+    private String payment;
     private String timeContract;
     private String timeDecorator;
     private String managerName;
@@ -32,7 +33,7 @@ public class BuildingDto {
     private String note;
     private String link;
     private String location;
-    private String type;
+    private String[] typeArr;
     private String image;
     private Date createdDate;
     private String createdBy;
@@ -53,6 +54,14 @@ public class BuildingDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(Integer districtId) {
+        this.districtId = districtId;
     }
 
     public Integer getWardId() {
@@ -95,11 +104,11 @@ public class BuildingDto {
         this.numberOfBasement = numberOfBasement;
     }
 
-    public Float getBuildingArea() {
+    public Integer getBuildingArea() {
         return buildingArea;
     }
 
-    public void setBuildingArea(Float buildingArea) {
+    public void setBuildingArea(Integer buildingArea) {
         this.buildingArea = buildingArea;
     }
 
@@ -119,12 +128,12 @@ public class BuildingDto {
         this.level = level;
     }
 
-    public String[] getRentalArea() {
-        return rentalArea;
+    public Integer[] getRentalAreaArr() {
+        return rentalAreaArr;
     }
 
-    public void setRentalArea(String[] rentalArea) {
-        this.rentalArea = rentalArea;
+    public void setRentalAreaArr(Integer[] rentalAreaArr) {
+        this.rentalAreaArr = rentalAreaArr;
     }
 
     public String getAreaDescription() {
@@ -191,20 +200,20 @@ public class BuildingDto {
         this.electricityCost = electricityCost;
     }
 
-    public String getDepositCost() {
-        return depositCost;
+    public String getDeposit() {
+        return deposit;
     }
 
-    public void setDepositCost(String depositCost) {
-        this.depositCost = depositCost;
+    public void setDeposit(String deposit) {
+        this.deposit = deposit;
     }
 
-    public String getPaymentCost() {
-        return paymentCost;
+    public String getPayment() {
+        return payment;
     }
 
-    public void setPaymentCost(String paymentCost) {
-        this.paymentCost = paymentCost;
+    public void setPayment(String payment) {
+        this.payment = payment;
     }
 
     public String getTimeContract() {
@@ -271,12 +280,12 @@ public class BuildingDto {
         this.location = location;
     }
 
-    public String getType() {
-        return type;
+    public String[] getTypeArr() {
+        return typeArr;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTypeArr(String[] typeArr) {
+        this.typeArr = typeArr;
     }
 
     public String getImage() {
