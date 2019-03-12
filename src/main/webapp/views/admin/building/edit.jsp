@@ -50,6 +50,7 @@
                 </h2>
             </header>
             <div class="panel-body">
+                <div id="notify-wrapper"></div>
                 <form class="form-horizontal buildingForm" action="${submitFormUrl}" enctype="multipart/form-data"
                       id="buildingForm">
                     <c:if test="${not empty command.pojo.id}">
@@ -510,7 +511,6 @@
                 e.preventDefault();
                 var data = $("#buildingForm").serializeObject();
                 delete data.multiselect;
-                console.log(data);
                 doSubmitForm(data);
             });
         }
@@ -526,10 +526,19 @@
                 data: JSON.stringify(data),
                 dataType: 'json',
                 success: function (result) {
-                    <%--window.location.href = '${submitFormUrl}';--%>
+                    var pnotify = {
+                        title: '<fmt:message bundle="${lang}" key="insert.success"/>',
+                        text: '<fmt:message bundle="${lang}" key="building.insert.success"/>'.format(result.id),
+                        type: 'success'
+                    };
+                    sessionStorage.setItem("pNotify", JSON.stringify(pnotify));
+
+                    window.location.href = '${submitFormUrl}list';
                 },
                 error: function (error) {
-                    window.location.href = '${submitFormUrl}';
+                    $("#notify-wrapper").html('<div class="alert alert-danger">' +
+                        '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><fmt:message bundle="${lang}" key="insert.error"/> </div>');
+                    $("html, body").animate({scrollTop: 0}, "slow");
                 },
             });
         }
@@ -545,10 +554,19 @@
                 data: JSON.stringify(data),
                 dataType: 'json',
                 success: function (result) {
-                    <%--window.location.href = '${submitFormUrl}';--%>
+                    var pnotify = {
+                        title: '<fmt:message bundle="${lang}" key="update.success"/>',
+                        text: '<fmt:message bundle="${lang}" key="building.update.success"/>'.format(result.id),
+                        type: 'success'
+                    };
+                    sessionStorage.setItem("pNotify", JSON.stringify(pnotify));
+
+                    window.location.href = '${submitFormUrl}list';
                 },
                 error: function (error) {
-                    window.location.href = '${submitFormUrl}';
+                    $("#notify-wrapper").html('<div class="alert alert-danger">' +
+                        '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><fmt:message bundle="${lang}" key="update.error"/> </div>');
+                    $("html, body").animate({scrollTop: 0}, "slow");
                 },
             });
         }

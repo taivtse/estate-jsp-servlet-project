@@ -83,8 +83,8 @@ public class BuildingController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         BuildingDto buildingDto = HttpUtil.of(req.getReader()).toObject(BuildingDto.class);
         try {
-            buildingService.save(buildingDto);
-            resp.getWriter().print("{}");
+            buildingDto = buildingService.save(buildingDto);
+            HttpUtil.writeValue(resp.getOutputStream(), buildingDto);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -94,8 +94,8 @@ public class BuildingController extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         BuildingDto buildingDto = HttpUtil.of(req.getReader()).toObject(BuildingDto.class);
         try {
-            buildingService.update(buildingDto);
-            resp.getWriter().print("{}");
+            buildingDto = buildingService.update(buildingDto);
+            HttpUtil.writeValue(resp.getOutputStream(), buildingDto);
         } catch (Exception e) {
             e.printStackTrace();
         }

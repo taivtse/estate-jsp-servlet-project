@@ -173,7 +173,13 @@
             //TODO: set checkbox to vertical and horizontal center
             $(".dataTable thead th:first-child").css({"width": "45px", "vertical-align": "middle", "padding": "0"});
             $(".dataTable tbody td:first-child").css({"vertical-align": "middle", "padding": "0"});
-            $(".dataTable .checkbox-custom").css({"margin-left": "50%"});
+            $(".dataTable .checkbox-custom").css({"margin-left": "50%", "transform": "translateX(-50%)"});
+
+            //    show pnotify in session storage
+            if (sessionStorage.pNotify) {
+                new PNotify(JSON.parse(sessionStorage.getItem("pNotify")));
+                sessionStorage.removeItem("pNotify");
+            }
         });
 
         function addEventDeleteButton() {
@@ -222,13 +228,6 @@
             });
         }
     </script>
-    <style>
-        .dataTable .row th:first-child {
-            width: 100px;
-            vertical-align: middle;
-            padding: 0;
-        }
-    </style>
 </content>
 </body>
 </html>
