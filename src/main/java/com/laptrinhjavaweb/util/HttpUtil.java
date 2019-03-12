@@ -1,5 +1,6 @@
 package com.laptrinhjavaweb.util;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
@@ -10,11 +11,15 @@ public class HttpUtil {
     private static ObjectMapper mapper = new ObjectMapper();
     private String value;
 
+    static {
+        mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+    }
+
     public HttpUtil(String value) {
         this.value = value;
     }
 
-    public <T> T toModel(Class<T> clazz) {
+    public <T> T toObject(Class<T> clazz) {
         T model = null;
         try {
             model = mapper.readValue(value, clazz);
@@ -46,6 +51,9 @@ public class HttpUtil {
     }
 
     public static String writeValueAsString(Object value) {
+        if (value == null) {
+            return "{}";
+        }
         try {
             return mapper.writeValueAsString(value);
         } catch (IOException e) {

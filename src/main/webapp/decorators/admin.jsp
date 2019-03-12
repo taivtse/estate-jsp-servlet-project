@@ -89,6 +89,9 @@
     <!-- Theme Initialization Files -->
     <script src="<c:url value='/template/admin/javascripts/theme.init.js'/>"></script>
 
+    <!-- Global JS -->
+    <script src="<c:url value='/template/admin/javascripts/global.js'/>"></script>
+
     <decorator:getProperty property="page.local_script"></decorator:getProperty>
 
     <%-- Pnotify script --%>

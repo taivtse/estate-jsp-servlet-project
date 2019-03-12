@@ -13,6 +13,7 @@ import com.laptrinhjavaweb.service.RentAreaService;
 import com.laptrinhjavaweb.service.WardService;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, BuildingEntity> implements BuildingService {
@@ -41,7 +42,7 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
             List<RentAreaDto> rentAreaDtoList = rentAreaService.findAllByBuildingId(buildingDto.getId());
             List<Integer> rentAreaNumberList = new ArrayList<>();
             rentAreaDtoList.forEach(rentAreaDto -> rentAreaNumberList.add(rentAreaDto.getArea()));
-            buildingDto.setRentalAreaArr(rentAreaNumberList.toArray(new Integer[rentAreaNumberList.size()]));
+            buildingDto.setRentalAreaArray(rentAreaNumberList.toArray(new Integer[rentAreaNumberList.size()]));
         }
 
         return buildingDtoList;
@@ -60,15 +61,59 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
         buildingDto.setFullAddress(this.buildAddress(districtDto.getName(), wardDto.getName(), buildingDto.getStreet()));
 
 //        split structure to array
-        buildingDto.setTypeArr(buildingEntity.getType().split(","));
+        if (buildingEntity.getType() != null) {
+            buildingDto.setTypeArray(buildingEntity.getType().split(","));
+        }
 
 //        get rent area and set to rent area array in building dto
         List<RentAreaDto> rentAreaDtoList = rentAreaService.findAllByBuildingId(id);
         List<Integer> rentAreaNumberList = new ArrayList<>();
         rentAreaDtoList.forEach(rentAreaDto -> rentAreaNumberList.add(rentAreaDto.getArea()));
-        buildingDto.setRentalAreaArr(rentAreaNumberList.toArray(new Integer[rentAreaNumberList.size()]));
+        buildingDto.setRentalAreaArray(rentAreaNumberList.toArray(new Integer[rentAreaNumberList.size()]));
 
         return buildingDto;
+    }
+
+    @Override
+    public BuildingDto save(BuildingDto dto) throws Exception {
+        dto.setCreatedDate(new Date());
+//        TODO: change crated by if authenticated
+        dto.setCreatedBy("thanhtai");
+
+        BuildingEntity entity = converter.dtoToEntity(dto);
+
+        if (dto.getTypeArray() != null) {
+            entity.setType(String.join(",", dto.getTypeArray()));
+        }
+        genericDao.save(entity);
+
+        return converter.entityToDto(entity);
+    }
+
+    @Override
+    public BuildingDto update(BuildingDto dto) throws Exception {
+        BuildingEntity oldEntity = genericDao.findOneById(dto.getId());
+
+        dto.setCreatedDate(oldEntity.getCreatedDate());
+        dto.setCreatedBy(oldEntity.getCreatedBy());
+        dto.setModifiedDate(new Date());
+//        TODO: change crated by if authenticated
+        dto.setModifiedBy("haimy");
+
+//        TODO: remove all old rent area before update all new
+
+        BuildingEntity entity = converter.dtoToEntity(dto);
+        if (dto.getTypeArray() != null) {
+            entity.setType(String.join(",", dto.getTypeArray()));
+        }
+        genericDao.update(entity);
+
+        return converter.entityToDto(entity);
+    }
+
+    @Override
+    public void deleteById(Integer integer) throws Exception {
+        super.deleteById(integer);
     }
 
     private String buildAddress(String district, String ward, String street) {

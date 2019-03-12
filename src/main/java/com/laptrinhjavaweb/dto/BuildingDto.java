@@ -14,7 +14,7 @@ public class BuildingDto {
     private Integer buildingArea;
     private String direction;
     private String level;
-    private Integer[] rentalAreaArr;
+    private Integer[] rentalAreaArray;
     private String areaDescription;
     private Integer rentalCost;
     private String costDescription;
@@ -33,7 +33,7 @@ public class BuildingDto {
     private String note;
     private String link;
     private String location;
-    private String[] typeArr;
+    private String[] typeArray;
     private String image;
     private Date createdDate;
     private String createdBy;
@@ -128,12 +128,12 @@ public class BuildingDto {
         this.level = level;
     }
 
-    public Integer[] getRentalAreaArr() {
-        return rentalAreaArr;
+    public Integer[] getRentalAreaArray() {
+        return rentalAreaArray;
     }
 
-    public void setRentalAreaArr(Integer[] rentalAreaArr) {
-        this.rentalAreaArr = rentalAreaArr;
+    public void setRentalAreaArray(Integer[] rentalAreaArray) {
+        this.rentalAreaArray = rentalAreaArray;
     }
 
     public String getAreaDescription() {
@@ -280,12 +280,12 @@ public class BuildingDto {
         this.location = location;
     }
 
-    public String[] getTypeArr() {
-        return typeArr;
+    public String[] getTypeArray() {
+        return typeArray;
     }
 
-    public void setTypeArr(String[] typeArr) {
-        this.typeArr = typeArr;
+    public void setTypeArray(String[] typeArray) {
+        this.typeArray = typeArray;
     }
 
     public String getImage() {

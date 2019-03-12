@@ -40,8 +40,8 @@
                 <tr>
                     <th class="nosort">
                         <div class="checkbox-custom checkbox-default">
-                            <input type="checkbox" id="chkCheckAll">
-                            <label for="chkCheckAll"></label>
+                            <input type="checkbox">
+                            <label></label>
                         </div>
                     </th>
                     <th>
@@ -82,7 +82,7 @@
                 <tbody>
                 <c:forEach var="districtDto" items="${command.listResult}">
                     <tr>
-                        <td class="align-center">
+                        <td>
                             <div class="checkbox-custom checkbox-default">
                                 <input type="checkbox" name="checkList" value="${districtDto.id}">
                                 <label></label>
@@ -96,7 +96,7 @@
                         <td>${districtDto.managerName}</td>
                         <td>${districtDto.managerPhone}</td>
                         <td>${districtDto.buildingArea}</td>
-                        <td>${fn:join(districtDto.rentalAreaArr, ', ')}</td>
+                        <td>${fn:join(districtDto.rentalAreaArray, ', ')}</td>
                         <td>
                             <fmt:formatNumber type="number" maxFractionDigits="3" value="${districtDto.rentalCost}"/>
                         </td>
@@ -169,6 +169,11 @@
             });
 
             addEventDeleteButton();
+
+            //TODO: set checkbox to vertical and horizontal center
+            $(".dataTable thead th:first-child").css({"width": "45px", "vertical-align": "middle", "padding": "0"});
+            $(".dataTable tbody td:first-child").css({"vertical-align": "middle", "padding": "0"});
+            $(".dataTable .checkbox-custom").css({"margin-left": "50%"});
         });
 
         function addEventDeleteButton() {
@@ -217,6 +222,13 @@
             });
         }
     </script>
+    <style>
+        .dataTable .row th:first-child {
+            width: 100px;
+            vertical-align: middle;
+            padding: 0;
+        }
+    </style>
 </content>
 </body>
 </html>
