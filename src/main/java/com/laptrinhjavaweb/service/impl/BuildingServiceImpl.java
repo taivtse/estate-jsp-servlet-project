@@ -87,6 +87,15 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
         }
         genericDao.save(entity);
 
+//        save all new rent area
+        for (Integer area : dto.getRentalAreaArray()) {
+            RentAreaDto rentAreaDto = new RentAreaDto();
+            rentAreaDto.setArea(area);
+            rentAreaDto.setBuildingId(dto.getId());
+
+            rentAreaService.save(rentAreaDto);
+        }
+
         return converter.entityToDto(entity);
     }
 
@@ -100,13 +109,21 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
 //        TODO: change crated by if authenticated
         dto.setModifiedBy("haimy");
 
-//        TODO: remove all old rent area before update all new
-
         BuildingEntity entity = converter.dtoToEntity(dto);
         if (dto.getTypeArray() != null) {
             entity.setType(String.join(",", dto.getTypeArray()));
         }
         genericDao.update(entity);
+
+//        delete all old rent area and insert new
+        rentAreaService.deleteAllByBuildingId(dto.getId());
+        for (Integer area : dto.getRentalAreaArray()) {
+            RentAreaDto rentAreaDto = new RentAreaDto();
+            rentAreaDto.setArea(area);
+            rentAreaDto.setBuildingId(dto.getId());
+
+            rentAreaService.save(rentAreaDto);
+        }
 
         return converter.entityToDto(entity);
     }

@@ -406,7 +406,7 @@
                                     <fmt:message bundle="${lang}" key="building.link"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <input typer="text" name="link"
+                                    <input type="text" name="link"
                                            value="${command.pojo.link}"
                                            class="form-control">
                                 </div>
@@ -462,10 +462,10 @@
                     </div>
                     <hr>
                     <div class="form-group text-center">
-                        <button typer="button" class="mb-xs mt-xs mr-xs btn btn-primary" id="submitButton">
+                        <button type="button" class="mb-xs mt-xs mr-xs btn btn-primary" id="submitButton">
                             <fmt:message bundle="${lang}" key="${empty command.pojo.id ? 'insert' : 'update'}"/>
                         </button>
-                        <button typer="reset" class="mb-xs mt-xs mr-xs btn btn-default">
+                        <button type="reset" class="mb-xs mt-xs mr-xs btn btn-default">
                             <fmt:message bundle="${lang}" key="reset"/>
                         </button>
                     </div>
@@ -480,7 +480,7 @@
 </content>
 
 <content tag="local_script">
-    <script typer="application/javascript">
+    <script type="application/javascript">
         $(document).ready(function () {
             setImagePreviewEvent();
 
@@ -536,9 +536,11 @@
                     window.location.href = '${submitFormUrl}list';
                 },
                 error: function (error) {
-                    $("#notify-wrapper").html('<div class="alert alert-danger">' +
-                        '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><fmt:message bundle="${lang}" key="insert.error"/> </div>');
-                    $("html, body").animate({scrollTop: 0}, "slow");
+                    new PNotify({
+                        title: '<fmt:message bundle="${lang}" key="insert.error"/>',
+                        text: '<fmt:message bundle="${lang}" key="input.check.again"/>',
+                        type: 'error'
+                    });
                 },
             });
         }
@@ -564,9 +566,11 @@
                     window.location.href = '${submitFormUrl}list';
                 },
                 error: function (error) {
-                    $("#notify-wrapper").html('<div class="alert alert-danger">' +
-                        '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><fmt:message bundle="${lang}" key="update.error"/> </div>');
-                    $("html, body").animate({scrollTop: 0}, "slow");
+                    new PNotify({
+                        title: '<fmt:message bundle="${lang}" key="update.error"/>',
+                        text: '<fmt:message bundle="${lang}" key="input.check.again"/>',
+                        type: 'error'
+                    });
                 },
             });
         }

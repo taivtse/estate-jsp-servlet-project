@@ -22,4 +22,9 @@ public class RentAreaServiceImpl extends AbstractService<Integer, RentAreaDto, R
         Criterion criterion = Logical.and("buildingId").eq(buildingId);
         return super.findAllByProperties(null, Arrays.asList(criterion));
     }
+
+    @Override
+    public void deleteAllByBuildingId(Integer id) throws Exception {
+        ((RentAreaDaoImpl) genericDao).deleteAllByBuildingId(id);
+    }
 }

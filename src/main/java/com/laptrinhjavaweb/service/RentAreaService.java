@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface RentAreaService extends GenericService<Integer, RentAreaDto> {
     List<RentAreaDto> findAllByBuildingId(Integer buildingId);
+
+    void deleteAllByBuildingId(Integer id) throws Exception;
 }

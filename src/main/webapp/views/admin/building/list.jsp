@@ -171,9 +171,9 @@
             addEventDeleteButton();
 
             //TODO: set checkbox to vertical and horizontal center
-            $(".dataTable thead th:first-child").css({"width": "45px", "vertical-align": "middle", "padding": "0"});
-            $(".dataTable tbody td:first-child").css({"vertical-align": "middle", "padding": "0"});
-            $(".dataTable .checkbox-custom").css({"margin-left": "50%", "transform": "translateX(-50%)"});
+            // $(".dataTable thead th:first-child").css({"width": "45px", "vertical-align": "middle", "padding": "0"});
+            // $(".dataTable tbody td:first-child").css({"vertical-align": "middle", "padding": "0"});
+            // $(".dataTable .checkbox-custom").css({"margin-left": "50%", "transform": "translateX(-50%)"});
 
             //    show pnotify in session storage
             if (sessionStorage.pNotify) {
