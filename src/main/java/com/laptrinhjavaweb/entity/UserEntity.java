@@ -23,6 +23,9 @@ public class UserEntity {
     @Column(name = "full_name")
     private String fullName;
 
+    @Column(name = "status")
+    private Boolean status;
+
     @Column(name = "role_id")
     private String roleId;
 
@@ -64,6 +67,14 @@ public class UserEntity {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
     public void setFullName(String fullName) {

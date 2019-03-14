@@ -6,4 +6,6 @@ import java.sql.SQLException;
 
 public interface AssignmentDao extends GenericDao<Integer, AssignmentEntity> {
     void deleteAllByBuildingId(Integer id) throws SQLException;
+
+    AssignmentEntity findOneByStaffIdAndBuildingId(Integer staffId, Integer buildingId);
 }

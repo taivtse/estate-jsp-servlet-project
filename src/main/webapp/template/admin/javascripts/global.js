@@ -60,8 +60,8 @@ function bindEventCheckAllCheckbox() {
 }
 
 function enableOrDisableDeleteAll() {
-    $('tbody input[type=checkbox]').click(function () {
-        if ($('tbody input[type=checkbox]:checked').length == 0) {
+    $('.checkbox-item').click(function () {
+        if ($('.checkbox-item:checked').length == 0) {
             $('#btnDeleteAll').prop('disabled', true);
         } else {
             $('#btnDeleteAll').prop('disabled', false);
@@ -70,8 +70,8 @@ function enableOrDisableDeleteAll() {
 }
 
 function autoCheckCheckboxAll() {
-    $('tbody input[type=checkbox]').change(function () {
-        if ($('tbody input[type=checkbox]').length == $('tbody input[type=checkbox]:checked').length) {
+    $('.checkbox-item').change(function () {
+        if ($('.checkbox-item').length == $('.checkbox-item:checked').length) {
             $('#chkCheckAll').prop("checked", true);
         } else {
             $('#chkCheckAll').prop("checked", false);

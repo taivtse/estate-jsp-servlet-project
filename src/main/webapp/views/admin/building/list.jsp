@@ -9,6 +9,7 @@
 <c:url var="searchUrl" value="/admin/building/list"></c:url>
 <c:url var="editUrl" value="/admin/building/edit"></c:url>
 <c:url var="submitFormUrl" value="/admin/building/"></c:url>
+<c:url var="assignmentStaffApi" value="/api/assignment/staff"></c:url>
 <html>
 <head>
     <title>
@@ -81,33 +82,34 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="districtDto" items="${command.listResult}">
+                <c:forEach var="buildingDto" items="${command.listResult}">
                     <tr>
                         <td>
                             <div class="checkbox-custom checkbox-default">
-                                <input type="checkbox" name="checkList" value="${districtDto.id}">
+                                <input type="checkbox" class="checkbox-item" name="checkList" value="${buildingDto.id}">
                                 <label></label>
                             </div>
                         </td>
                         <td>
-                            <fmt:formatDate value="${districtDto.createdDate}" pattern="dd-MM-yyyy"/>
+                            <fmt:formatDate value="${buildingDto.createdDate}" pattern="dd-MM-yyyy"/>
                         </td>
-                        <td>${districtDto.name}</td>
-                        <td>${districtDto.fullAddress}</td>
-                        <td>${districtDto.managerName}</td>
-                        <td>${districtDto.managerPhone}</td>
-                        <td>${districtDto.buildingArea}</td>
-                        <td>${fn:join(districtDto.rentalAreaArray, ', ')}</td>
+                        <td>${buildingDto.name}</td>
+                        <td>${buildingDto.fullAddress}</td>
+                        <td>${buildingDto.managerName}</td>
+                        <td>${buildingDto.managerPhone}</td>
+                        <td>${buildingDto.buildingArea}</td>
+                        <td>${fn:join(buildingDto.rentalAreaArray, ', ')}</td>
                         <td>
-                            <fmt:formatNumber type="number" maxFractionDigits="3" value="${districtDto.rentalCost}"/>
+                            <fmt:formatNumber type="number" maxFractionDigits="3" value="${buildingDto.rentalCost}"/>
                         </td>
-                        <td>${districtDto.serviceCost}</td>
-                        <td>${districtDto.commissionCost}</td>
+                        <td>${buildingDto.serviceCost}</td>
+                        <td>${buildingDto.commissionCost}</td>
                         <td class="actions">
-                            <a href="#" class="on-default edit-row"><i class="fa fa-tasks"></i></a>
-                            <a href="<c:url value='${editUrl}/${districtDto.id}'/>" class="on-default edit-row"><i
+                            <a href="#" class="btn-assignment" data-building-id="${buildingDto.id}"><i
+                                    class="fa fa-tasks"></i></a>
+                            <a href="<c:url value='${editUrl}/${buildingDto.id}'/>" class="on-default edit-row"><i
                                     class="fa fa-pencil"></i></a>
-                            <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+                            <a href="#" class=""><i class="fa fa-trash-o"></i></a>
                         </td>
                     </tr>
                 </c:forEach>
@@ -149,19 +151,33 @@
         </section>
     </div>
 
-    <div id="assignment-dialog" class="modal-block mfp-hide">
+    <div id="assignment-dialog" class="zoom-anim-dialog modal-block mfp-hide">
         <section class="panel panel-featured">
             <header class="panel-heading">
                 <h2 class="panel-title">
-                    <fmt:message bundle="${lang}" key="delete.ask.title"/>
+                    <fmt:message bundle="${lang}" key="assignment.staff.list"/>
                 </h2>
             </header>
             <div class="panel-body">
                 <div class="modal-wrapper">
                     <div class="modal-text">
-                        <p>
-                            <fmt:message bundle="${lang}" key="delete.ask.text"/>
-                        </p>
+                        <form id="assignmentForm">
+                            <input type="hidden" name="buildingId" id="buildingIdHiddenInput">
+                            <table class="table table-bordered table-striped mb-none" id="assignment-table">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <fmt:message bundle="${lang}" key="staff.assign"/>
+                                    </th>
+                                    <th>
+                                        <fmt:message bundle="${lang}" key="staff.fullName"/>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -169,7 +185,7 @@
                 <div class="row">
                     <div class="col-md-12 text-right">
                         <button id="confirmAssign" class="btn btn-primary">
-                            <fmt:message bundle="${lang}" key="confirm"/>
+                            <fmt:message bundle="${lang}" key="save"/>
                         </button>
                         <button class="modal-dismiss btn btn-default">
                             <fmt:message bundle="${lang}" key="cancel"/>
@@ -201,6 +217,7 @@
                     }]
             });
 
+            addEventAssignmentButotn();
             addEventDeleteButton();
 
             //TODO: set checkbox to vertical and horizontal center
@@ -214,6 +231,91 @@
                 sessionStorage.removeItem("pNotify");
             }
         });
+
+        function addEventAssignmentButotn() {
+            $(".btn-assignment").click(function (e) {
+                e.preventDefault();
+
+                var buildingId = $(this).data("building-id");
+                fillAssignmentStaffList(buildingId);
+                $("#buildingIdHiddenInput").val(buildingId);
+
+                $.magnificPopup.open({
+                    items: {
+                        src: '#assignment-dialog',
+                        type: 'inline'
+                    },
+                    preloader: false,
+                    removalDelay: 300,
+                    mainClass: 'my-mfp-zoom-in',
+                    modal: true,
+                    callbacks: {
+                        open: function () {
+                            $('#confirmAssign').on('click', function (e) {
+                                e.preventDefault();
+                                $.magnificPopup.close();
+
+                                var data = $("#assignmentForm").serializeObject();
+                                saveAssignmentStaff(data);
+                            });
+                        },
+                        close: function () {
+                            $('#confirmAssign').off('click');
+                        }
+                    }
+                });
+            })
+        }
+
+        function fillAssignmentStaffList(buildingId) {
+            $.ajax({
+                type: 'GET',
+                url: '${assignmentStaffApi}?buildingId=' + buildingId,
+                dataType: 'json',
+                success: function (result) {
+                    renderAssignmentTable(result);
+                },
+                error: function (error) {
+
+                }
+            });
+        }
+
+        function renderAssignmentTable(data) {
+            var tbody = '';
+            data.forEach(function (staff) {
+                var row = '<tr><td>\n' +
+                    '<div class="checkbox-custom checkbox-default">\n' +
+                    '<input type="checkbox" name="checkList" value="' + staff.id + '" ' + staff.checked + '><label></label></div></td>\n' +
+                    '<td>' + staff.fullName + '</td></tr>';
+                tbody += row;
+            });
+
+            $("#assignment-table tbody").html(tbody);
+        }
+
+        function saveAssignmentStaff(data) {
+            $.ajax({
+                type: 'POST',
+                url: '${assignmentStaffApi}',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (result) {
+                    new PNotify({
+                        title: '<fmt:message bundle="${lang}" key="assignment.success"/>',
+                        text: '<fmt:message bundle="${lang}" key="assignment.success.text"/>',
+                        type: 'success'
+                    });
+                },
+                error: function (error) {
+                    new PNotify({
+                        title: '<fmt:message bundle="${lang}" key="assignment.error"/>',
+                        text: '<fmt:message bundle="${lang}" key="error"/>',
+                        type: 'error'
+                    });
+                }
+            });
+        }
 
         function addEventDeleteButton() {
             $('#btnDeleteAll').on('click', function (e) {
@@ -236,15 +338,9 @@
                                 var data = $("#buildingDeleteForm").serializeObject();
                                 deleteBuilding(data);
                             });
-
-                            $('#cancelDelete').on('click', function (e) {
-                                $.magnificPopup.close();
-                            });
-
                         },
                         close: function () {
                             $('#confirmDelete').off('click');
-                            $('#cancelDelete').off('click');
                         }
                     }
                 });

@@ -2,6 +2,8 @@ package com.laptrinhjavaweb.dao.impl;
 
 import com.laptrinhjavaweb.dao.AssignmentDao;
 import com.laptrinhjavaweb.entity.AssignmentEntity;
+import com.laptrinhjavaweb.orm.query.criteria.Criteria;
+import com.laptrinhjavaweb.orm.query.criteria.criterion.Logical;
 import com.laptrinhjavaweb.orm.query.sqlquery.SqlQuery;
 import com.laptrinhjavaweb.orm.session.Session;
 import com.laptrinhjavaweb.orm.session.SessionFactory;
@@ -22,6 +24,20 @@ public class AssignmentDaoImpl extends AbstractDao<Integer, AssignmentEntity> im
         } catch (SQLException e) {
             transaction.rollback();
             throw e;
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public AssignmentEntity findOneByStaffIdAndBuildingId(Integer staffId, Integer buildingId) {
+        Session session = SessionFactory.openSession();
+        try {
+            Criteria criteria = session.createCriteria(AssignmentEntity.class);
+            criteria.addCriterion(Logical.and("buildingId").eq(buildingId));
+            criteria.addCriterion(Logical.and("userId").eq(staffId));
+
+            return (AssignmentEntity) criteria.uniqueResult();
         } finally {
             session.close();
         }

@@ -1,6 +1,7 @@
 package com.laptrinhjavaweb.service.impl;
 
 import com.laptrinhjavaweb.converter.AssignmentConverter;
+import com.laptrinhjavaweb.dao.AssignmentDao;
 import com.laptrinhjavaweb.dao.impl.AssignmentDaoImpl;
 import com.laptrinhjavaweb.dto.AssignmentDto;
 import com.laptrinhjavaweb.entity.AssignmentEntity;
@@ -15,5 +16,11 @@ public class AssignmentServiceImpl extends AbstractService<Integer, AssignmentDt
     @Override
     public void deleteAllByBuildingId(Integer id) throws Exception {
         ((AssignmentDaoImpl) genericDao).deleteAllByBuildingId(id);
+    }
+
+    @Override
+    public boolean isExistByStaffIdAndBuildingId(Integer staffId, Integer buildingId) {
+        AssignmentEntity assignmentEntity = ((AssignmentDao) genericDao).findOneByStaffIdAndBuildingId(staffId, buildingId);
+        return assignmentEntity != null;
     }
 }

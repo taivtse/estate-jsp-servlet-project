@@ -115,8 +115,8 @@
                                 </label>
                                 <div class="col-md-9">
                                     <select data-plugin-selectTwo class="form-control populate">
-                                        <c:forEach var="districtDto" items="${command.districtDtoList}">
-                                            <option value="${districtDto.id}" ${districtDto.id eq command.pojo.districtId ? 'selected' : ''}>${districtDto.name}</option>
+                                        <c:forEach var="buildingDto" items="${command.districtDtoList}">
+                                            <option value="${buildingDto.id}" ${buildingDto.id eq command.pojo.districtId ? 'selected' : ''}>${buildingDto.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
