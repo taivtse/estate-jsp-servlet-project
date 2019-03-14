@@ -61,13 +61,7 @@ public class AbstractService<ID extends Serializable, D, E> implements GenericSe
     }
 
     @Override
-    public void delete(D dto) throws Exception {
-        E entity = converter.dtoToEntity(dto);
-        genericDao.delete(entity);
-    }
-
-    @Override
-    public void deleteById(ID id) throws Exception {
-        genericDao.deleteById(id);
+    public void deleteById(ID... ids) throws Exception {
+        genericDao.deleteById(ids);
     }
 }

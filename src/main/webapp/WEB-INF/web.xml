@@ -6,7 +6,7 @@
     <display-name>Toeic Online Learning</display-name>
     
     <welcome-file-list>
-        <welcome-file>/admin/building/</welcome-file>
+        <welcome-file>/admin/building/list</welcome-file>
     </welcome-file-list>
 
     <jsp-config>

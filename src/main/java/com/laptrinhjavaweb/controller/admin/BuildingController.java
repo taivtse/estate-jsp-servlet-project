@@ -102,7 +102,18 @@ public class BuildingController extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
-
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        BuildingCommand command = HttpUtil.of(req.getReader()).toObject(BuildingCommand.class);
+        Integer[] intArray = new Integer[command.getCheckList().length];
+        int i = 0;
+        for (String strId : command.getCheckList()) {
+            intArray[i] = Integer.parseInt(strId.trim());
+            i++;
+        }
+        try {
+            buildingService.deleteById(intArray);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

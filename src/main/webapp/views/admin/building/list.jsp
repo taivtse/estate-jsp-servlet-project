@@ -8,6 +8,7 @@
 <%@include file="/common/taglib.jsp" %>
 <c:url var="searchUrl" value="/admin/building/list"></c:url>
 <c:url var="editUrl" value="/admin/building/edit"></c:url>
+<c:url var="submitFormUrl" value="/admin/building/"></c:url>
 <html>
 <head>
     <title>
@@ -34,13 +35,13 @@
                 </div>
             </div>
         </div>
-        <form action="">
-            <table class="table table-bordered table-striped mb-none" id="datatable-default">
+        <form id="buildingDeleteForm">
+            <table class="table table-bordered table-striped mb-none" id="building-table">
                 <thead>
                 <tr>
                     <th class="nosort">
                         <div class="checkbox-custom checkbox-default">
-                            <input type="checkbox">
+                            <input type="checkbox" id="chkCheckAll">
                             <label></label>
                         </div>
                     </th>
@@ -103,6 +104,7 @@
                         <td>${districtDto.serviceCost}</td>
                         <td>${districtDto.commissionCost}</td>
                         <td class="actions">
+                            <a href="#" class="on-default edit-row"><i class="fa fa-tasks"></i></a>
                             <a href="<c:url value='${editUrl}/${districtDto.id}'/>" class="on-default edit-row"><i
                                     class="fa fa-pencil"></i></a>
                             <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
@@ -116,7 +118,7 @@
 </section>
 
 <content tag="specific_html">
-    <div id="dialog" class="modal-block mfp-hide">
+    <div id="delete-dialog" class="modal-block mfp-hide">
         <section class="panel panel-featured">
             <header class="panel-heading">
                 <h2 class="panel-title">
@@ -135,10 +137,41 @@
             <footer class="panel-footer">
                 <div class="row">
                     <div class="col-md-12 text-right">
-                        <button id="dialogConfirm" class="btn btn-primary">
+                        <button id="confirmDelete" class="btn btn-primary">
                             <fmt:message bundle="${lang}" key="confirm"/>
                         </button>
-                        <button id="dialogCancel" class="btn btn-default">
+                        <button id="cancelDelete" class="btn btn-default">
+                            <fmt:message bundle="${lang}" key="cancel"/>
+                        </button>
+                    </div>
+                </div>
+            </footer>
+        </section>
+    </div>
+
+    <div id="assignment-dialog" class="modal-block mfp-hide">
+        <section class="panel panel-featured">
+            <header class="panel-heading">
+                <h2 class="panel-title">
+                    <fmt:message bundle="${lang}" key="delete.ask.title"/>
+                </h2>
+            </header>
+            <div class="panel-body">
+                <div class="modal-wrapper">
+                    <div class="modal-text">
+                        <p>
+                            <fmt:message bundle="${lang}" key="delete.ask.text"/>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <footer class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button id="confirmAssign" class="btn btn-primary">
+                            <fmt:message bundle="${lang}" key="confirm"/>
+                        </button>
+                        <button id="cancelAssign" class="btn btn-default">
                             <fmt:message bundle="${lang}" key="cancel"/>
                         </button>
                     </div>
@@ -151,7 +184,7 @@
 <content tag="local_script">
     <script type="application/javascript">
         $(document).ready(function () {
-            $('#datatable-default').DataTable({
+            $('#building-table').DataTable({
                 // tai edited here
                 paging: false,
                 info: false,
@@ -183,47 +216,62 @@
         });
 
         function addEventDeleteButton() {
-            $('.remove-row').on('click', function (e) {
+            $('#btnDeleteAll').on('click', function (e) {
                 e.preventDefault();
                 $.magnificPopup.open({
                     items: {
-                        src: '#dialog',
+                        src: '#delete-dialog',
                         type: 'inline'
                     },
                     preloader: false,
                     modal: true,
                     callbacks: {
                         open: function () {
-                            $('#dialogConfirm').on('click', function (e) {
+                            $('#confirmDelete').on('click', function (e) {
                                 e.preventDefault();
                                 $.magnificPopup.close();
 
-                                deleteBuilding();
+                                var data = $("#buildingDeleteForm").serializeObject();
+                                deleteBuilding(data);
                             });
 
-                            $('#dialogCancel').on('click', function (e) {
+                            $('#cancelDelete').on('click', function (e) {
                                 $.magnificPopup.close();
                             });
 
                         },
                         close: function () {
-                            $('#dialogConfirm').off('click');
-                            $('#dialogCancel').off('click');
+                            $('#confirmDelete').off('click');
+                            $('#cancelDelete').off('click');
                         }
                     }
                 });
             })
         }
 
-        function deleteBuilding() {
+        function deleteBuilding(data) {
+            console.log(JSON.stringify(data))
             $.ajax({
-                type: "DELETE",
-                url: "/admin/building/",
-                success: function (msg) {
+                type: 'DELETE',
+                url: '${submitFormUrl}',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (result) {
+                    var pnotify = {
+                        title: '<fmt:message bundle="${lang}" key="delete.success"/>',
+                        text: '<fmt:message bundle="${lang}" key="building.delete.success"/>',
+                        type: 'success'
+                    };
+                    sessionStorage.setItem("pNotify", JSON.stringify(pnotify));
 
+                    window.location.href = '${submitFormUrl}list';
                 },
                 error: function (error) {
-                    console.log("ERROR: ", error);
+                    new PNotify({
+                        title: '<fmt:message bundle="${lang}" key="delete.error"/>',
+                        text: '<fmt:message bundle="${lang}" key="error"/>',
+                        type: 'error'
+                    });
                 }
             });
         }

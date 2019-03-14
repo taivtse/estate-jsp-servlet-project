@@ -11,4 +11,9 @@ public class AssignmentServiceImpl extends AbstractService<Integer, AssignmentDt
         super.genericDao = new AssignmentDaoImpl();
         super.converter = new AssignmentConverter();
     }
+
+    @Override
+    public void deleteAllByBuildingId(Integer id) throws Exception {
+        ((AssignmentDaoImpl) genericDao).deleteAllByBuildingId(id);
+    }
 }

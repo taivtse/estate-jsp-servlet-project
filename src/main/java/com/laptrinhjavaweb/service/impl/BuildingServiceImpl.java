@@ -7,10 +7,7 @@ import com.laptrinhjavaweb.dto.DistrictDto;
 import com.laptrinhjavaweb.dto.RentAreaDto;
 import com.laptrinhjavaweb.dto.WardDto;
 import com.laptrinhjavaweb.entity.BuildingEntity;
-import com.laptrinhjavaweb.service.BuildingService;
-import com.laptrinhjavaweb.service.DistrictService;
-import com.laptrinhjavaweb.service.RentAreaService;
-import com.laptrinhjavaweb.service.WardService;
+import com.laptrinhjavaweb.service.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +17,7 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
     private DistrictService districtService = new DistrictServiceImpl();
     private WardService wardService = new WardServiceImpl();
     private RentAreaService rentAreaService = new RentAreaServiceImpl();
+    private AssignmentService assignmentService = new AssignmentServiceImpl();
 
     public BuildingServiceImpl() {
         super.genericDao = new BuildingDaoImpl();
@@ -88,12 +86,14 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
         genericDao.save(entity);
 
 //        save all new rent area
-        for (Integer area : dto.getRentalAreaArray()) {
-            RentAreaDto rentAreaDto = new RentAreaDto();
-            rentAreaDto.setArea(area);
-            rentAreaDto.setBuildingId(dto.getId());
+        if (dto.getRentalAreaArray() != null) {
+            for (Integer area : dto.getRentalAreaArray()) {
+                RentAreaDto rentAreaDto = new RentAreaDto();
+                rentAreaDto.setArea(area);
+                rentAreaDto.setBuildingId(dto.getId());
 
-            rentAreaService.save(rentAreaDto);
+                rentAreaService.save(rentAreaDto);
+            }
         }
 
         return converter.entityToDto(entity);
@@ -117,20 +117,27 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
 
 //        delete all old rent area and insert new
         rentAreaService.deleteAllByBuildingId(dto.getId());
-        for (Integer area : dto.getRentalAreaArray()) {
-            RentAreaDto rentAreaDto = new RentAreaDto();
-            rentAreaDto.setArea(area);
-            rentAreaDto.setBuildingId(dto.getId());
+        if (dto.getRentalAreaArray() != null) {
+            for (Integer area : dto.getRentalAreaArray()) {
+                RentAreaDto rentAreaDto = new RentAreaDto();
+                rentAreaDto.setArea(area);
+                rentAreaDto.setBuildingId(dto.getId());
 
-            rentAreaService.save(rentAreaDto);
+                rentAreaService.save(rentAreaDto);
+            }
         }
 
         return converter.entityToDto(entity);
     }
 
     @Override
-    public void deleteById(Integer integer) throws Exception {
-        super.deleteById(integer);
+    public void deleteById(Integer... ids) throws Exception {
+        for (Integer id : ids) {
+            rentAreaService.deleteAllByBuildingId(id);
+            assignmentService.deleteAllByBuildingId(id);
+
+            genericDao.deleteById(id);
+        }
     }
 
     private String buildAddress(String district, String ward, String street) {
