@@ -40,6 +40,11 @@
         return objectData;
     };
 
+    $(document).on('click', '.modal-dismiss', function (e) {
+        e.preventDefault();
+        $.magnificPopup.close();
+    });
+
     bindEventCheckAllCheckbox();
     enableOrDisableDeleteAll();
     autoCheckCheckboxAll();

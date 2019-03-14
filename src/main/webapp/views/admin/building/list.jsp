@@ -118,7 +118,7 @@
 </section>
 
 <content tag="specific_html">
-    <div id="delete-dialog" class="modal-block mfp-hide">
+    <div id="delete-dialog" class="zoom-anim-dialog modal-block mfp-hide">
         <section class="panel panel-featured">
             <header class="panel-heading">
                 <h2 class="panel-title">
@@ -140,7 +140,7 @@
                         <button id="confirmDelete" class="btn btn-primary">
                             <fmt:message bundle="${lang}" key="confirm"/>
                         </button>
-                        <button id="cancelDelete" class="btn btn-default">
+                        <button class="modal-dismiss btn btn-default">
                             <fmt:message bundle="${lang}" key="cancel"/>
                         </button>
                     </div>
@@ -171,7 +171,7 @@
                         <button id="confirmAssign" class="btn btn-primary">
                             <fmt:message bundle="${lang}" key="confirm"/>
                         </button>
-                        <button id="cancelAssign" class="btn btn-default">
+                        <button class="modal-dismiss btn btn-default">
                             <fmt:message bundle="${lang}" key="cancel"/>
                         </button>
                     </div>
@@ -224,6 +224,8 @@
                         type: 'inline'
                     },
                     preloader: false,
+                    removalDelay: 300,
+                    mainClass: 'my-mfp-zoom-in',
                     modal: true,
                     callbacks: {
                         open: function () {
