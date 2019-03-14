@@ -41,4 +41,11 @@ public class UserServiceImpl extends AbstractService<Integer, UserDto, UserEntit
 
         return staffAssignmentDtoList;
     }
+
+    @Override
+    public UserDto findLoginUser(String username, String password) {
+        UserEntity userEntity = ((UserDao) genericDao).findActiveUserByUsernameAndPassword(username, password);
+
+        return converter.entityToDto(userEntity);
+    }
 }

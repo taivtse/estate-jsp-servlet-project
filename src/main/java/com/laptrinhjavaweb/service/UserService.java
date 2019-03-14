@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface UserService extends GenericService<Integer, UserDto> {
     List<StaffAssignmentDto> getStaffAssignmentListByBuildingId(Integer buildingId);
+
+    UserDto findLoginUser(String username, String password);
 }

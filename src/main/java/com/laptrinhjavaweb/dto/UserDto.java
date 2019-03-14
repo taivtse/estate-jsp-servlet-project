@@ -7,7 +7,8 @@ public class UserDto {
     private String username;
     private String password;
     private String fullName;
-    private String roleId;
+    private Boolean status;
+    private Integer roleId;
     private Date createdDate;
     private String createdBy;
     private Date modifiedDate;
@@ -45,11 +46,19 @@ public class UserDto {
         this.fullName = fullName;
     }
 
-    public String getRoleId() {
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public Integer getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(String roleId) {
+    public void setRoleId(Integer roleId) {
         this.roleId = roleId;
     }
 

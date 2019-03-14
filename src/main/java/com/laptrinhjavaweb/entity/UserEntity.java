@@ -27,7 +27,7 @@ public class UserEntity {
     private Boolean status;
 
     @Column(name = "role_id")
-    private String roleId;
+    private Integer roleId;
 
     @Column(name = "created_date")
     private Date createdDate;
@@ -81,11 +81,11 @@ public class UserEntity {
         this.fullName = fullName;
     }
 
-    public String getRoleId() {
+    public Integer getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(String roleId) {
+    public void setRoleId(Integer roleId) {
         this.roleId = roleId;
     }
 

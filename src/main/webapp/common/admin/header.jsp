@@ -192,39 +192,6 @@
             </li>
         </ul>
         <span class="separator"></span>
-
-        <div class="userbox">
-            <a href="#" data-toggle="dropdown">
-                <figure class="profile-picture">
-                    <img src="<c:url value='/template/admin/images/flag/flag_${empty cookie.AppLocale ? "vi" : cookie.AppLocale.value}.png'/>"/>
-                </figure>
-                <div class="profile-info">
-                    <span class="name"><spring:message code="label.language"/></span>
-                </div>
-                <i class="fa custom-caret"></i>
-            </a>
-
-            <div class="dropdown-menu">
-                <ul class="list-unstyled">
-                    <li class="divider"></li>
-                    <li>
-                        <a class="language-change" data-language="en" href="#" role="menuitem" tabindex="-1"
-                           style="display: flex; align-items: center;">
-                            <img class="mr-xs" height="20px"
-                                 src="<c:url value='/template/admin/images/flag/flag_en.png'/>"/>
-                            <spring:message code="label.language.en"/></a>
-                    </li>
-                    <li>
-                        <a class="language-change" data-language="vi" href="#" role="menuitem" tabindex="-1"
-                           style="display: flex; align-items: center;">
-                            <img class="mr-xs" height="20px"
-                                 src="<c:url value='/template/admin/images/flag/flag_vi.png'/>"/>
-                            <spring:message code="label.language.vi"/></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <span class="separator"></span>
         <div id="userbox" class="userbox">
             <a href="#" data-toggle="dropdown">
                 <figure class="profile-picture">
@@ -233,8 +200,7 @@
                          data-lock-picture="<c:url value='/template/admin/images/!logged-user.jpg'/>"/>
                 </figure>
                 <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
-                    <span class="name">John Doe Junior</span>
-                    <span class="role">administrator</span>
+                    <span class="name">${sessionScope.session_user.fullName}</span>
                 </div>
 
                 <i class="fa custom-caret"></i>
@@ -248,7 +214,9 @@
                             Profile</a>
                     </li>
                     <li>
-                        <a role="menuitem" tabindex="-1" href="/j_spring_security_logout"><i class="fa fa-power-off"></i> Logout</a>
+                        <a role="menuitem" tabindex="-1" href="/auth/logout"><i class="fa fa-power-off"></i>
+                            <fmt:message bundle="${lang}" key="logout"/>
+                        </a>
                     </li>
                 </ul>
             </div>
