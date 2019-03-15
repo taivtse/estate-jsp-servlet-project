@@ -7,6 +7,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@include file="/common/taglib.jsp" %>
 <c:url var="submitFormUrl" value="/admin/building/"></c:url>
+<c:url var="wardApi" value="/api/ward"></c:url>
 <html>
 <head>
     <title>
@@ -114,7 +115,7 @@
                                     <fmt:message bundle="${lang}" key="building.districtId"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <select data-plugin-selectTwo class="form-control populate">
+                                    <select data-plugin-selectTwo class="form-control populate" id="district-select">
                                         <c:forEach var="buildingDto" items="${command.districtDtoList}">
                                             <option value="${buildingDto.id}" ${buildingDto.id eq command.pojo.districtId ? 'selected' : ''}>${buildingDto.name}</option>
                                         </c:forEach>
@@ -128,7 +129,8 @@
                                     <fmt:message bundle="${lang}" key="building.wardId"/>
                                 </label>
                                 <div class="col-md-9">
-                                    <select data-plugin-selectTwo name="wardId" class="form-control populate">
+                                    <select data-plugin-selectTwo name="wardId" class="form-control populate"
+                                            id="ward-select">
                                         <c:forEach var="wardDto" items="${command.wardDtoList}">
                                             <option value="${wardDto.id}" ${wardDto.id eq command.pojo.wardId ? 'selected' : ''}>${wardDto.name}</option>
                                         </c:forEach>
@@ -485,7 +487,31 @@
             setImagePreviewEvent();
 
             setFormSubmitEvent();
-        })
+
+            processDistrictChange();
+        });
+
+        function processDistrictChange() {
+            $("#district-select").change(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '${wardApi}?districtId=' + $(this).val(),
+                    dataType: 'json',
+                    success: function (result) {
+                        renderWardSelect(result);
+                    }
+                });
+            });
+        }
+
+        function renderWardSelect(data) {
+            $("#ward-select").empty();
+            data.forEach(function (ward) {
+                var newOption = new Option(ward.name, ward.id, false, false);
+                $("#ward-select").append(newOption);
+            });
+            $("#ward-select").trigger('change');
+        }
 
         function setImagePreviewEvent() {
             $(".imagePreviewWrapper").click(function () {

@@ -5,10 +5,6 @@
          version="3.1">
     <display-name>Toeic Online Learning</display-name>
 
-    <welcome-file-list>
-        <welcome-file>/admin/building/list</welcome-file>
-    </welcome-file-list>
-
     <jsp-config>
         <jsp-property-group>
             <url-pattern>*.jsp</url-pattern>

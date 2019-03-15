@@ -274,9 +274,6 @@
                 dataType: 'json',
                 success: function (result) {
                     renderAssignmentTable(result);
-                },
-                error: function (error) {
-
                 }
             });
         }
