@@ -4,7 +4,7 @@ import com.laptrinhjavaweb.dao.AssignmentDao;
 import com.laptrinhjavaweb.entity.AssignmentEntity;
 import com.laptrinhjavaweb.orm.query.criteria.Criteria;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Logical;
-import com.laptrinhjavaweb.orm.query.sqlquery.SqlQuery;
+import com.laptrinhjavaweb.orm.query.sqlquery.SQLQuery;
 import com.laptrinhjavaweb.orm.session.Session;
 import com.laptrinhjavaweb.orm.session.SessionFactory;
 import com.laptrinhjavaweb.orm.transaction.Transaction;
@@ -17,7 +17,7 @@ public class AssignmentDaoImpl extends AbstractDao<Integer, AssignmentEntity> im
         Session session = SessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         try {
-            SqlQuery query = session.createSQLQuery("DELETE FROM assignment WHERE building_id={id}");
+            SQLQuery query = session.createSQLQuery("DELETE FROM assignment WHERE building_id={id}");
             query.setParameter("id", id);
             query.executeUpdate();
             transaction.commit();

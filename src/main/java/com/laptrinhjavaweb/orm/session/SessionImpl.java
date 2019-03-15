@@ -5,8 +5,8 @@ import com.laptrinhjavaweb.orm.exception.IdentifierGenerationException;
 import com.laptrinhjavaweb.orm.query.criteria.Criteria;
 import com.laptrinhjavaweb.orm.query.criteria.CriteriaImpl;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Logical;
-import com.laptrinhjavaweb.orm.query.sqlquery.SqlQuery;
-import com.laptrinhjavaweb.orm.query.sqlquery.SqlQueryImpl;
+import com.laptrinhjavaweb.orm.query.sqlquery.SQLQuery;
+import com.laptrinhjavaweb.orm.query.sqlquery.SQLQueryImpl;
 import com.laptrinhjavaweb.orm.query.statement.NamedParamStatement;
 import com.laptrinhjavaweb.orm.session.util.CloseExecutorUtil;
 import com.laptrinhjavaweb.orm.transaction.Transaction;
@@ -108,8 +108,8 @@ public class SessionImpl implements Session {
     }
 
     @Override
-    public SqlQuery createSQLQuery(String sql) {
-        return new SqlQueryImpl(connection, sql);
+    public SQLQuery createSQLQuery(String sql) {
+        return new SQLQueryImpl(connection, sql);
     }
 
     @Override

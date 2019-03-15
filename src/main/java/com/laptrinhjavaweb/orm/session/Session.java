@@ -1,7 +1,7 @@
 package com.laptrinhjavaweb.orm.session;
 
 import com.laptrinhjavaweb.orm.query.criteria.Criteria;
-import com.laptrinhjavaweb.orm.query.sqlquery.SqlQuery;
+import com.laptrinhjavaweb.orm.query.sqlquery.SQLQuery;
 import com.laptrinhjavaweb.orm.transaction.Transaction;
 
 import java.io.Serializable;
@@ -16,7 +16,7 @@ public interface Session {
 
     void delete(Object entity) throws SQLException;
 
-    SqlQuery createSQLQuery(String sql) throws SQLException;
+    SQLQuery createSQLQuery(String sql) throws SQLException;
 
     Criteria createCriteria(Class entityClass);
 

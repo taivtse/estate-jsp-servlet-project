@@ -1,6 +1,8 @@
 package com.laptrinhjavaweb.orm.query.sqlquery;
 
+import com.laptrinhjavaweb.orm.exception.TormException;
 import com.laptrinhjavaweb.orm.mapper.ArrayMapper;
+import com.laptrinhjavaweb.orm.mapper.EntityMapper;
 import com.laptrinhjavaweb.orm.query.statement.NamedParamStatement;
 import com.laptrinhjavaweb.orm.session.util.CloseExecutorUtil;
 
@@ -10,10 +12,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqlQueryImpl implements SqlQuery {
+public class SQLQueryImpl implements SQLQuery {
+    private Class entityClass;
     private NamedParamStatement statement;
 
-    public SqlQueryImpl(Connection connection, String sql) {
+    public SQLQueryImpl(Connection connection, String sql) {
         try {
             this.statement = new NamedParamStatement(connection, sql);
         } catch (SQLException e) {
@@ -22,12 +25,20 @@ public class SqlQueryImpl implements SqlQuery {
     }
 
     @Override
-    public List<Object[]> list() {
-        List<Object[]> resultList = new ArrayList<>();
+    public List list() {
+        List resultList = new ArrayList<>();
         try {
             ResultSet resultSet = this.statement.executeQuery();
             while (resultSet.next()) {
-                resultList.add(ArrayMapper.toArray(resultSet));
+                if (entityClass != null) {
+                    try {
+                        resultList.add(EntityMapper.of(this.entityClass).toEntity(resultSet));
+                    } catch (Exception e) {
+                        throw new TormException(e);
+                    }
+                } else {
+                    resultList.add(ArrayMapper.toArray(resultSet));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -56,6 +67,12 @@ public class SqlQueryImpl implements SqlQuery {
     @Override
     public void setParameter(String namedParam, Object parameter) throws SQLException {
         this.statement.setNamedParam(namedParam, parameter);
+    }
+
+    @Override
+    public SQLQuery setEntity(Class entityClass) {
+        this.entityClass = entityClass;
+        return this;
     }
 
     private void close() {
