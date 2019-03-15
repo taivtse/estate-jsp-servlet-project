@@ -36,7 +36,7 @@
                         <label>
                             <fmt:message bundle="${lang}" key="building.name"/>
                         </label>
-                        <input type="text" name="name" value="${param.name}"
+                        <input type="text" name="search.name" value="${param['search.name']}"
                                class="form-control">
                     </div>
                 </div>
@@ -46,8 +46,8 @@
                             <fmt:message bundle="${lang}" key="building.buildingArea.from"/>
                         </label>
                         <div>
-                            <input type="number" name="buildingAreaFrom"
-                                   value="${param.buildingAreaFrom}"
+                            <input type="number" name="search.buildingAreaFrom"
+                                   value="${param['search.buildingAreaFrom']}"
                                    class="form-control">
                         </div>
                     </div>
@@ -58,8 +58,8 @@
                             <fmt:message bundle="${lang}" key="building.buildingArea.to"/>
                         </label>
                         <div>
-                            <input type="number" name="buildingAreaTo"
-                                   value="${param.buildingAreaTo}"
+                            <input type="number" name="search.buildingAreaTo"
+                                   value="${param['search.buildingAreaTo']}"
                                    class="form-control">
                         </div>
                     </div>
@@ -73,11 +73,11 @@
                             <fmt:message bundle="${lang}" key="building.district"/>
                         </label>
                         <div>
-                            <select data-plugin-selectTwo name="districtId" class="form-control populate"
+                            <select data-plugin-selectTwo name="search.districtId" class="form-control populate"
                                     id="district-select">
-                                <option value=''><fmt:message bundle="${lang}" key="select.all"/></option>
+                                <option value="-1"><fmt:message bundle="${lang}" key="select.all"/></option>
                                 <c:forEach var="districtDto" items="${command.districtDtoList}">
-                                    <option value="${districtDto.id}" ${param.districtId eq districtDto.id ? 'selected' : ''}>${districtDto.name}</option>
+                                    <option value="${districtDto.id}" ${param['search.districtId'] eq districtDto.id ? 'selected' : ''}>${districtDto.name}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -89,7 +89,7 @@
                             <fmt:message bundle="${lang}" key="building.ward"/>
                         </label>
                         <div>
-                            <select data-plugin-selectTwo disabled name="wardId" class="form-control populate"
+                            <select data-plugin-selectTwo disabled name="search.wardId" class="form-control populate"
                                     id="ward-select">
                             </select>
                         </div>
@@ -101,8 +101,57 @@
                             <fmt:message bundle="${lang}" key="building.street"/>
                         </label>
                         <div>
-                            <input type="text" name="street" value="${param.street}"
+                            <input type="text" name="search.street" value="${param['search.street']}"
                                    class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label>
+                            <fmt:message bundle="${lang}" key="building.managerName"/>
+                        </label>
+                        <div>
+                            <input type="text" name="search.managerName"
+                                   value="${param['search.managerName']}"
+                                   class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label>
+                            <fmt:message bundle="${lang}" key="building.managerPhone"/>
+                        </label>
+                        <div>
+                            <input type="text" name="search.managerPhone"
+                                   value="${param['search.managerPhone']}"
+                                   class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label>
+                            <fmt:message bundle="${lang}" key="building.staff"/>
+                        </label>
+                        <div class="myMultiSelect">
+                            <select class="form-control" name="search.staffArray"
+                                    multiple data-plugin-multiselect>
+                                <c:forEach var="staffDto" items="${command.staffDtoList}">
+                                    <c:set var="found" value="false" scope="request"/>
+                                    <c:forEach var="staffId" items="${paramValues['search.staffArray']}">
+                                        <c:if test="${staffId == staffDto.id}">
+                                            <c:set var="found" value="true" scope="request"/>
+                                        </c:if>
+                                    </c:forEach>
+
+                                    <option value="${staffDto.id}" ${found ? 'selected' : ''}>${staffDto.fullName}</option>
+                                </c:forEach>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -115,8 +164,8 @@
                             <fmt:message bundle="${lang}" key="building.rentArea.from"/>
                         </label>
                         <div>
-                            <input type="number" name="rentAreaFrom"
-                                   value="${param.rentAreaFrom}"
+                            <input type="number" name="search.rentAreaFrom"
+                                   value="${param['search.rentAreaFrom']}"
                                    class="form-control">
                         </div>
                     </div>
@@ -127,8 +176,8 @@
                             <fmt:message bundle="${lang}" key="building.rentArea.to"/>
                         </label>
                         <div>
-                            <input type="number" name="rentAreaTo"
-                                   value="${param.rentAreaTo}"
+                            <input type="number" name="search.rentAreaTo"
+                                   value="${param['search.rentAreaTo']}"
                                    class="form-control">
                         </div>
                     </div>
@@ -139,8 +188,8 @@
                             <fmt:message bundle="${lang}" key="building.rentalCost.from"/>
                         </label>
                         <div>
-                            <input type="number" name="rentalCostFrom"
-                                   value="${param.rentalCostFrom}"
+                            <input type="number" name="search.rentalCostFrom"
+                                   value="${param['search.rentalCostFrom']}"
                                    class="form-control">
                         </div>
                     </div>
@@ -151,8 +200,8 @@
                             <fmt:message bundle="${lang}" key="building.rentalCost.to"/>
                         </label>
                         <div>
-                            <input type="number" name="rentalCostTo"
-                                   value="${param.rentalCostTo}"
+                            <input type="number" name="search.rentalCostTo"
+                                   value="${param['search.rentalCostTo']}"
                                    class="form-control">
                         </div>
                     </div>
@@ -166,8 +215,8 @@
                             <fmt:message bundle="${lang}" key="building.numberOfBasement"/>
                         </label>
                         <div>
-                            <input type="number" name="numberOfBasement"
-                                   value="${param.numberOfBasement}"
+                            <input type="number" name="search.numberOfBasement"
+                                   value="${param['search.numberOfBasement']}"
                                    class="form-control">
                         </div>
                     </div>
@@ -178,8 +227,8 @@
                             <fmt:message bundle="${lang}" key="building.direction"/>
                         </label>
                         <div>
-                            <input type="text" name="direction"
-                                   value="${param.direction}"
+                            <input type="text" name="search.direction"
+                                   value="${param['search.direction']}"
                                    class="form-control">
                         </div>
                     </div>
@@ -190,8 +239,8 @@
                             <fmt:message bundle="${lang}" key="building.level"/>
                         </label>
                         <div>
-                            <input type="text" name="level"
-                                   value="${param.level}"
+                            <input type="text" name="search.level"
+                                   value="${param['search.level']}"
                                    class="form-control">
                         </div>
                     </div>
@@ -202,11 +251,11 @@
                             <fmt:message bundle="${lang}" key="building.type"/>
                         </label>
                         <div class="myMultiSelect">
-                            <select class="form-control" name="typeArray"
+                            <select class="form-control" name="search.typeArray"
                                     multiple data-plugin-multiselect>
                                 <c:forEach var="buildingType" items="${command.buildingTypeArray}">
                                     <c:set var="found" value="false" scope="request"/>
-                                    <c:forEach var="typeId" items="${paramValues.typeArray}">
+                                    <c:forEach var="typeId" items="${paramValues['search.typeArray']}">
                                         <c:if test="${typeId == buildingType}">
                                             <c:set var="found" value="true" scope="request"/>
                                         </c:if>
@@ -219,61 +268,15 @@
                     </div>
                 </div>
             </div>
-            <br>
-            <div class="row">
-                <div class="col-xs-4">
-                    <div class="form-group">
-                        <label>
-                            <fmt:message bundle="${lang}" key="building.managerName"/>
-                        </label>
-                        <div>
-                            <input type="text" name="managerName"
-                                   value="${param.managerName}"
-                                   class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-4">
-                    <div class="form-group">
-                        <label>
-                            <fmt:message bundle="${lang}" key="building.managerPhone"/>
-                        </label>
-                        <div>
-                            <input type="text" name="managerPhone"
-                                   value="${param.managerPhone}"
-                                   class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-4">
-                    <div class="form-group">
-                        <label>
-                            <fmt:message bundle="${lang}" key="building.staff"/>
-                        </label>
-                        <div class="myMultiSelect">
-                            <select class="form-control" name="staffArray"
-                                    multiple data-plugin-multiselect>
-                                <c:forEach var="staffDto" items="${command.staffDtoList}">
-                                    <c:set var="found" value="false" scope="request"/>
-                                    <c:forEach var="staffId" items="${paramValues.staffArray}">
-                                        <c:if test="${staffId == staffDto.id}">
-                                            <c:set var="found" value="true" scope="request"/>
-                                        </c:if>
-                                    </c:forEach>
-
-                                    <option value="${staffDto.id}" ${found ? 'selected' : ''}>${staffDto.fullName}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <hr>
             <div class="form-group text-center">
-                <button class="mb-xs btn btn-info" id="submitButton">
+                <button class="mb-xs btn mr-xs btn-info" id="submitButton">
                     <fmt:message bundle="${lang}" key="search"/>
                     <i class="fa fa-search"></i>
                 </button>
+                <a href="/admin/building/list" type="reset" class="mb-xs btn btn-default">
+                    <fmt:message bundle="${lang}" key="reset"/>
+                </a>
             </div>
         </form>
     </div>
@@ -498,21 +501,21 @@
 
         function processDistrictChange() {
             $("#district-select").change(function () {
-                if ($(this).val()) {
+                if ($(this).val() != -1) {
                     $.ajax({
                         type: 'GET',
                         url: '${wardApi}?districtId=' + $(this).val(),
                         dataType: 'json',
                         success: function (data) {
                             $("#ward-select").empty();
-                            $("#ward-select").append(new Option('<fmt:message bundle="${lang}" key="select.all"/>', '', false, false));
+                            $("#ward-select").append(new Option('<fmt:message bundle="${lang}" key="select.all"/>', -1, false, false));
 
                             data.forEach(function (ward) {
                                 var newOption = new Option(ward.name, ward.id, false, false);
                                 $("#ward-select").append(newOption);
 
-                                if (ward.id == '${param.wardId}') {
-                                    $('#ward-select').val(${param.wardId}).trigger("change");
+                                if (ward.id == '${param['search.wardId']}') {
+                                    $('#ward-select').val(${param['search.wardId']}).trigger("change");
                                 }
                             });
                             $("#ward-select").trigger('change');
@@ -527,7 +530,7 @@
                 }
             });
 
-            if ($("#district-select").val()) {
+            if ($("#district-select").val() != -1) {
                 $("#district-select").trigger('change');
             }
         }

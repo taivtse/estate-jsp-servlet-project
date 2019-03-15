@@ -1,9 +1,6 @@
 package com.laptrinhjavaweb.command;
 
-import com.laptrinhjavaweb.dto.BuildingDto;
-import com.laptrinhjavaweb.dto.DistrictDto;
-import com.laptrinhjavaweb.dto.UserDto;
-import com.laptrinhjavaweb.dto.WardDto;
+import com.laptrinhjavaweb.dto.*;
 
 import java.util.List;
 
@@ -12,9 +9,11 @@ public class BuildingCommand extends AbstractCommand<BuildingDto> {
     private List<WardDto> wardDtoList;
     private List<UserDto> staffDtoList;
     private BuildingType[] buildingTypeArray = BuildingType.values();
+    private BuildingSearchingDto search;
 
     public BuildingCommand() {
         this.pojo = new BuildingDto();
+        search = new BuildingSearchingDto();
     }
 
     public List<DistrictDto> getDistrictDtoList() {
@@ -47,6 +46,14 @@ public class BuildingCommand extends AbstractCommand<BuildingDto> {
 
     public void setStaffDtoList(List<UserDto> staffDtoList) {
         this.staffDtoList = staffDtoList;
+    }
+
+    public BuildingSearchingDto getSearch() {
+        return search;
+    }
+
+    public void setSearch(BuildingSearchingDto search) {
+        this.search = search;
     }
 
     public enum BuildingType {
