@@ -93,19 +93,6 @@
     <script src="<c:url value='/template/admin/javascripts/global.js'/>"></script>
 
     <decorator:getProperty property="page.local_script"></decorator:getProperty>
-
-    <%-- Pnotify script --%>
-    <script type="application/javascript">
-        $(document).ready(function () {
-            <c:if test="${not empty command.pNotifyDto}">
-            new PNotify({
-                title: '${command.pNotifyDto.title}',
-                text: '${command.pNotifyDto.text}  ',
-                type: '${command.pNotifyDto.type}'
-            });
-            </c:if>
-        });
-    </script>
 </section>
 </body>
 </html>

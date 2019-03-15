@@ -4,11 +4,14 @@ import com.laptrinhjavaweb.command.BuildingCommand;
 import com.laptrinhjavaweb.constant.SystemConstant;
 import com.laptrinhjavaweb.dto.BuildingDto;
 import com.laptrinhjavaweb.dto.DistrictDto;
+import com.laptrinhjavaweb.dto.UserDto;
 import com.laptrinhjavaweb.service.BuildingService;
 import com.laptrinhjavaweb.service.DistrictService;
+import com.laptrinhjavaweb.service.UserService;
 import com.laptrinhjavaweb.service.WardService;
 import com.laptrinhjavaweb.service.impl.BuildingServiceImpl;
 import com.laptrinhjavaweb.service.impl.DistrictServiceImpl;
+import com.laptrinhjavaweb.service.impl.UserServiceImpl;
 import com.laptrinhjavaweb.service.impl.WardServiceImpl;
 import com.laptrinhjavaweb.util.FormUtil;
 import com.laptrinhjavaweb.util.HttpUtil;
@@ -28,6 +31,7 @@ public class BuildingController extends HttpServlet {
     private BuildingService buildingService = new BuildingServiceImpl();
     private DistrictService districtService = new DistrictServiceImpl();
     private WardService wardService = new WardServiceImpl();
+    private UserService userService = new UserServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -43,11 +47,12 @@ public class BuildingController extends HttpServlet {
             List<DistrictDto> districtDtoList = districtService.findAll();
             command.setDistrictDtoList(districtDtoList);
 
+//            set staff list
+            List<UserDto> staffDtoList = userService.findAllActiveStaff();
+            command.setStaffDtoList(staffDtoList);
+
             if (type.startsWith(SystemConstant.TYPE_LIST)) {
                 command.setListResult(buildingService.findAll());
-//            set ward list
-                command.setWardDtoList(wardService.findAllByDistrictId(districtDtoList.get(0).getId()));
-
                 req.setAttribute(SystemConstant.COMMAND, command);
                 req.getRequestDispatcher(viewRootPath.concat("list.jsp")).forward(req, resp);
 

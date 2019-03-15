@@ -1,6 +1,5 @@
 package com.laptrinhjavaweb.util;
 
-import com.laptrinhjavaweb.command.AbstractCommand;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConvertUtilsBean;
 import org.apache.commons.beanutils.PropertyUtilsBean;
@@ -13,7 +12,7 @@ import java.util.Date;
 
 public class FormUtil {
 
-    public static <T extends AbstractCommand> T populate(Class<T> clazz, HttpServletRequest request) {
+    public static <T> T populate(Class<T> clazz, HttpServletRequest request) {
         T object = null;
         try {
             object = clazz.newInstance();

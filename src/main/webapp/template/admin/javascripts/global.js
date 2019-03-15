@@ -1,6 +1,4 @@
-(function ($) {
-
-    'use strict';
+$(document).ready(function () {
 
     PNotify.prototype.options.delay = 5000;
 
@@ -45,11 +43,14 @@
         $.magnificPopup.close();
     });
 
+    $("input[name='multiselect']").each(function () {
+        $(this).removeAttr("name");
+    });
+
     bindEventCheckAllCheckbox();
     enableOrDisableDeleteAll();
     autoCheckCheckboxAll();
-
-}).apply(this, [jQuery]);
+})
 
 
 function bindEventCheckAllCheckbox() {

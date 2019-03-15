@@ -37,7 +37,8 @@ public class AssignmentStaffApi extends HttpServlet {
         if (command.getCheckList() != null && command.getBuildingId() != null) {
             try {
                 assignmentService.deleteAllByBuildingId(command.getBuildingId());
-                for (Integer staffId : command.getCheckList()) {
+                for (String staffStrId : command.getCheckList()) {
+                    Integer staffId = Integer.valueOf(staffStrId);
                     AssignmentDto assignmentDto = new AssignmentDto();
                     assignmentDto.setUserId(staffId);
                     assignmentDto.setBuildingId(command.getBuildingId());

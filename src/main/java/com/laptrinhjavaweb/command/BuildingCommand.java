@@ -2,6 +2,7 @@ package com.laptrinhjavaweb.command;
 
 import com.laptrinhjavaweb.dto.BuildingDto;
 import com.laptrinhjavaweb.dto.DistrictDto;
+import com.laptrinhjavaweb.dto.UserDto;
 import com.laptrinhjavaweb.dto.WardDto;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 public class BuildingCommand extends AbstractCommand<BuildingDto> {
     private List<DistrictDto> districtDtoList;
     private List<WardDto> wardDtoList;
+    private List<UserDto> staffDtoList;
     private BuildingType[] buildingTypeArray = BuildingType.values();
 
     public BuildingCommand() {
@@ -37,6 +39,14 @@ public class BuildingCommand extends AbstractCommand<BuildingDto> {
 
     public void setBuildingTypeArray(BuildingType[] buildingTypeArray) {
         this.buildingTypeArray = buildingTypeArray;
+    }
+
+    public List<UserDto> getStaffDtoList() {
+        return staffDtoList;
+    }
+
+    public void setStaffDtoList(List<UserDto> staffDtoList) {
+        this.staffDtoList = staffDtoList;
     }
 
     public enum BuildingType {

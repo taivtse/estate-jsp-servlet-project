@@ -51,7 +51,6 @@
                 </h2>
             </header>
             <div class="panel-body">
-                <div id="notify-wrapper"></div>
                 <form class="form-horizontal buildingForm" action="${submitFormUrl}" enctype="multipart/form-data"
                       id="buildingForm">
                     <c:if test="${not empty command.pojo.id}">
@@ -112,12 +111,12 @@
                         <div class="col-xs-4">
                             <div class="form-group">
                                 <label class="col-md-3 control-label">
-                                    <fmt:message bundle="${lang}" key="building.districtId"/>
+                                    <fmt:message bundle="${lang}" key="building.district"/>
                                 </label>
                                 <div class="col-md-9">
                                     <select data-plugin-selectTwo class="form-control populate" id="district-select">
-                                        <c:forEach var="buildingDto" items="${command.districtDtoList}">
-                                            <option value="${buildingDto.id}" ${buildingDto.id eq command.pojo.districtId ? 'selected' : ''}>${buildingDto.name}</option>
+                                        <c:forEach var="districtDto" items="${command.districtDtoList}">
+                                            <option value="${districtDto.id}" ${districtDto.id eq command.pojo.districtId ? 'selected' : ''}>${districtDto.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -126,7 +125,7 @@
                         <div class="col-xs-4">
                             <div class="form-group">
                                 <label class="col-md-3 control-label">
-                                    <fmt:message bundle="${lang}" key="building.wardId"/>
+                                    <fmt:message bundle="${lang}" key="building.ward"/>
                                 </label>
                                 <div class="col-md-9">
                                     <select data-plugin-selectTwo name="wardId" class="form-control populate"
@@ -497,20 +496,16 @@
                     type: 'GET',
                     url: '${wardApi}?districtId=' + $(this).val(),
                     dataType: 'json',
-                    success: function (result) {
-                        renderWardSelect(result);
+                    success: function (data) {
+                        $("#ward-select").empty();
+                        data.forEach(function (ward) {
+                            var newOption = new Option(ward.name, ward.id, false, false);
+                            $("#ward-select").append(newOption);
+                        });
+                        $("#ward-select").trigger('change');
                     }
                 });
             });
-        }
-
-        function renderWardSelect(data) {
-            $("#ward-select").empty();
-            data.forEach(function (ward) {
-                var newOption = new Option(ward.name, ward.id, false, false);
-                $("#ward-select").append(newOption);
-            });
-            $("#ward-select").trigger('change');
         }
 
         function setImagePreviewEvent() {
@@ -536,7 +531,6 @@
             $("#submitButton").click(function (e) {
                 e.preventDefault();
                 var data = $("#buildingForm").serializeObject();
-                delete data.multiselect;
                 doSubmitForm(data);
             });
         }
