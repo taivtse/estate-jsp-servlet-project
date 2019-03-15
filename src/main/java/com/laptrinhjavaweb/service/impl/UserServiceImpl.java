@@ -3,7 +3,7 @@ package com.laptrinhjavaweb.service.impl;
 import com.laptrinhjavaweb.converter.UserConverter;
 import com.laptrinhjavaweb.dao.UserDao;
 import com.laptrinhjavaweb.dao.impl.UserDaoImpl;
-import com.laptrinhjavaweb.dto.StaffAssignmentDto;
+import com.laptrinhjavaweb.dto.AssignmentStaffDto;
 import com.laptrinhjavaweb.dto.UserDto;
 import com.laptrinhjavaweb.entity.UserEntity;
 import com.laptrinhjavaweb.service.AssignmentService;
@@ -21,25 +21,25 @@ public class UserServiceImpl extends AbstractService<Integer, UserDto, UserEntit
     }
 
     @Override
-    public List<StaffAssignmentDto> getStaffAssignmentListByBuildingId(Integer buildingId) {
+    public List<AssignmentStaffDto> getStaffAssignmentListByBuildingId(Integer buildingId) {
         List<UserEntity> userEntityList = ((UserDao) genericDao).findAllActiveStaffList();
-        List<StaffAssignmentDto> staffAssignmentDtoList = new ArrayList<>();
+        List<AssignmentStaffDto> assignmentStaffDtoList = new ArrayList<>();
 
         userEntityList.forEach(staff -> {
-            StaffAssignmentDto staffAssignmentDto = new StaffAssignmentDto();
-            staffAssignmentDto.setId(staff.getId());
-            staffAssignmentDto.setFullName(staff.getFullName());
+            AssignmentStaffDto assignmentStaffDto = new AssignmentStaffDto();
+            assignmentStaffDto.setId(staff.getId());
+            assignmentStaffDto.setFullName(staff.getFullName());
 
             if (assignmentService.isExistByStaffIdAndBuildingId(staff.getId(), buildingId)) {
-                staffAssignmentDto.setChecked("checked");
+                assignmentStaffDto.setChecked("checked");
             } else {
-                staffAssignmentDto.setChecked("");
+                assignmentStaffDto.setChecked("");
             }
 
-            staffAssignmentDtoList.add(staffAssignmentDto);
+            assignmentStaffDtoList.add(assignmentStaffDto);
         });
 
-        return staffAssignmentDtoList;
+        return assignmentStaffDtoList;
     }
 
     @Override

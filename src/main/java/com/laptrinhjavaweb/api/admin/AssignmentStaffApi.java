@@ -1,9 +1,9 @@
 package com.laptrinhjavaweb.api.admin;
 
 
-import com.laptrinhjavaweb.command.AssignmentCommand;
+import com.laptrinhjavaweb.command.AssignmentStaffCommand;
 import com.laptrinhjavaweb.dto.AssignmentDto;
-import com.laptrinhjavaweb.dto.StaffAssignmentDto;
+import com.laptrinhjavaweb.dto.AssignmentStaffDto;
 import com.laptrinhjavaweb.service.AssignmentService;
 import com.laptrinhjavaweb.service.UserService;
 import com.laptrinhjavaweb.service.impl.AssignmentServiceImpl;
@@ -26,20 +26,18 @@ public class AssignmentStaffApi extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Integer buildingId = Integer.parseInt(req.getParameter("buildingId"));
-        List<StaffAssignmentDto> staffAssignmentDtoList = userService.getStaffAssignmentListByBuildingId(buildingId);
-        HttpUtil.writeValue(resp.getOutputStream(), staffAssignmentDtoList);
+        List<AssignmentStaffDto> assignmentStaffDtoList = userService.getStaffAssignmentListByBuildingId(buildingId);
+        HttpUtil.writeValue(resp.getOutputStream(), assignmentStaffDtoList);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        AssignmentCommand command = HttpUtil.of(req.getReader()).toObject(AssignmentCommand.class);
+        AssignmentStaffCommand command = HttpUtil.of(req.getReader()).toObject(AssignmentStaffCommand.class);
 
         if (command.getCheckList() != null && command.getBuildingId() != null) {
             try {
                 assignmentService.deleteAllByBuildingId(command.getBuildingId());
-                for (String staffStrId : command.getCheckList()) {
-                    Integer staffId = Integer.parseInt(staffStrId);
-
+                for (Integer staffId : command.getCheckList()) {
                     AssignmentDto assignmentDto = new AssignmentDto();
                     assignmentDto.setUserId(staffId);
                     assignmentDto.setBuildingId(command.getBuildingId());

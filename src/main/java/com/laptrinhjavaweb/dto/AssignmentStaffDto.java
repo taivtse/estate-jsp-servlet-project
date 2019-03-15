@@ -1,6 +1,6 @@
 package com.laptrinhjavaweb.dto;
 
-public class StaffAssignmentDto {
+public class AssignmentStaffDto {
     private Integer id;
     private String fullName;
     private String checked;

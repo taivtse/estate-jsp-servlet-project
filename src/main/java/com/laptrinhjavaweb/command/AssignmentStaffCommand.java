@@ -1,12 +1,12 @@
 package com.laptrinhjavaweb.command;
 
-import com.laptrinhjavaweb.dto.AssignmentDto;
+import com.laptrinhjavaweb.dto.AssignmentStaffDto;
 
-public class AssignmentCommand extends AbstractCommand<AssignmentDto> {
+public class AssignmentStaffCommand extends AbstractCommand<AssignmentStaffDto> {
     private Integer buildingId;
 
-    public AssignmentCommand() {
-        this.pojo = new AssignmentDto();
+    public AssignmentStaffCommand() {
+        this.pojo = new AssignmentStaffDto();
     }
 
     public Integer getBuildingId() {

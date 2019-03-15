@@ -1,7 +1,5 @@
 package com.laptrinhjavaweb.command;
 
-import com.laptrinhjavaweb.dto.PNotifyDto;
-
 import java.util.List;
 
 public class AbstractCommand<T> {
@@ -15,7 +13,6 @@ public class AbstractCommand<T> {
     private String sortExpression;
     private String sortDirection;
     private String[] checkList;
-    private PNotifyDto pNotifyDto;
 
     public T getPojo() {
         return pojo;
@@ -95,13 +92,5 @@ public class AbstractCommand<T> {
 
     public void setCheckList(String[] checkList) {
         this.checkList = checkList;
-    }
-
-    public PNotifyDto getpNotifyDto() {
-        return pNotifyDto;
-    }
-
-    public void setpNotifyDto(PNotifyDto pNotifyDto) {
-        this.pNotifyDto = pNotifyDto;
     }
 }
