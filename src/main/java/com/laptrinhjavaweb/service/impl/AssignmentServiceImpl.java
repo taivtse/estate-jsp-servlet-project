@@ -19,9 +19,6 @@ public class AssignmentServiceImpl extends AbstractService<Integer, AssignmentDt
     @Override
     public AssignmentDto save(AssignmentDto dto) throws Exception {
         dto.setCreatedDate(new Date());
-
-//        TODO: change create by
-        dto.setCreatedBy("thanh tai");
         return super.save(dto);
     }
 

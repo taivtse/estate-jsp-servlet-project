@@ -51,8 +51,7 @@
                 </h2>
             </header>
             <div class="panel-body">
-                <form class="form-horizontal buildingForm" action="${submitFormUrl}" enctype="multipart/form-data"
-                      id="buildingForm">
+                <form class="form-horizontal buildingForm" enctype="multipart/form-data" id="buildingForm">
                     <c:if test="${not empty command.pojo.id}">
                         <input type="hidden" name="id" value="${command.pojo.id}">
                     </c:if>
@@ -463,7 +462,7 @@
                     </div>
                     <hr>
                     <div class="form-group text-center">
-                        <button type="button" class="mb-xs mt-xs mr-xs btn btn-primary" id="submitButton">
+                        <button type="submit" class="mb-xs mt-xs mr-xs btn btn-primary" id="submitButton">
                             <fmt:message bundle="${lang}" key="${empty command.pojo.id ? 'insert' : 'update'}"/>
                         </button>
                         <button type="reset" class="mb-xs mt-xs mr-xs btn btn-default">

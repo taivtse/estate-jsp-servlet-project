@@ -88,8 +88,6 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
     @Override
     public BuildingDto save(BuildingDto dto) throws Exception {
         dto.setCreatedDate(new Date());
-//        TODO: change crated by if authenticated
-        dto.setCreatedBy("thanhtai");
 
         BuildingEntity entity = converter.dtoToEntity(dto);
 
@@ -100,15 +98,7 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
         genericDao.save(entity);
 
 //        save all new rent area
-        if (dto.getRentalAreaArray() != null) {
-            for (Integer area : dto.getRentalAreaArray()) {
-                RentAreaDto rentAreaDto = new RentAreaDto();
-                rentAreaDto.setArea(area);
-                rentAreaDto.setBuildingId(entity.getId());
-
-                rentAreaService.save(rentAreaDto);
-            }
-        }
+        this.saveRentalAreaArray(dto.getRentalAreaArray(), entity.getId());
 
         return converter.entityToDto(entity);
     }
@@ -116,12 +106,10 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
     @Override
     public BuildingDto update(BuildingDto dto) throws Exception {
         BuildingEntity oldEntity = genericDao.findOneById(dto.getId());
-
         dto.setCreatedDate(oldEntity.getCreatedDate());
         dto.setCreatedBy(oldEntity.getCreatedBy());
+
         dto.setModifiedDate(new Date());
-//        TODO: change crated by if authenticated
-        dto.setModifiedBy("haimy");
 
         BuildingEntity entity = converter.dtoToEntity(dto);
         if (dto.getTypeArray() != null) {
@@ -132,15 +120,7 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
 
 //        delete all old rent area and insert new
         rentAreaService.deleteAllByBuildingId(dto.getId());
-        if (dto.getRentalAreaArray() != null) {
-            for (Integer area : dto.getRentalAreaArray()) {
-                RentAreaDto rentAreaDto = new RentAreaDto();
-                rentAreaDto.setArea(area);
-                rentAreaDto.setBuildingId(dto.getId());
-
-                rentAreaService.save(rentAreaDto);
-            }
-        }
+        this.saveRentalAreaArray(dto.getRentalAreaArray(), entity.getId());
 
         return converter.entityToDto(entity);
     }
@@ -167,5 +147,17 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
         }
 
         return address;
+    }
+
+    private void saveRentalAreaArray(Integer[] areaArray, Integer buildingId) throws Exception {
+        if (areaArray != null) {
+            for (Integer area : areaArray) {
+                RentAreaDto rentAreaDto = new RentAreaDto();
+                rentAreaDto.setArea(area);
+                rentAreaDto.setBuildingId(buildingId);
+
+                rentAreaService.save(rentAreaDto);
+            }
+        }
     }
 }

@@ -17,6 +17,7 @@ import com.laptrinhjavaweb.service.WardService;
 import com.laptrinhjavaweb.service.util.SingletonServiceUtil;
 import com.laptrinhjavaweb.util.FormUtil;
 import com.laptrinhjavaweb.util.HttpUtil;
+import com.laptrinhjavaweb.util.SessionUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -121,6 +122,9 @@ public class BuildingController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         BuildingDto buildingDto = HttpUtil.of(req.getReader()).toObject(BuildingDto.class);
         try {
+            String createdBy = ((UserDto) SessionUtil.getInstance().getAttribute(req, SystemConstant.SESSION_USER)).getUsername();
+            buildingDto.setCreatedBy(createdBy);
+
             buildingDto = buildingService.save(buildingDto);
             HttpUtil.writeValue(resp.getOutputStream(), buildingDto);
         } catch (Exception e) {
@@ -132,6 +136,9 @@ public class BuildingController extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         BuildingDto buildingDto = HttpUtil.of(req.getReader()).toObject(BuildingDto.class);
         try {
+            String modifyBy = ((UserDto) SessionUtil.getInstance().getAttribute(req, SystemConstant.SESSION_USER)).getUsername();
+            buildingDto.setModifiedBy(modifyBy);
+
             buildingDto = buildingService.update(buildingDto);
             HttpUtil.writeValue(resp.getOutputStream(), buildingDto);
         } catch (Exception e) {

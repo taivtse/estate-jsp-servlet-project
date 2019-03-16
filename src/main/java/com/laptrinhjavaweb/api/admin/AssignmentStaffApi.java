@@ -2,12 +2,15 @@ package com.laptrinhjavaweb.api.admin;
 
 
 import com.laptrinhjavaweb.command.AssignmentStaffCommand;
+import com.laptrinhjavaweb.constant.SystemConstant;
 import com.laptrinhjavaweb.dto.AssignmentDto;
 import com.laptrinhjavaweb.dto.AssignmentStaffDto;
+import com.laptrinhjavaweb.dto.UserDto;
 import com.laptrinhjavaweb.service.AssignmentService;
 import com.laptrinhjavaweb.service.UserService;
 import com.laptrinhjavaweb.service.util.SingletonServiceUtil;
 import com.laptrinhjavaweb.util.HttpUtil;
+import com.laptrinhjavaweb.util.SessionUtil;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -46,6 +49,9 @@ public class AssignmentStaffApi extends HttpServlet {
                     AssignmentDto assignmentDto = new AssignmentDto();
                     assignmentDto.setUserId(staffId);
                     assignmentDto.setBuildingId(command.getBuildingId());
+
+                    String createdBy = ((UserDto) SessionUtil.getInstance().getAttribute(req, SystemConstant.SESSION_USER)).getUsername();
+                    assignmentDto.setCreatedBy(createdBy);
 
                     assignmentService.save(assignmentDto);
                 }
