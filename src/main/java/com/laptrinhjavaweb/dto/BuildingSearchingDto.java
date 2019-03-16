@@ -9,7 +9,7 @@ public class BuildingSearchingDto {
     private String street;
     private String managerName;
     private String managerPhone;
-    private String[] staffArray;
+    private Integer[] staffArray;
     private Integer rentAreaFrom;
     private Integer rentAreaTo;
     private Integer rentalCostFrom;
@@ -83,11 +83,11 @@ public class BuildingSearchingDto {
         this.managerPhone = managerPhone;
     }
 
-    public String[] getStaffArray() {
+    public Integer[] getStaffArray() {
         return staffArray;
     }
 
-    public void setStaffArray(String[] staffArray) {
+    public void setStaffArray(Integer[] staffArray) {
         this.staffArray = staffArray;
     }
 

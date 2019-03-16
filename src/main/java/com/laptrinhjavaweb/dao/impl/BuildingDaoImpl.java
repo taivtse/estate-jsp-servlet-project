@@ -116,19 +116,19 @@ public class BuildingDaoImpl extends AbstractDao<Integer, BuildingEntity> implem
 
 //        tim kiem theo huong
         if (StringUtils.isNotBlank(builder.getDirection())) {
-            where.append(" AND b.direction LIKE {direction}");
-            paramMap.put("direction", "%" + builder.getDirection() + "%");
+            where.append(" AND b.direction = {direction}");
+            paramMap.put("direction", builder.getDirection());
         }
 
 //        tim kiem theo hang
         if (StringUtils.isNotBlank(builder.getLevel())) {
-            where.append(" AND b.level LIKE {level}");
-            paramMap.put("level", "%" + builder.getLevel() + "%");
+            where.append(" AND b.level = {level}");
+            paramMap.put("level", builder.getLevel());
         }
 
 //        tim kiem theo loai toa nha
         if (builder.getTypeArray() != null && builder.getTypeArray().length > 0) {
-            where.append(" AND(");
+            where.append(" AND (");
             for (int i = 0; i < builder.getTypeArray().length; i++) {
                 if (i != 0) {
                     where.append(" OR ");

@@ -9,7 +9,7 @@ public class BuildingBuilder {
     private String street;
     private String managerName;
     private String managerPhone;
-    private String[] staffArray;
+    private Integer[] staffArray;
     private Integer rentAreaFrom;
     private Integer rentAreaTo;
     private Integer rentalCostFrom;
@@ -48,7 +48,7 @@ public class BuildingBuilder {
         private String street;
         private String managerName;
         private String managerPhone;
-        private String[] staffArray;
+        private Integer[] staffArray;
         private Integer rentAreaFrom;
         private Integer rentAreaTo;
         private Integer rentalCostFrom;
@@ -98,7 +98,7 @@ public class BuildingBuilder {
             return this;
         }
 
-        public Builder setStaffArray(String[] staffArray) {
+        public Builder setStaffArray(Integer[] staffArray) {
             this.staffArray = staffArray;
             return this;
         }
@@ -180,7 +180,7 @@ public class BuildingBuilder {
         return managerPhone;
     }
 
-    public String[] getStaffArray() {
+    public Integer[] getStaffArray() {
         return staffArray;
     }
 
