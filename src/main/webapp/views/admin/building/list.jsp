@@ -75,7 +75,7 @@
                         <div>
                             <select data-plugin-selectTwo name="search.districtId" class="form-control populate"
                                     id="district-select">
-                                <option value="-1"><fmt:message bundle="${lang}" key="select.all"/></option>
+                                <option value="0"><fmt:message bundle="${lang}" key="select.all"/></option>
                                 <c:forEach var="districtDto" items="${command.districtDtoList}">
                                     <option value="${districtDto.id}" ${param['search.districtId'] eq districtDto.id ? 'selected' : ''}>${districtDto.name}</option>
                                 </c:forEach>
@@ -501,14 +501,14 @@
 
         function processDistrictChange() {
             $("#district-select").change(function () {
-                if ($(this).val() != -1) {
+                if ($(this).val() != 0) {
                     $.ajax({
                         type: 'GET',
                         url: '${wardApi}?districtId=' + $(this).val(),
                         dataType: 'json',
                         success: function (data) {
                             $("#ward-select").empty();
-                            $("#ward-select").append(new Option('<fmt:message bundle="${lang}" key="select.all"/>', -1, false, false));
+                            $("#ward-select").append(new Option('<fmt:message bundle="${lang}" key="select.all"/>', 0, false, false));
 
                             data.forEach(function (ward) {
                                 var newOption = new Option(ward.name, ward.id, false, false);
@@ -530,7 +530,7 @@
                 }
             });
 
-            if ($("#district-select").val() != -1) {
+            if ($("#district-select").val() != 0) {
                 $("#district-select").trigger('change');
             }
         }

@@ -18,7 +18,7 @@ public class AssignmentDaoImpl extends AbstractDao<Integer, AssignmentEntity> im
         Transaction transaction = session.beginTransaction();
         try {
             SQLQuery query = session.createSQLQuery("DELETE FROM assignment WHERE building_id={id}");
-            query.setParameter("id", id);
+            query.setParam("id", id);
             query.executeUpdate();
             transaction.commit();
         } catch (SQLException e) {

@@ -1,10 +1,15 @@
 package com.laptrinhjavaweb.controller.admin;
 
+import com.laptrinhjavaweb.builder.BuildingBuilder;
 import com.laptrinhjavaweb.command.BuildingCommand;
 import com.laptrinhjavaweb.constant.SystemConstant;
 import com.laptrinhjavaweb.dto.BuildingDto;
+import com.laptrinhjavaweb.dto.BuildingSearchingDto;
 import com.laptrinhjavaweb.dto.DistrictDto;
 import com.laptrinhjavaweb.dto.UserDto;
+import com.laptrinhjavaweb.paging.PageRequest;
+import com.laptrinhjavaweb.paging.Pageable;
+import com.laptrinhjavaweb.paging.Sorter;
 import com.laptrinhjavaweb.service.BuildingService;
 import com.laptrinhjavaweb.service.DistrictService;
 import com.laptrinhjavaweb.service.UserService;
@@ -52,7 +57,30 @@ public class BuildingController extends HttpServlet {
             command.setStaffDtoList(staffDtoList);
 
             if (type.startsWith(SystemConstant.TYPE_LIST)) {
-                command.setListResult(buildingService.findAll());
+                Pageable pageable = new PageRequest(command.getPage(), command.getMaxPageItems(),
+                        new Sorter(command.getSortExpression(), command.getSortDirection()));
+
+                BuildingSearchingDto search = command.getSearch();
+                BuildingBuilder builder = new BuildingBuilder.Builder()
+                        .setName(search.getName())
+                        .setBuildingAreaFrom(search.getBuildingAreaFrom())
+                        .setBuildingAreaTo(search.getBuildingAreaTo())
+                        .setDistrictId(search.getDistrictId())
+                        .setWardId(search.getWardId())
+                        .setStreet(search.getStreet())
+                        .setManagerName(search.getManagerName())
+                        .setManagerPhone(search.getManagerPhone())
+                        .setStaffArray(search.getStaffArray())
+                        .setRentAreaFrom(search.getRentAreaFrom())
+                        .setRentAreaTo(search.getRentAreaTo())
+                        .setRentalCostFrom(search.getRentalCostFrom())
+                        .setRentalCostTo(search.getRentalCostTo())
+                        .setNumberOfBasement(search.getNumberOfBasement())
+                        .setDirection(search.getDirection())
+                        .setLevel(search.getLevel())
+                        .setTypeArray(search.getTypeArray()).build();
+
+                command.setListResult(buildingService.findAll(pageable, builder));
                 req.setAttribute(SystemConstant.COMMAND, command);
                 req.getRequestDispatcher(viewRootPath.concat("list.jsp")).forward(req, resp);
 
@@ -78,9 +106,10 @@ public class BuildingController extends HttpServlet {
                 resp.sendRedirect("/admin/building/list");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            resp.sendRedirect("/admin/building/list");
-            return;
+            throw e;
+//            e.printStackTrace();
+//            resp.sendRedirect("/admin/building/list");
+//            return;
         }
     }
 

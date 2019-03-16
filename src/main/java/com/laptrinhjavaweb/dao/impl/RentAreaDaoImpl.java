@@ -16,7 +16,7 @@ public class RentAreaDaoImpl extends AbstractDao<Integer, RentAreaEntity> implem
         Transaction transaction = session.beginTransaction();
         try {
             SQLQuery query = session.createSQLQuery("DELETE FROM rent_area WHERE building_id={id}");
-            query.setParameter("id", id);
+            query.setParam("id", id);
             query.executeUpdate();
             transaction.commit();
         } catch (SQLException e) {

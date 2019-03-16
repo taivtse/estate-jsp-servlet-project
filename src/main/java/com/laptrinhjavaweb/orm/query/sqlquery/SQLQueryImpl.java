@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SQLQueryImpl implements SQLQuery {
     private Class entityClass;
@@ -60,13 +61,20 @@ public class SQLQueryImpl implements SQLQuery {
     }
 
     @Override
-    public void setParameter(int index, Object parameter) throws SQLException {
+    public void setParam(int index, Object parameter) throws SQLException {
         this.statement.setParamAt(index, parameter);
     }
 
     @Override
-    public void setParameter(String namedParam, Object parameter) throws SQLException {
+    public void setParam(String namedParam, Object parameter) throws SQLException {
         this.statement.setNamedParam(namedParam, parameter);
+    }
+
+    @Override
+    public void setParamMap(Map<String, Object> paramMap) throws SQLException {
+        for (Map.Entry<String, Object> entry : paramMap.entrySet()) {
+            this.setParam(entry.getKey(), entry.getValue());
+        }
     }
 
     @Override

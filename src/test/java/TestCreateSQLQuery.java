@@ -14,7 +14,7 @@ public class TestCreateSQLQuery {
         SQLQuery statement;
         try {
             statement = session.createSQLQuery("Select * from role where id = ?");
-            statement.setParameter(1, "AA");
+            statement.setParam(1, "AA");
 
             List<Object[]> objectList = statement.list();
 

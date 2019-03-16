@@ -1,12 +1,15 @@
 package com.laptrinhjavaweb.service.impl;
 
+import com.laptrinhjavaweb.builder.BuildingBuilder;
 import com.laptrinhjavaweb.converter.BuildingConverter;
+import com.laptrinhjavaweb.dao.BuildingDao;
 import com.laptrinhjavaweb.dao.impl.BuildingDaoImpl;
 import com.laptrinhjavaweb.dto.BuildingDto;
 import com.laptrinhjavaweb.dto.DistrictDto;
 import com.laptrinhjavaweb.dto.RentAreaDto;
 import com.laptrinhjavaweb.dto.WardDto;
 import com.laptrinhjavaweb.entity.BuildingEntity;
+import com.laptrinhjavaweb.paging.Pageable;
 import com.laptrinhjavaweb.service.*;
 
 import java.util.ArrayList;
@@ -25,11 +28,13 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
     }
 
     @Override
-    public List<BuildingDto> findAll() {
-        List<BuildingDto> buildingDtoList = super.findAll();
+    public List<BuildingDto> findAll(Pageable pageable, BuildingBuilder builder) {
+        List<BuildingEntity> buildingEntityList = ((BuildingDao) genericDao).findAll(pageable, builder);
+        List<BuildingDto> buildingDtoList = new ArrayList<>();
 
 //        convert entity to dto and add it to dto list
-        for (BuildingDto buildingDto : buildingDtoList) {
+        for (BuildingEntity buildingEntity : buildingEntityList) {
+            BuildingDto buildingDto = converter.entityToDto(buildingEntity);
 
 //            get district and ward name to concatenate to full address
             WardDto wardDto = wardService.findOneById(buildingDto.getWardId());
@@ -41,6 +46,8 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
             List<Integer> rentAreaNumberList = new ArrayList<>();
             rentAreaDtoList.forEach(rentAreaDto -> rentAreaNumberList.add(rentAreaDto.getArea()));
             buildingDto.setRentalAreaArray(rentAreaNumberList.toArray(new Integer[rentAreaNumberList.size()]));
+
+            buildingDtoList.add(buildingDto);
         }
 
         return buildingDtoList;
@@ -83,6 +90,7 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
         if (dto.getTypeArray() != null) {
             entity.setType(String.join(",", dto.getTypeArray()));
         }
+
         genericDao.save(entity);
 
 //        save all new rent area
@@ -90,7 +98,7 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
             for (Integer area : dto.getRentalAreaArray()) {
                 RentAreaDto rentAreaDto = new RentAreaDto();
                 rentAreaDto.setArea(area);
-                rentAreaDto.setBuildingId(dto.getId());
+                rentAreaDto.setBuildingId(entity.getId());
 
                 rentAreaService.save(rentAreaDto);
             }
@@ -113,6 +121,7 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
         if (dto.getTypeArray() != null) {
             entity.setType(String.join(",", dto.getTypeArray()));
         }
+
         genericDao.update(entity);
 
 //        delete all old rent area and insert new
