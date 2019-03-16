@@ -1,7 +1,7 @@
 package com.laptrinhjavaweb.service.impl;
 
 import com.laptrinhjavaweb.converter.WardConverter;
-import com.laptrinhjavaweb.dao.impl.WardDaoImpl;
+import com.laptrinhjavaweb.dao.util.SingletonDaoUtil;
 import com.laptrinhjavaweb.dto.WardDto;
 import com.laptrinhjavaweb.entity.WardEntity;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class WardServiceImpl extends AbstractService<Integer, WardDto, WardEntity> implements WardService {
     public WardServiceImpl() {
-        super.genericDao = new WardDaoImpl();
+        super.genericDao = SingletonDaoUtil.getWardDaoInstance();
         super.converter = new WardConverter();
     }
 

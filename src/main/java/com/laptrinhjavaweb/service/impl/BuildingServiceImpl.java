@@ -3,7 +3,7 @@ package com.laptrinhjavaweb.service.impl;
 import com.laptrinhjavaweb.builder.BuildingBuilder;
 import com.laptrinhjavaweb.converter.BuildingConverter;
 import com.laptrinhjavaweb.dao.BuildingDao;
-import com.laptrinhjavaweb.dao.impl.BuildingDaoImpl;
+import com.laptrinhjavaweb.dao.util.SingletonDaoUtil;
 import com.laptrinhjavaweb.dto.BuildingDto;
 import com.laptrinhjavaweb.dto.DistrictDto;
 import com.laptrinhjavaweb.dto.RentAreaDto;
@@ -23,7 +23,7 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
     private AssignmentService assignmentService = new AssignmentServiceImpl();
 
     public BuildingServiceImpl() {
-        super.genericDao = new BuildingDaoImpl();
+        super.genericDao = SingletonDaoUtil.getBuildingDaoInstance();
         super.converter = new BuildingConverter();
     }
 

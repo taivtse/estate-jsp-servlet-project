@@ -1,7 +1,7 @@
 package dao;
 
 import com.laptrinhjavaweb.dao.RoleDao;
-import com.laptrinhjavaweb.dao.impl.RoleDaoImpl;
+import com.laptrinhjavaweb.dao.util.SingletonDaoUtil;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -12,7 +12,7 @@ public class TestRoleDao {
 
     @BeforeTest
     public void init() {
-        roleDao = new RoleDaoImpl();
+        roleDao = SingletonDaoUtil.getRoleDaoInstance();
     }
 
     @Test

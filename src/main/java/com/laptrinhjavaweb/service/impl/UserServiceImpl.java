@@ -2,7 +2,7 @@ package com.laptrinhjavaweb.service.impl;
 
 import com.laptrinhjavaweb.converter.UserConverter;
 import com.laptrinhjavaweb.dao.UserDao;
-import com.laptrinhjavaweb.dao.impl.UserDaoImpl;
+import com.laptrinhjavaweb.dao.util.SingletonDaoUtil;
 import com.laptrinhjavaweb.dto.AssignmentStaffDto;
 import com.laptrinhjavaweb.dto.UserDto;
 import com.laptrinhjavaweb.entity.UserEntity;
@@ -19,7 +19,7 @@ public class UserServiceImpl extends AbstractService<Integer, UserDto, UserEntit
     private AssignmentService assignmentService = new AssignmentServiceImpl();
 
     public UserServiceImpl() {
-        super.genericDao = new UserDaoImpl();
+        super.genericDao = SingletonDaoUtil.getUserDaoInstance();
         super.converter = new UserConverter();
     }
 

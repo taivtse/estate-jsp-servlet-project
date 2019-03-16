@@ -3,6 +3,7 @@ package com.laptrinhjavaweb.service.impl;
 import com.laptrinhjavaweb.converter.AssignmentConverter;
 import com.laptrinhjavaweb.dao.AssignmentDao;
 import com.laptrinhjavaweb.dao.impl.AssignmentDaoImpl;
+import com.laptrinhjavaweb.dao.util.SingletonDaoUtil;
 import com.laptrinhjavaweb.dto.AssignmentDto;
 import com.laptrinhjavaweb.entity.AssignmentEntity;
 import com.laptrinhjavaweb.service.AssignmentService;
@@ -11,7 +12,7 @@ import java.util.Date;
 
 public class AssignmentServiceImpl extends AbstractService<Integer, AssignmentDto, AssignmentEntity> implements AssignmentService {
     public AssignmentServiceImpl() {
-        super.genericDao = new AssignmentDaoImpl();
+        super.genericDao = SingletonDaoUtil.getAssignmentDaoInstance();
         super.converter = new AssignmentConverter();
     }
 

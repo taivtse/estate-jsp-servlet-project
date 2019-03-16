@@ -1,7 +1,7 @@
 package dao;
 
 import com.laptrinhjavaweb.dao.UserDao;
-import com.laptrinhjavaweb.dao.impl.UserDaoImpl;
+import com.laptrinhjavaweb.dao.util.SingletonDaoUtil;
 import com.laptrinhjavaweb.entity.UserEntity;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Logical;
@@ -17,7 +17,7 @@ public class TestUserDao {
 
     @BeforeTest
     public void init() {
-        userDao = new UserDaoImpl();
+        userDao = SingletonDaoUtil.getUserDaoInstance();
     }
 
     @Test
