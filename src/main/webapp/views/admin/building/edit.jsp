@@ -61,7 +61,7 @@
                                 <input type="file" id="buildingImage" name="image">
                                 <div class="imagePreviewWrapper">
                                     <c:if test="${not empty command.pojo.image}">
-                                        <c:url value="/resource/${command.pojo.image}" var="imageUrl"></c:url>
+                                        <c:url value="/api/image/${command.pojo.image}" var="imageUrl"></c:url>
                                     </c:if>
                                     <img src="${imageUrl}" alt="" id="imagePreview">
                                 </div>

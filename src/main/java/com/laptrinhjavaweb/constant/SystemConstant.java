@@ -5,7 +5,6 @@ import java.io.File;
 public class SystemConstant {
     public static final String BASE_UPLOAD_PATH = "/Users/vothanhtai/Documents/WorkSpace/Java/LRHTeam/estate-project/resources".replace("/", File.separator);
     public static final String BUILDING_UPLOAD_PATH = "building";
-    public static final String BUILDING_IMAGE_PREFIX = "building";
 
     public static final String REDIRECT_URL = "redirect:/";
     public static final String COMMAND = "command";

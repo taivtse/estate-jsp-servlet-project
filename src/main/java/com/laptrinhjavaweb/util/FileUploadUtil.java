@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.Normalizer;
 import java.util.Base64;
 
 public class FileUploadUtil {
@@ -22,14 +23,25 @@ public class FileUploadUtil {
         return fileUploadUtil;
     }
 
-    public void writeBase64(String base64, String parentFolder, String savedName, String extension) throws IOException {
+    public String writeBase64(String base64, String parentFolder, String savedName, String extension) throws IOException {
+//        Convert to ascii string
+        savedName = Normalizer.normalize(savedName, Normalizer.Form.NFKD);
+        String regex = "[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+";
+        savedName = new String(savedName.replaceAll(regex, "").getBytes("ascii"), "ascii");
+
+//        remove all special characters and whitespace
+        savedName = savedName.replaceAll("([^A-Za-z0-9]|\\s)", "");
+        savedName = savedName.concat(extension);
+
         String rawData = base64.split(",")[1];
         byte[] decodedImg = Base64.getDecoder().decode(rawData);
         Path destinationFolder = Paths.get(SystemConstant.BASE_UPLOAD_PATH, parentFolder);
         createFolderIfNotExisted(destinationFolder);
 
-        Path destinationFile = Paths.get(destinationFolder.toString(), savedName.concat(extension));
+        Path destinationFile = Paths.get(destinationFolder.toString(), savedName);
         Files.write(destinationFile, decodedImg);
+
+        return Paths.get(parentFolder, savedName).toString();
     }
 
     private void createFolderIfNotExisted(Path path) {

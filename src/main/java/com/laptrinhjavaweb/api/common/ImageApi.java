@@ -17,20 +17,19 @@ public class ImageApi extends HttpServlet {
         String fileName = req.getPathInfo().substring(1);
         Path filePath = Paths.get(SystemConstant.BASE_UPLOAD_PATH, fileName);
 
-        FileInputStream fileInputStream = new FileInputStream(filePath.toFile());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+        OutputStream outputStream;
+        BufferedOutputStream bufferedOutputStream;
+        try (FileInputStream fileInputStream = new FileInputStream(filePath.toFile());
+             BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream)) {
 
-        OutputStream outputStream = resp.getOutputStream();
-        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-        int ch;
-        while ((ch = bufferedInputStream.read()) != -1) {
-            bufferedOutputStream.write(ch);
+            outputStream = resp.getOutputStream();
+            bufferedOutputStream = new BufferedOutputStream(outputStream);
+            int ch;
+            while ((ch = bufferedInputStream.read()) != -1) {
+                bufferedOutputStream.write(ch);
+            }
+        } catch (IOException e) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
-
-        bufferedInputStream.close();
-        fileInputStream.close();
-
-        bufferedOutputStream.close();
-        outputStream.close();
     }
 }

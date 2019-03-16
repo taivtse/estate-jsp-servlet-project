@@ -100,10 +100,11 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
 
 //        save image
         if (StringUtils.isNotBlank(dto.getImage())) {
-            entity.setImage(SystemConstant.BUILDING_IMAGE_PREFIX + dto.getId());
-            FileUploadUtil.getInstance().writeBase64(dto.getImage(),
-                    SystemConstant.BUILDING_UPLOAD_PATH, SystemConstant.BUILDING_IMAGE_PREFIX + dto.getId(),
+            String imageName = FileUploadUtil.getInstance().writeBase64(dto.getImage(),
+                    SystemConstant.BUILDING_UPLOAD_PATH, SystemConstant.BUILDING_UPLOAD_PATH + dto.getId(),
                     SystemConstant.JPG);
+
+            entity.setImage(imageName);
         }
 
         genericDao.save(entity);
@@ -129,10 +130,13 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
 
 //        save image
         if (StringUtils.isNotBlank(dto.getImage())) {
-            entity.setImage(SystemConstant.BUILDING_IMAGE_PREFIX + dto.getId());
-            FileUploadUtil.getInstance().writeBase64(dto.getImage(),
-                    SystemConstant.BUILDING_UPLOAD_PATH, SystemConstant.BUILDING_IMAGE_PREFIX + dto.getId(),
+            String imageName = FileUploadUtil.getInstance().writeBase64(dto.getImage(),
+                    SystemConstant.BUILDING_UPLOAD_PATH, SystemConstant.BUILDING_UPLOAD_PATH + dto.getId(),
                     SystemConstant.JPG);
+
+            entity.setImage(imageName);
+        } else {
+            entity.setImage(oldEntity.getImage());
         }
 
         genericDao.update(entity);
