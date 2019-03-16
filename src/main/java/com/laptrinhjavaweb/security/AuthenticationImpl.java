@@ -3,7 +3,7 @@ package com.laptrinhjavaweb.security;
 import com.laptrinhjavaweb.constant.SystemConstant;
 import com.laptrinhjavaweb.dto.UserDto;
 import com.laptrinhjavaweb.service.UserService;
-import com.laptrinhjavaweb.service.impl.UserServiceImpl;
+import com.laptrinhjavaweb.service.util.SingletonServiceUtil;
 import com.laptrinhjavaweb.util.SessionUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +17,7 @@ public class AuthenticationImpl implements Authentication {
     public AuthenticationImpl(String username, String password) {
         this.username = username;
         this.password = password;
-        this.userService = new UserServiceImpl();
+        this.userService = SingletonServiceUtil.getUserServiceInstance();
     }
 
     @Override

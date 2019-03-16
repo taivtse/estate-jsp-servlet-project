@@ -3,7 +3,7 @@ package com.laptrinhjavaweb.api.admin;
 
 import com.laptrinhjavaweb.dto.WardDto;
 import com.laptrinhjavaweb.service.WardService;
-import com.laptrinhjavaweb.service.impl.WardServiceImpl;
+import com.laptrinhjavaweb.service.util.SingletonServiceUtil;
 import com.laptrinhjavaweb.util.HttpUtil;
 
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +16,11 @@ import java.util.List;
 @WebServlet("/api/ward")
 public class WardApi extends HttpServlet {
 
-    private WardService wardService = new WardServiceImpl();
+    private WardService wardService;
+
+    public WardApi() {
+        wardService = SingletonServiceUtil.getWardServiceInstance();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

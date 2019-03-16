@@ -14,10 +14,7 @@ import com.laptrinhjavaweb.service.BuildingService;
 import com.laptrinhjavaweb.service.DistrictService;
 import com.laptrinhjavaweb.service.UserService;
 import com.laptrinhjavaweb.service.WardService;
-import com.laptrinhjavaweb.service.impl.BuildingServiceImpl;
-import com.laptrinhjavaweb.service.impl.DistrictServiceImpl;
-import com.laptrinhjavaweb.service.impl.UserServiceImpl;
-import com.laptrinhjavaweb.service.impl.WardServiceImpl;
+import com.laptrinhjavaweb.service.util.SingletonServiceUtil;
 import com.laptrinhjavaweb.util.FormUtil;
 import com.laptrinhjavaweb.util.HttpUtil;
 
@@ -33,10 +30,17 @@ import java.util.List;
 public class BuildingController extends HttpServlet {
     private final String viewRootPath = "/views/admin/building/";
 
-    private BuildingService buildingService = new BuildingServiceImpl();
-    private DistrictService districtService = new DistrictServiceImpl();
-    private WardService wardService = new WardServiceImpl();
-    private UserService userService = new UserServiceImpl();
+    private BuildingService buildingService;
+    private DistrictService districtService;
+    private WardService wardService;
+    private UserService userService;
+
+    public BuildingController() {
+        buildingService = SingletonServiceUtil.getBuildingServiceInstance();
+        districtService = SingletonServiceUtil.getDistrictServiceInstance();
+        wardService = SingletonServiceUtil.getWardServiceInstance();
+        userService = SingletonServiceUtil.getUserServiceInstance();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

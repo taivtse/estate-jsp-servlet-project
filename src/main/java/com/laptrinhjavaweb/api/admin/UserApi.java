@@ -3,7 +3,7 @@ package com.laptrinhjavaweb.api.admin;
 
 import com.laptrinhjavaweb.dto.UserDto;
 import com.laptrinhjavaweb.service.UserService;
-import com.laptrinhjavaweb.service.impl.UserServiceImpl;
+import com.laptrinhjavaweb.service.util.SingletonServiceUtil;
 import com.laptrinhjavaweb.util.HttpUtil;
 
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +16,11 @@ import java.util.List;
 @WebServlet("/api/user")
 public class UserApi extends HttpServlet {
 
-    private UserService userService = new UserServiceImpl();
+    private UserService userService;
+
+    public UserApi() {
+        userService = SingletonServiceUtil.getUserServiceInstance();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

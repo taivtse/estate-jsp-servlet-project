@@ -6,8 +6,7 @@ import com.laptrinhjavaweb.dto.AssignmentDto;
 import com.laptrinhjavaweb.dto.AssignmentStaffDto;
 import com.laptrinhjavaweb.service.AssignmentService;
 import com.laptrinhjavaweb.service.UserService;
-import com.laptrinhjavaweb.service.impl.AssignmentServiceImpl;
-import com.laptrinhjavaweb.service.impl.UserServiceImpl;
+import com.laptrinhjavaweb.service.util.SingletonServiceUtil;
 import com.laptrinhjavaweb.util.HttpUtil;
 
 import javax.servlet.annotation.WebServlet;
@@ -20,8 +19,13 @@ import java.util.List;
 @WebServlet("/api/assignment/staff")
 public class AssignmentStaffApi extends HttpServlet {
 
-    private UserService userService = new UserServiceImpl();
-    private AssignmentService assignmentService = new AssignmentServiceImpl();
+    private UserService userService;
+    private AssignmentService assignmentService;
+
+    public AssignmentStaffApi() {
+        userService = SingletonServiceUtil.getUserServiceInstance();
+        assignmentService = SingletonServiceUtil.getAssignmentServiceInstance();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

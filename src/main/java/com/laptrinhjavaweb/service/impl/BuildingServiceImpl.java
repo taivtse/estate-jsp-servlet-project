@@ -11,20 +11,26 @@ import com.laptrinhjavaweb.dto.WardDto;
 import com.laptrinhjavaweb.entity.BuildingEntity;
 import com.laptrinhjavaweb.paging.Pageable;
 import com.laptrinhjavaweb.service.*;
+import com.laptrinhjavaweb.service.util.SingletonServiceUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, BuildingEntity> implements BuildingService {
-    private DistrictService districtService = new DistrictServiceImpl();
-    private WardService wardService = new WardServiceImpl();
-    private RentAreaService rentAreaService = new RentAreaServiceImpl();
-    private AssignmentService assignmentService = new AssignmentServiceImpl();
+    private DistrictService districtService;
+    private WardService wardService;
+    private RentAreaService rentAreaService;
+    private AssignmentService assignmentService;
 
     public BuildingServiceImpl() {
         super.genericDao = SingletonDaoUtil.getBuildingDaoInstance();
         super.converter = new BuildingConverter();
+
+        districtService = SingletonServiceUtil.getDistrictServiceInstance();
+        wardService = SingletonServiceUtil.getWardServiceInstance();
+        rentAreaService = SingletonServiceUtil.getRentAreaServiceInstance();
+        assignmentService = SingletonServiceUtil.getAssignmentServiceInstance();
     }
 
     @Override

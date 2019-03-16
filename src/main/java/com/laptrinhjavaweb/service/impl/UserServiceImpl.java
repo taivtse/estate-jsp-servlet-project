@@ -10,17 +10,20 @@ import com.laptrinhjavaweb.orm.query.criteria.criterion.Criterion;
 import com.laptrinhjavaweb.orm.query.criteria.criterion.Logical;
 import com.laptrinhjavaweb.service.AssignmentService;
 import com.laptrinhjavaweb.service.UserService;
+import com.laptrinhjavaweb.service.util.SingletonServiceUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class UserServiceImpl extends AbstractService<Integer, UserDto, UserEntity> implements UserService {
-    private AssignmentService assignmentService = new AssignmentServiceImpl();
+    private AssignmentService assignmentService;
 
     public UserServiceImpl() {
         super.genericDao = SingletonDaoUtil.getUserDaoInstance();
         super.converter = new UserConverter();
+
+        assignmentService = SingletonServiceUtil.getAssignmentServiceInstance();
     }
 
     @Override
