@@ -144,12 +144,16 @@ public class BuildingDaoImpl extends AbstractDao<Integer, BuildingEntity> implem
 
 //        sorting
         if (StringUtils.isNotBlank(pageable.getSorter().getPropertyName()) && StringUtils.isNotBlank(pageable.getSorter().getDirection())) {
-            sqlBuilder.append(" ORDER BY " + pageable.getSorter().getPropertyName() + " " + pageable.getSorter().getDirection());
+            sqlBuilder.append(" ORDER BY {orderBy} {orderDirection}");
+            paramMap.put("orderBy", pageable.getSorter().getPropertyName());
+            paramMap.put("orderDirection", pageable.getSorter().getDirection());
         }
 
 //        paging
         if (pageable.getOffset() != null && pageable.getLimit() != null) {
-            sqlBuilder.append(" LIMIT " + pageable.getLimit() + " OFFSET " + pageable.getOffset());
+            sqlBuilder.append(" LIMIT {limit} OFFSET {offset}");
+            paramMap.put("limit", pageable.getLimit());
+            paramMap.put("offset", pageable.getOffset());
         }
 
         Session session = SessionFactory.openSession();
