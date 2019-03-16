@@ -522,15 +522,21 @@
 
                     reader.readAsDataURL(this.files[0]);
                 }
-                $("#buildingImage").val(this.files[0].name);
             })
         }
 
         function setFormSubmitEvent() {
-            $("#submitButton").click(function (e) {
+            $("#buildingForm").submit(async function (e) {
                 e.preventDefault();
-                var data = $("#buildingForm").serializeObject();
-                doSubmitForm(data);
+                var formData = $("#buildingForm").serializeObject();
+
+                var input = document.getElementById("buildingImage");
+                if (input.files && input.files[0]) {
+                    await getBase64(input.files[0]).then(
+                        data => formData.image = data
+                    );
+                }
+                doSubmitForm(formData);
             });
         }
 

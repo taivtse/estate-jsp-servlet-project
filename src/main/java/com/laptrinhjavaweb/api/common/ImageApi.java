@@ -10,8 +10,8 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@WebServlet("/resource/*")
-public class ImageController extends HttpServlet {
+@WebServlet("/api/image/*")
+public class ImageApi extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String fileName = req.getPathInfo().substring(1);

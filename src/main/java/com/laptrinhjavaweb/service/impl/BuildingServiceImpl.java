@@ -1,6 +1,7 @@
 package com.laptrinhjavaweb.service.impl;
 
 import com.laptrinhjavaweb.builder.BuildingBuilder;
+import com.laptrinhjavaweb.constant.SystemConstant;
 import com.laptrinhjavaweb.converter.BuildingConverter;
 import com.laptrinhjavaweb.dao.BuildingDao;
 import com.laptrinhjavaweb.dao.util.SingletonDaoUtil;
@@ -12,6 +13,8 @@ import com.laptrinhjavaweb.entity.BuildingEntity;
 import com.laptrinhjavaweb.paging.Pageable;
 import com.laptrinhjavaweb.service.*;
 import com.laptrinhjavaweb.service.util.SingletonServiceUtil;
+import com.laptrinhjavaweb.util.FileUploadUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -95,6 +98,14 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
             entity.setType(String.join(",", dto.getTypeArray()));
         }
 
+//        save image
+        if (StringUtils.isNotBlank(dto.getImage())) {
+            entity.setImage(SystemConstant.BUILDING_IMAGE_PREFIX + dto.getId());
+            FileUploadUtil.getInstance().writeBase64(dto.getImage(),
+                    SystemConstant.BUILDING_UPLOAD_PATH, SystemConstant.BUILDING_IMAGE_PREFIX + dto.getId(),
+                    SystemConstant.JPG);
+        }
+
         genericDao.save(entity);
 
 //        save all new rent area
@@ -114,6 +125,14 @@ public class BuildingServiceImpl extends AbstractService<Integer, BuildingDto, B
         BuildingEntity entity = converter.dtoToEntity(dto);
         if (dto.getTypeArray() != null) {
             entity.setType(String.join(",", dto.getTypeArray()));
+        }
+
+//        save image
+        if (StringUtils.isNotBlank(dto.getImage())) {
+            entity.setImage(SystemConstant.BUILDING_IMAGE_PREFIX + dto.getId());
+            FileUploadUtil.getInstance().writeBase64(dto.getImage(),
+                    SystemConstant.BUILDING_UPLOAD_PATH, SystemConstant.BUILDING_IMAGE_PREFIX + dto.getId(),
+                    SystemConstant.JPG);
         }
 
         genericDao.update(entity);
