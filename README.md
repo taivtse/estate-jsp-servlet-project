@@ -15,7 +15,7 @@
 ## Công nghệ sử dụng:
 * Backend:
 1. Jsp - Servlet
-2. [Torm link](https://github.com/taivtse/t-orm) - ORM riêng của mình
+2. [Torm ORM](https://github.com/taivtse/t-orm) - ORM riêng của mình
 3. Sitemesh decorator
 4. Mô hình 3 layer
 5. MySQL
